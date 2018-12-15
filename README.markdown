@@ -1,22 +1,27 @@
-# Apache 2.4 per SmartCard TS-CNS (Tessera Sanitaria - Carta Nazionale Servizi)
+# Apache HTTP 2.4 per SmartCard TS-CNS (Tessera Sanitaria - Carta Nazionale Servizi)
 [![Antonio Musarra's Blog](https://img.shields.io/badge/maintainer-Antonio_Musarra's_Blog-purple.svg?colorB=6e60cc)](https://www.dontesta.it)
 [![Twitter Follow](https://img.shields.io/twitter/follow/antonio_musarra.svg?style=social&label=%40antonio_musarra%20on%20Twitter&style=plastic)](https://twitter.com/antonio_musarra)
 
-L'obiettivo di questo progetto è quello di fornire un "template"pronto all'uso
+L'obiettivo di questo progetto è quello di fornire un template pronto all'uso
 che realizza un sistema di autenticazione tramite la SmartCard **TS-CNS** basato 
-su [Apache HTTPD](http://httpd.apache.org/docs/2.4/). Ognuno può poi modificare 
+su [Apache HTTP](http://httpd.apache.org/docs/2.4/). Ognuno può poi modificare 
 o specializzare questo progetto sulla base delle proprie esigenze.
 
-Si tratta di un progetto docker per la creazione di un container che implementa
-un sistema di **mutua autenticazione o autenticazione bilaterale SSL/TLS**.
-Questo meccanismo di autenticazione, richiede anche il certificato digitale 
-da parte del client, certificato che in questo caso è memorizzato 
+Si tratta di un progetto [docker](https://www.docker.com/) per la creazione di 
+un container che implementa un sistema di **mutua autenticazione o autenticazione bilaterale SSL/TLS**.
+Questo meccanismo di autenticazione richiede anche il certificato digitale 
+da parte del client, certificato che in questo caso risiede 
 all'interno della TS-CNS.
 
 La particolarità del sistema implementato (attraverso questo container) è quella 
 di consentire l'autenticazione tramite la propria SmartCard
 **TS-CNS (Tessera Sanitaria - Carta Nazionale Servizi)**, rilasciata dalla 
 regione di appartenenza.
+
+La mia regione di appartenenza è la Regione Lazio il cui portale di riferimento
+per la TS-CNS è https://cns.regione.lazio.it/. Ogni regione ha il suo portale
+di riferimento dov'è possibile trovare tutte le informazioni utili che riguardano
+appunto la TS-CNS.
 
 ## 1 - Overview
 Questo container parte dall'immagine base di [*ubuntu:18.04*](https://hub.docker.com/_/ubuntu), 
@@ -25,11 +30,11 @@ autenticazione basato sulla TS-CNS.
 
 Il software di base installato è:
 
-* Apache HTTPD 2.4 (2.4.29)
+* Apache HTTP 2.4 (2.4.29)
 * PHP 7 (7.2.10-0ubuntu0.18.04.1)
 * Modulo PHP per Apache
 
-L'installazione di PHP e del modulo per Apache è del tutto opzionale, i due 
+_L'installazione di PHP e del modulo per Apache è del tutto opzionale_. I due 
 moduli sono stati installati esclusivamente per costruire la pagina di atterraggio
 dell'utente dopo la fase di autenticazione. Questa pagina mostra le informazioni
 estratte dal certificato digitale.
@@ -44,7 +49,7 @@ FROM ubuntu:18.04
 ```
 
 A seguire c'è la sezione delle variabili di ambiente che sono prettamente 
-specifiche di Apache HTTPD. I valori di queste variabili d'ambiente possono
+specifiche di Apache HTTP. I valori di queste variabili d'ambiente possono
 essere modificate in base alle proprie esigenze.
 
 ```docker
@@ -72,13 +77,13 @@ da [ZeroSSL](https://zerossl.com).
 Il CN di questo specifico certificato è impostato a *cns.dontesta.it*. La 
 scadenza prevista per questo certificato è il 13 marzo 2019.
 
-Di default la porta *HTTPS* è impostata a **10443** dalla variabile `APACHE_SSL_PORT`.
+Di default della porta *HTTPS* è impostata a **10443** dalla variabile `APACHE_SSL_PORT`.
 La variabile `APPLICATION_URL` definisce il path di redirect qualora si accedesse 
 via protocollo HTTP e non HTTPS.
 
 La sezione a seguire del Dockerfile, contiene tutte le direttive necessarie per 
-l'installazione del software indicato in precedenza. Dato che abbiamo una 
-distribuzione [**Ubuntu**](https://www.ubuntu.com/), il comando *apt* è
+l'installazione del software indicato in precedenza. Dato che la 
+distribuzione scelta è [**Ubuntu**](https://www.ubuntu.com/), il comando *apt* è
 responsabile della gestione dei package, quindi dell'installazione.
 
 ```docker
@@ -154,7 +159,7 @@ RUN a2enmod ssl \
 
 Le due ultime direttive indicate sul Dockerfile, dichiarano la porta HTTPS 
 (`APACHE_SSL_PORT`) che deve essere pubblica e il comando da eseguire per mettere 
-in listen (o ascolto) il nuovo servizio Apache.
+in listen (o ascolto) il nuovo servizio Apache HTTP.
 
 ## 3 - Organizzazione
 In termini di directory e file, il progetto è organizzato così come mostrato a 
@@ -220,7 +225,7 @@ CONTAINER ID        IMAGE                          COMMAND                  CREA
 65c874216624        httpd-cns-dontesta-it:latest   "/usr/sbin/apache2ct…"   36 minutes ago      Up 36 minutes       0.0.0.0:10443->10443/tcp   cns
 ```
 
-Da questo momento, è possibile raggiungere il servizio di autenticazione basato
+Da questo momento è possibile raggiungere il servizio di autenticazione basato
 sulla TS-CNS utilizzando il browser. 
 
 Per evitare l'errore `SSL_ERROR_BAD_CERT_DOMAIN` da parte del browser, raggiungendo 
@@ -237,19 +242,20 @@ file di _hosts_ la riga a seguire.
 In ambiente di collaudo e/o produzione il nome del servizio o FQDN sarà registrato 
 su un DNS.
 
-A questo punto, lato **server-side** è tutto pronto, non resta fare altro che
-un test. Nel caso disponiate di una vostra SmartCard TS-CNS e il vostro PC già 
-configurato per l'utilizzo, potreste da subito eseguire un test puntando il 
+Lato **server-side** è tutto pronto, non resta fare altro che un test. 
+Nel caso disponiate di una vostra SmartCard TS-CNS e il vostro PC già 
+configurato per l'utilizzo, potreste eseguire da subito un test puntando il 
 vostro browser alla URL https://cns.dontesta.it:10443/
 
 Puntando all'indirizzo https://cns.dontesta.it:10443/ dovrebbe accadere quanto 
 segue:
 
 1. Richiesta del PIN CODE della vostra TS-CNS;
-2. Selezione del vostro certificato digitale contenuto all'interno della CNS;
+2. Richiesta di selezione del vostro certificato digitale contenuto all'interno della CNS;
 3. Visualizzazione della pagina di benvenuto.
 
-A seguire sono mostrati una serie di screenshot del mio caso.
+A seguire una serie di screenshot del mio caso di test, utilizzando proprio la 
+mia TS-CNS.
 
 ![Inserimento PIN TS-CNS](images/TS-CNS_InserimentoPINCODE.png)
 
@@ -271,12 +277,12 @@ dalle difficoltà incontrate cercando di accedere ai servizi del [Sistema Inform
 
 Credo che questo progetto possa essere utile a coloro che hanno la necessità di
 realizzare un servizio di autenticazione basato sulla TS-CNS e non sanno magari
-da dover iniziare. Questo progetto potrebbe essere un buon punto di partenza.
+da dove iniziare. **Questo progetto potrebbe essere quindi un buon punto di partenza.**
 
 Per maggiori approfondimenti riguardo questo specifico argomento, ho già in 
 preparazione il prossimo articolo per [Antonio Musarra's Blog](https://www.dontesta.it).
 
-### Project License
+## Project License
 The MIT License (MIT)
 
 Copyright &copy; 2018 Antonio Musarra's Blog - [https://www.dontesta.it](https://www.dontesta.it "Antonio Musarra's Blog") , 
