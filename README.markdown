@@ -192,10 +192,32 @@ Il folder *configs* contiene al suo interno altri folder e file, in particolare:
 3. **test**: contiene gli script PHP di test. 
 
 ## 4 - Quickstart
-In questo momento l'immagine Docker non è disponibile su DockerHub, occorre
-quindi procedere con la build della nuova immagine e al termine della build lanciare 
-l'immagine ottenuta. A seguire sono indicati i comandi *docker* da lanciare dal
-proprio terminale.
+L'immagine di questo progetto docker è disponibile sul mio account docker hub
+[amusarra/httpd-cns-dontesta-it](
+https://hub.docker.com/r/amusarra/httpd-cns-dontesta-it). Potreste quindi fin
+da subito fare un test. A seguire il comando per il pull dell'immagine docker
+da docker hub.
+
+```bash
+docker run -i -t -d -p 10443:10443 --name=cns amusarra/httpd-cns-dontesta-it:1.0.0
+```
+Una volta eseguito il pull dell'immagine docker è possibile creare il nuovo
+container tramite il comando a seguire.
+
+```bash
+docker run -i -t -d -p 10443:10443 --name=cns amusarra/httpd-cns-dontesta-it:1.0.0
+```
+Utilizzando il comando `docker ps` dovremmo poter vedere in lista il nuovo
+container, così come indicato a seguire.
+
+```bash
+CONTAINER ID        IMAGE                                  COMMAND                  CREATED             STATUS              PORTS                      NAMES
+bb707fb00e89        amusarra/httpd-cns-dontesta-it:1.0.0   "/usr/sbin/apache2ct…"   6 seconds ago       Up 4 seconds        0.0.0.0:10443->10443/tcp   cns
+```
+
+Nel caso in cui vogliate apportare delle modifiche, dovreste poi procedere con 
+la build della nuova immagine e al termine della build lanciare l'immagine ottenuta. 
+A seguire sono indicati i comandi *docker* da lanciare dal proprio terminale.
 
 _I comandi docker di build e run devono essere lanciati dalla root della directory 
 di progetto dopo aver fatto il clone di questo repository._
