@@ -16,6 +16,7 @@ ENV DEBIAN_FRONTEND noninteractive
 RUN apt update \
     && apt install -y apache2 \
     && apt install -y php libapache2-mod-php \
+    && apt install -y curl \
     && rm -rf /var/lib/apt/lists/*
 
 # Copy Apache configuration file
