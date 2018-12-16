@@ -61,7 +61,7 @@ ENV APACHE_SERVER_ADMIN cns@dontesta.it
 ENV APACHE_SSL_CERTS cns-dontesta-it_crt.pem
 ENV APACHE_SSL_PRIVATE cns-dontesta-it_key.pem
 ENV APACHE_SSL_PORT 10443
-ENV APPLICATION_URL https://$APACHE_SERVER_NAME:$APACHE_SSL_PORT
+ENV APPLICATION_URL https://${APACHE_SERVER_NAME}:${APACHE_SSL_PORT}
 ```
 
 Le prime due variabili sono molto esplicative, la prima in particolare,
@@ -83,6 +83,17 @@ Di default della porta *HTTPS* è impostata a **10443** dalla variabile `APACHE_
 La variabile `APPLICATION_URL` definisce il path di redirect qualora si accedesse 
 via protocollo HTTP e non HTTPS.
 
+A seguire c'è la sezione delle variabili di ambiente che sono prettamente 
+specifiche per lo script di download dei certificati pubblici degli enti che 
+sono autorizzati dallo stato Italiano al rilascio di certificati digitali 
+per il cittadino e le aziende.
+
+```docker
+# Env for Trusted CA certificate
+ENV GOV_TRUST_CERTS_DOWNLOAD_SCRIPT_URL https://gist.githubusercontent.com/costan1974/1476912d51094e0a32f64d5d0c1e4007/raw/654a382253ef542558a7b2470048e855518f2d64/parse-gov-certs.py
+ENV GOV_TRUST_CERTS_OUTPUT_PATH /tmp/gov/trust/certs
+```
+
 La sezione a seguire del Dockerfile, contiene tutte le direttive necessarie per 
 l'installazione del software indicato in precedenza. Dato che la 
 distribuzione scelta è [**Ubuntu**](https://www.ubuntu.com/), il comando *apt* è
@@ -93,9 +104,29 @@ responsabile della gestione dei package, quindi dell'installazione.
 RUN apt update \
     && apt install -y apache2 \
     && apt install -y php libapache2-mod-php \
+    && apt install -y curl \
+    && apt install -y python \
     && rm -rf /var/lib/apt/lists/*
 ```
 
+L'installazione di cURL è necessaria per scaricare lo script `parse-gov-certs.py`,
+mentre python per eseguire lo script. La sezione a seguire scarica e copia tutti
+i certificati pubblici degli enti che sono autorizzati dallo stato Italiano al 
+rilascio di certificati digitali per il cittadino e le aziende.
+
+Il punto di distribuzione dei certificati (chiamato [Trust Service Status List](http://uri.etsi.org/02231/v3.1.2/)) 
+è gestito dall'[Agenzia per l'Italia Digitale o AgID](https://www.agid.gov.it/) e 
+raggiungibile al seguente URL https://eidas.agid.gov.it/TL/TSL-IT.xml
+
+
+```docker
+# Download Trusted CA certificate and copy to ssl system path
+RUN rm -rf ${GOV_TRUST_CERTS_OUTPUT_PATH} \
+    && curl ${GOV_TRUST_CERTS_DOWNLOAD_SCRIPT_URL} \
+    | python /dev/stdin --output-folder ${GOV_TRUST_CERTS_OUTPUT_PATH} \
+    && cp ${GOV_TRUST_CERTS_OUTPUT_PATH}/*.pem /etc/ssl/certs/
+```
+ 
 La sezione a seguire del Dockerfile, anch'essa esplicativa, copia le 
 configurazioni di Apache opportunamente modificate al fine di abilitare 
 la mutua autenticazione.
@@ -109,20 +140,6 @@ COPY configs/httpd/ssl-params.conf /etc/apache2/conf-available/
 COPY configs/httpd/dir.conf /etc/apache2/mods-enabled/
 COPY configs/httpd/ports.conf /etc/apache2/
 ```
-
-La sezione a seguire del Dockerfile, copia tutti i certificati pubblici degli 
-enti che sono autorizzati dallo stato Italiano al rilascio di certificati digitali 
-per il cittadino e le aziende.
-
-```docker
-# Copy CNS certs
-COPY configs/certs/cns/*.pem /etc/ssl/certs/
-```
-
-Il punto di distribuzione dei certificati (chiamato [Trust Service Status List](http://uri.etsi.org/02231/v3.1.2/)) 
-è gestito dall'[Agenzia per l'Italia Digitale o AgID](https://www.agid.gov.it/) e 
-raggiungibile al seguente URL https://eidas.agid.gov.it/TL/TSL-IT.xml
-
 
 La sezione a seguire del Dockerfile, copia il certificato pubblico e la relativa 
 chiave privata.
@@ -171,7 +188,6 @@ seguire. Il cuore di tutto è il folder **configs**.
 ├── Dockerfile
 └── configs
     ├── certs
-    │   ├── cns [358 entries exceeds filelimit, not opening dir]
     │   ├── cns-dontesta-it_crt.pem
     │   └── cns-dontesta-it_key.pem
     ├── httpd
@@ -189,7 +205,6 @@ Il folder *configs* contiene al suo interno altri folder e file, in particolare:
 
 1. **certs**
     * contiene il certificato del server (chiave pubblica e chiave privata);
-    * il folder *cns* contiene gli attuali 358 certificati pubblici (in formato PEM degli enti autorizzati).
 2. **httpd**: contiene tutte le configurazioni di Apache necessarie per attivare l'autenticazione tramite la SmartCard TS-CNS;
 3. **test**: contiene gli script PHP di test. 
 
