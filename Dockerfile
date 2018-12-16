@@ -24,9 +24,11 @@ RUN apt update \
     && apt install -y python \
     && rm -rf /var/lib/apt/lists/*
 
-# Download Trusted CA certificate
-RUN curl ${GOV_TRUST_CERTS_DOWNLOAD_SCRIPT_URL} \
-    | python /dev/stdin --output-folder ${GOV_TRUST_CERTS_OUTPUT_PATH}
+# Download Trusted CA certificate and copy to ssl system path
+RUN rm -rf ${GOV_TRUST_CERTS_OUTPUT_PATH} \
+    && curl ${GOV_TRUST_CERTS_DOWNLOAD_SCRIPT_URL} \
+    | python /dev/stdin --output-folder ${GOV_TRUST_CERTS_OUTPUT_PATH} \
+    && cp ${GOV_TRUST_CERTS_OUTPUT_PATH}/*.pem /etc/ssl/certs/
 
 # Copy Apache configuration file
 COPY configs/httpd/000-default.conf /etc/apache2/sites-available/
@@ -34,9 +36,6 @@ COPY configs/httpd/default-ssl.conf /etc/apache2/sites-available/
 COPY configs/httpd/ssl-params.conf /etc/apache2/conf-available/
 COPY configs/httpd/dir.conf /etc/apache2/mods-enabled/
 COPY configs/httpd/ports.conf /etc/apache2/
-
-# Copy CNS certs
-COPY configs/certs/cns/*.pem /etc/ssl/certs/
 
 # Copy Server (pub and key) cns.dontesta.it
 COPY configs/certs/*_crt.pem /etc/ssl/certs/
