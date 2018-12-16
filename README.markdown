@@ -2,10 +2,10 @@
 [![Antonio Musarra's Blog](https://img.shields.io/badge/maintainer-Antonio_Musarra's_Blog-purple.svg?colorB=6e60cc)](https://www.dontesta.it)
 [![Twitter Follow](https://img.shields.io/twitter/follow/antonio_musarra.svg?style=social&label=%40antonio_musarra%20on%20Twitter&style=plastic)](https://twitter.com/antonio_musarra)
 
-L'obiettivo di questo progetto è quello di fornire un template pronto all'uso
+L'obiettivo di questo progetto è quello di fornire un **template** pronto all'uso
 che realizza un sistema di autenticazione tramite la SmartCard **TS-CNS** basato 
-su [Apache HTTP](http://httpd.apache.org/docs/2.4/). Ognuno può poi modificare 
-o specializzare questo progetto sulla base delle proprie esigenze.
+su [Apache HTTP](http://httpd.apache.org/docs/2.4/). **Ognuno può poi modificare 
+o specializzare questo progetto sulla base delle proprie esigenze**
 
 Si tratta di un progetto [docker](https://www.docker.com/) per la creazione di 
 un container che implementa un sistema di **mutua autenticazione o autenticazione bilaterale SSL/TLS**.
