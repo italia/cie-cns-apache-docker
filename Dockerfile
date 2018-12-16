@@ -7,7 +7,7 @@ ENV APACHE_SERVER_ADMIN cns@dontesta.it
 ENV APACHE_SSL_CERTS cns-dontesta-it_crt.pem
 ENV APACHE_SSL_PRIVATE cns-dontesta-it_key.pem
 ENV APACHE_SSL_PORT 10443
-ENV APPLICATION_URL https://$APACHE_SERVER_NAME:$APACHE_SSL_PORT
+ENV APPLICATION_URL https://${APACHE_SERVER_NAME}:${APACHE_SSL_PORT}
 
 # Env for deb conf
 ENV DEBIAN_FRONTEND noninteractive
@@ -53,7 +53,7 @@ RUN a2enmod ssl \
     && c_rehash /etc/ssl/certs/
 
 # Expose Apache
-EXPOSE $APACHE_SSL_PORT
+EXPOSE ${APACHE_SSL_PORT}
  
 # Launch Apache
 CMD ["/usr/sbin/apache2ctl", "-DFOREGROUND"]
