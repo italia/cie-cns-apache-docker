@@ -1,7 +1,7 @@
 # Apache HTTP 2.4 per SmartCard TS-CNS (Tessera Sanitaria - Carta Nazionale Servizi)
 [![Antonio Musarra's Blog](https://img.shields.io/badge/maintainer-Antonio_Musarra's_Blog-purple.svg?colorB=6e60cc)](https://www.dontesta.it)
-[![](https://images.microbadger.com/badges/image/amusarra/httpd-cns-dontesta-it:1.0.0.svg)](https://microbadger.com/images/amusarra/httpd-cns-dontesta-it:1.0.0 "Get your own image badge on microbadger.com")
-[![](https://images.microbadger.com/badges/version/amusarra/httpd-cns-dontesta-it:1.0.0.svg)](https://microbadger.com/images/amusarra/httpd-cns-dontesta-it:1.0.0 "Get your own version badge on microbadger.com")
+[![](https://images.microbadger.com/badges/image/amusarra/httpd-cns-dontesta-it:1.1.0.svg)](https://microbadger.com/images/amusarra/httpd-cns-dontesta-it:1.1.0 "Get your own image badge on microbadger.com")
+[![](https://images.microbadger.com/badges/version/amusarra/httpd-cns-dontesta-it:1.1.0.svg)](https://microbadger.com/images/amusarra/httpd-cns-dontesta-it:1.1.0 "Get your own version badge on microbadger.com")
 [![Twitter Follow](https://img.shields.io/twitter/follow/antonio_musarra.svg?style=social&label=%40antonio_musarra%20on%20Twitter&style=plastic)](https://twitter.com/antonio_musarra)
 
 L'obiettivo di questo progetto è quello di fornire un **template** pronto all'uso
@@ -95,7 +95,7 @@ http://uri.etsi.org/TrstSvc/Svctype/IdV
 
 ```docker
 # Env for Trusted CA certificate
-ENV GOV_TRUST_CERTS_DOWNLOAD_SCRIPT_URL https://gist.githubusercontent.com/costan1974/1476912d51094e0a32f64d5d0c1e4007/raw/654a382253ef542558a7b2470048e855518f2d64/parse-gov-certs.py
+ENV GOV_TRUST_CERTS_DOWNLOAD_SCRIPT_URL https://raw.githubusercontent.com/amusarra/apache-httpd-ts-cns-docker/master/scripts/parse-gov-certs.py
 ENV GOV_TRUST_CERTS_OUTPUT_PATH /tmp/gov/trust/certs
 ENV GOV_TRUST_CERTS_SERVICE_TYPE_IDENTIFIER http://uri.etsi.org/TrstSvc/Svctype/IdV
 ```
@@ -222,20 +222,20 @@ da subito fare un test. A seguire il comando per il pull dell'immagine docker
 da docker hub.
 
 ```bash
-docker run -i -t -d -p 10443:10443 --name=cns amusarra/httpd-cns-dontesta-it:1.0.0
+docker run -i -t -d -p 10443:10443 --name=cns amusarra/httpd-cns-dontesta-it:1.1.0
 ```
 Una volta eseguito il pull dell'immagine docker è possibile creare il nuovo
 container tramite il comando a seguire.
 
 ```bash
-docker run -i -t -d -p 10443:10443 --name=cns amusarra/httpd-cns-dontesta-it:1.0.0
+docker run -i -t -d -p 10443:10443 --name=cns amusarra/httpd-cns-dontesta-it:1.1.0
 ```
 Utilizzando il comando `docker ps` dovremmo poter vedere in lista il nuovo
 container, così come indicato a seguire.
 
 ```bash
 CONTAINER ID        IMAGE                                  COMMAND                  CREATED             STATUS              PORTS                      NAMES
-bb707fb00e89        amusarra/httpd-cns-dontesta-it:1.0.0   "/usr/sbin/apache2ct…"   6 seconds ago       Up 4 seconds        0.0.0.0:10443->10443/tcp   cns
+bb707fb00e89        amusarra/httpd-cns-dontesta-it:1.1.0   "/usr/sbin/apache2ct…"   6 seconds ago       Up 4 seconds        0.0.0.0:10443->10443/tcp   cns
 ```
 
 Nel caso in cui vogliate apportare delle modifiche, dovreste poi procedere con 
@@ -330,7 +330,7 @@ preparazione il prossimo articolo per [Antonio Musarra's Blog](https://www.donte
 ## Project License
 The MIT License (MIT)
 
-Copyright &copy; 2018 Antonio Musarra's Blog - [https://www.dontesta.it](https://www.dontesta.it "Antonio Musarra's Blog") , 
+Copyright &copy; 2018 Antonio Musarra's Blog - [https://www.dontesta.it](https://www.dontesta.it "Antonio Musarra's Blog"), 
 [antonio.musarra@gmail.com](mailto:antonio.musarra@gmail.com "Antonio Musarra Email")
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
