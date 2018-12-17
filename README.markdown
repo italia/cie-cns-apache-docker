@@ -88,10 +88,16 @@ specifiche per lo script di download dei certificati pubblici degli enti che
 sono autorizzati dallo stato Italiano al rilascio di certificati digitali 
 per il cittadino e le aziende.
 
+La variabile d'ambiente `GOV_TRUST_CERTS_SERVICE_TYPE_IDENTIFIER` applica il filtro
+sul Service Type Identifier, il cui valore assunto nel caso della CNS è
+http://uri.etsi.org/TrstSvc/Svctype/IdV
+
+
 ```docker
 # Env for Trusted CA certificate
 ENV GOV_TRUST_CERTS_DOWNLOAD_SCRIPT_URL https://gist.githubusercontent.com/costan1974/1476912d51094e0a32f64d5d0c1e4007/raw/654a382253ef542558a7b2470048e855518f2d64/parse-gov-certs.py
 ENV GOV_TRUST_CERTS_OUTPUT_PATH /tmp/gov/trust/certs
+ENV GOV_TRUST_CERTS_SERVICE_TYPE_IDENTIFIER http://uri.etsi.org/TrstSvc/Svctype/IdV
 ```
 
 La sezione a seguire del Dockerfile, contiene tutte le direttive necessarie per 
