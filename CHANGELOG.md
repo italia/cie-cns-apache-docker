@@ -7,6 +7,7 @@ e questo progetto aderisce a [Semantic Versioning](https://semver.org/spec/v2.0.
 ## [Unreleased]
 ### Added
 - Download automatico dei certificati CA Governativi e copia in /etc/ssl/certs (issue #2)
+- Filtro delle sole CA che sono dedicate al rilascio delle CNS (issue #2)
 
 ## [1.0.0] - 2018-12-15
 Prima release del progetto. Fare riferimento al README.md per maggiori dettagli

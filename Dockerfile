@@ -13,7 +13,8 @@ ENV APPLICATION_URL https://${APACHE_SERVER_NAME}:${APACHE_SSL_PORT}
 ENV DEBIAN_FRONTEND noninteractive
 
 # Env for Trusted CA certificate
-ENV GOV_TRUST_CERTS_DOWNLOAD_SCRIPT_URL https://gist.githubusercontent.com/costan1974/1476912d51094e0a32f64d5d0c1e4007/raw/654a382253ef542558a7b2470048e855518f2d64/parse-gov-certs.py
+ENV GOV_TRUST_CERTS_DOWNLOAD_SCRIPT_URL https://raw.githubusercontent.com/amusarra/apache-httpd-ts-cns-docker/develop/scripts/parse-gov-certs.py
+ENV GOV_TRUST_CERTS_SERVICE_TYPE_IDENTIFIER http://uri.etsi.org/TrstSvc/Svctype/IdV
 ENV GOV_TRUST_CERTS_OUTPUT_PATH /tmp/gov/trust/certs
 
 # Install services, packages and do cleanup
@@ -28,6 +29,7 @@ RUN apt update \
 RUN rm -rf ${GOV_TRUST_CERTS_OUTPUT_PATH} \
     && curl ${GOV_TRUST_CERTS_DOWNLOAD_SCRIPT_URL} \
     | python /dev/stdin --output-folder ${GOV_TRUST_CERTS_OUTPUT_PATH} \
+    --service-type-identifier ${GOV_TRUST_CERTS_SERVICE_TYPE_IDENTIFIER} \
     && cp ${GOV_TRUST_CERTS_OUTPUT_PATH}/*.pem /etc/ssl/certs/
 
 # Copy Apache configuration file
