@@ -1,7 +1,7 @@
 # Apache HTTP 2.4 per SmartCard TS-CNS (Tessera Sanitaria - Carta Nazionale Servizi)
 [![Antonio Musarra's Blog](https://img.shields.io/badge/maintainer-Antonio_Musarra's_Blog-purple.svg?colorB=6e60cc)](https://www.dontesta.it)
-[![](https://images.microbadger.com/badges/image/amusarra/httpd-cns-dontesta-it:1.1.0.svg)](https://microbadger.com/images/amusarra/httpd-cns-dontesta-it:1.1.0 "Get your own image badge on microbadger.com")
-[![](https://images.microbadger.com/badges/version/amusarra/httpd-cns-dontesta-it:1.1.0.svg)](https://microbadger.com/images/amusarra/httpd-cns-dontesta-it:1.1.0 "Get your own version badge on microbadger.com")
+[![](https://images.microbadger.com/badges/image/amusarra/httpd-cns-dontesta-it:1.2.0.svg)](https://microbadger.com/images/amusarra/httpd-cns-dontesta-it:1.2.0 "Get your own image badge on microbadger.com")
+[![](https://images.microbadger.com/badges/version/amusarra/httpd-cns-dontesta-it:1.2.0.svg)](https://microbadger.com/images/amusarra/httpd-cns-dontesta-it:1.2.0 "Get your own version badge on microbadger.com")
 [![Twitter Follow](https://img.shields.io/twitter/follow/antonio_musarra.svg?style=social&label=%40antonio_musarra%20on%20Twitter&style=plastic)](https://twitter.com/antonio_musarra)
 
 L'obiettivo di questo progetto è quello di fornire un **template** pronto all'uso
@@ -62,6 +62,8 @@ ENV APACHE_SSL_CERTS cns-dontesta-it_crt.pem
 ENV APACHE_SSL_PRIVATE cns-dontesta-it_key.pem
 ENV APACHE_SSL_PORT 10443
 ENV APPLICATION_URL https://${APACHE_SERVER_NAME}:${APACHE_SSL_PORT}
+ENV APACHE_LOG_LEVEL info
+ENV APACHE_SSL_LOG_LEVEL info
 ```
 
 Le prime due variabili sono molto esplicative, la prima in particolare,
@@ -82,6 +84,11 @@ scadenza prevista per questo certificato è il 13 marzo 2019.
 Di default della porta *HTTPS* è impostata a **10443** dalla variabile `APACHE_SSL_PORT`.
 La variabile `APPLICATION_URL` definisce il path di redirect qualora si accedesse 
 via protocollo HTTP e non HTTPS.
+
+Le variabili `APACHE_LOG_LEVEL`e `APACHE_SSL_LOG_LEVEL`, consentono di modificare
+il livello log generale e quello specifico per il modulo SSL. Il valore di default
+è impostato a INFO. Per maggiori informazioni potete consultare 
+[LogLevel Directive](https://httpd.apache.org/docs/2.4/mod/core.html#loglevel).
 
 A seguire c'è la sezione delle variabili di ambiente che sono prettamente 
 specifiche per lo script di download dei certificati pubblici degli enti che 
@@ -163,6 +170,7 @@ La sezione a seguire del Dockerfile, copia i due script PHP di test sulla
 # Copy phpinfo test script
 COPY configs/test/info.php /var/www/html/info.php
 COPY configs/test/index.php /var/www/html/index.php
+COPY configs/test/certificate_policy_check.php /var/www/html/certificate_policy_check.php
 ```
 
 La sezione a seguire del Dockerfile esegue le seguenti attività:
@@ -222,20 +230,20 @@ da subito fare un test. A seguire il comando per il pull dell'immagine docker
 da docker hub.
 
 ```bash
-docker run -i -t -d -p 10443:10443 --name=cns amusarra/httpd-cns-dontesta-it:1.1.0
+docker run -i -t -d -p 10443:10443 --name=cns amusarra/httpd-cns-dontesta-it:1.2.0
 ```
 Una volta eseguito il pull dell'immagine docker è possibile creare il nuovo
 container tramite il comando a seguire.
 
 ```bash
-docker run -i -t -d -p 10443:10443 --name=cns amusarra/httpd-cns-dontesta-it:1.1.0
+docker run -i -t -d -p 10443:10443 --name=cns amusarra/httpd-cns-dontesta-it:1.2.0
 ```
 Utilizzando il comando `docker ps` dovremmo poter vedere in lista il nuovo
 container, così come indicato a seguire.
 
 ```bash
 CONTAINER ID        IMAGE                                  COMMAND                  CREATED             STATUS              PORTS                      NAMES
-bb707fb00e89        amusarra/httpd-cns-dontesta-it:1.1.0   "/usr/sbin/apache2ct…"   6 seconds ago       Up 4 seconds        0.0.0.0:10443->10443/tcp   cns
+bb707fb00e89        amusarra/httpd-cns-dontesta-it:1.2.0   "/usr/sbin/apache2ct…"   6 seconds ago       Up 4 seconds        0.0.0.0:10443->10443/tcp   cns
 ```
 
 Nel caso in cui vogliate apportare delle modifiche, dovreste poi procedere con 
@@ -299,6 +307,34 @@ segue:
 2. Richiesta di selezione del vostro certificato digitale contenuto all'interno della CNS;
 3. Visualizzazione della pagina di benvenuto.
 
+Oltre a verificare che il certificato digitale sulla CNS sia valido, è anche
+eseguito il controllo per cui tra le Certificate Policies (Object ID: 2.5.29.32) 
+ci sia quella specifica della CNS, identificata dall'OID [1.3.76.16.2.1](http://oid-info.com/cgi-bin/display?oid=1.3.76.16.2.1&action=display).
+
+Questo check è demandato allo script PHP `configs/test/certificate_policy_check.php` 
+mostrato di seguito.
+
+```php
+<?php
+$cnsCertificatePolicies = 'Policy: 1.3.76.16.2.1';
+$ssl = openssl_x509_parse(getenv('SSL_CLIENT_CERT'));
+
+if(preg_match("/$cnsCertificatePolicies$/m", $ssl['extensions']['certificatePolicies']) == 0) {
+    die("Il certificato è valido ma non dispone della Certification Policy 
+    che dovrebbe avere una CNS - Carta Nazionale Servizi. La Certification Policy
+    è definita dall'OID 1.3.76.16.2.1 
+    <a href='http://oid-info.com/cgi-bin/display?oid=1.3.76.16.2.1&action=display'
+    >{iso(1) identified-organization(3) uninfo(76) agid(16) authentication(2) cns(1)}
+    </a>");
+}
+?>
+```
+
+Purtroppo la funzione [PeerExtList(object-ID)](https://httpd.apache.org/docs/2.4/mod/mod_ssl.html) 
+del modulo *mod_ssl* non permette il check dell'estensione *CertificatePolicies*
+perché strutturata.
+
+
 A seguire una serie di screenshot del mio caso di test, utilizzando proprio la 
 mia TS-CNS.
 
@@ -312,9 +348,31 @@ mia TS-CNS.
 **Figura 2 - Selezione del certificato digitale**
 
 
-![WelcomePage](images/TS-CNS_WelcomePage.png)
+![WelcomePage](images/TS-CNS_WelcomePage_1.png)
 
 **Figura 3 - Pagina di benvenuto dopo l'autenticazione**
+
+![WelcomePage](images/TS-CNS_WelcomePage_2.png)
+
+**Figura 4 - Pagina di benvenuto dopo l'autenticazione**
+
+
+![ErrorPage](images/TS-CNS_CertificationPolicyFailed.png)
+
+**Figura 5 - Pagina di benvenuto dopo l'autenticazione**
+
+Accedendo agli access log di Apache è possibile notare queste due informazioni utili:
+
+* Il protocollo SSL
+* Il SSL_CLIENT_S_DN_CN 
+
+```log
+172.17.0.1 TLSv1.2 MSRNTN77H15C351X/6120016461039008.i1ZpZfaCX/eKyikBfnF8to+M2T8= - MSRNTN77H15C351X/6120016461039008.i1ZpZfaCX/eKyikBfnF8to+M2T8= [18/Dec/2018:17:48:53 +0000] "GET / HTTP/1.1" 200 2787 "-" "Mozilla/5.0 (Macintosh; Intel Mac OSX 10.14; rv:64.0) Gecko/20100101 Firefox/64.0"
+```
+
+Il valore di `SSL_CLIENT_S_DN_CN` è inoltre impostato come **SSLUserName**, questo
+fa in modo che la variabile `REMOTE_USER` sia impostata con il CN del certificato digitale 
+che identificata univocamente l'utente. 
 
 ## 5 - Conclusioni
 Lo stimolo iniziale che ha poi scatenato la nascita di questo progetto, arriva

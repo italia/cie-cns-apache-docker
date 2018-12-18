@@ -4,6 +4,17 @@ Tutte le modifiche importanti a questo progetto saranno documentate in questo fi
 Il formato è basato su [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 e questo progetto aderisce a [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.2.0] - 2018-12-18
+### Added
+- Verifica della Certificate Policies che sia quella della CNS (issue #1)
+- Impostazione SSLUserName con SSL_CLIENT_S_DN_CN
+- Aggiunta sull'access log di Apache la versione del protocollo SSL
+- Aggiunte due env sul Dockerfile per modificare il livello di log standard di Apache e del modulo SSL
+
+### Changed
+- Modifica della Welcome Page che mostra il certificato digitale in formato PEM e in formato leggibile (human readable)
+- Aggiunto lo script PHP certificate_policy_check che esegue il check della Certificate Policies
+
 ## [1.1.0] - 2018-12-17
 ### Added
 - Download automatico dei certificati CA Governativi e copia in /etc/ssl/certs (issue #2)
