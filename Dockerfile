@@ -49,6 +49,7 @@ COPY configs/certs/*_key.pem /etc/ssl/private/
 COPY configs/test/info.php /var/www/html/info.php
 COPY configs/test/index.php /var/www/html/index.php
 COPY configs/test/certificate_policy_check.php /var/www/html/certificate_policy_check.php
+
 RUN a2enmod ssl \
     && a2enmod headers \
     && a2ensite default-ssl \
