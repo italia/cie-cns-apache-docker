@@ -359,15 +359,15 @@ mia TS-CNS.
 
 ![ErrorPage](images/TS-CNS_CertificationPolicyFailed.png)
 
-**Figura 5 - Pagina di benvenuto dopo l'autenticazione**
+**Figura 5 - Notifica di errore per check Policy CNS fallito**
 
-Accedendo agli access log di Apache è possibile notare queste due informazioni utili:
+Accedendo agli access log di Apache è possibile notare queste due informazioni utili al tracciamento delle operazioni eseguite dall'utente:
 
 * Il protocollo SSL
 * Il SSL_CLIENT_S_DN_CN 
 
 ```log
-172.17.0.1 TLSv1.2 MSRNTN77H15C351X/6120016461039008.i1ZpZfaCX/eKyikBfnF8to+M2T8= - MSRNTN77H15C351X/6120016461039008.i1ZpZfaCX/eKyikBfnF8to+M2T8= [18/Dec/2018:17:48:53 +0000] "GET / HTTP/1.1" 200 2787 "-" "Mozilla/5.0 (Macintosh; Intel Mac OSX 10.14; rv:64.0) Gecko/20100101 Firefox/64.0"
+172.17.0.1 TLSv1.2 - MSRNTN77H15C351X/6120016461039008.i1ZpZfaCX/eKyikBfnF8to+M2T8= [18/Dec/2018:17:48:53 +0000] "GET / HTTP/1.1" 200 2787 "-" "Mozilla/5.0 (Macintosh; Intel Mac OSX 10.14; rv:64.0) Gecko/20100101 Firefox/64.0"
 ```
 
 Il valore di `SSL_CLIENT_S_DN_CN` è inoltre impostato come **SSLUserName**, questo
