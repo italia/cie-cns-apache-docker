@@ -12,8 +12,7 @@ o specializzare questo progetto sulla base delle proprie esigenze**
 Si tratta di un progetto [docker](https://www.docker.com/) per la creazione di 
 un container che implementa un sistema di **mutua autenticazione o autenticazione bilaterale SSL/TLS**.
 Questo meccanismo di autenticazione richiede anche il certificato digitale 
-da parte del client, certificato che in questo caso risiede 
-all'interno della TS-CNS.
+da parte del client, certificato che in questo caso risiede all'interno della TS-CNS.
 
 La particolarità del sistema implementato (attraverso questo container) è quella 
 di consentire l'autenticazione tramite la propria SmartCard
@@ -87,7 +86,7 @@ via protocollo HTTP e non HTTPS.
 
 Le variabili `APACHE_LOG_LEVEL`e `APACHE_SSL_LOG_LEVEL`, consentono di modificare
 il livello log generale e quello specifico per il modulo SSL. Il valore di default
-è impostato a INFO. Per maggiori informazioni potete consultare 
+è impostato a INFO. Per maggiori informazioni potete consultare la documentazione su
 [LogLevel Directive](https://httpd.apache.org/docs/2.4/mod/core.html#loglevel).
 
 A seguire c'è la sezione delle variabili di ambiente che sono prettamente 
@@ -212,6 +211,7 @@ seguire. Il cuore di tutto è il folder **configs**.
     │   └── ssl-params.conf
     └── test
         ├── index.php
+        ├── certificate_policy_check
         └── info.php
 ```
 
@@ -230,9 +230,9 @@ da subito fare un test. A seguire il comando per il pull dell'immagine docker
 da docker hub.
 
 ```bash
-docker run -i -t -d -p 10443:10443 --name=cns amusarra/httpd-cns-dontesta-it:1.2.0
+docker pull amusarra/httpd-cns-dontesta-it:1.2.0
 ```
-Una volta eseguito il pull dell'immagine docker è possibile creare il nuovo
+Una volta eseguito il pull dell'immagine docker (versione 1.2.0) è possibile creare il nuovo
 container tramite il comando a seguire.
 
 ```bash
@@ -308,7 +308,7 @@ segue:
 3. Visualizzazione della pagina di benvenuto.
 
 Oltre a verificare che il certificato digitale sulla CNS sia valido, è anche
-eseguito il controllo per cui tra le Certificate Policies (Object ID: 2.5.29.32) 
+eseguito il controllo per cui tra le **Certificate Policies (Object ID: 2.5.29.32)** 
 ci sia quella specifica della CNS, identificata dall'OID [1.3.76.16.2.1](http://oid-info.com/cgi-bin/display?oid=1.3.76.16.2.1&action=display).
 
 Questo check è demandato allo script PHP `configs/test/certificate_policy_check.php` 
@@ -372,7 +372,7 @@ Accedendo agli access log di Apache è possibile notare queste due informazioni 
 
 Il valore di `SSL_CLIENT_S_DN_CN` è inoltre impostato come **SSLUserName**, questo
 fa in modo che la variabile `REMOTE_USER` sia impostata con il CN del certificato digitale 
-che identificata univocamente l'utente. 
+che identifica univocamente l'utente. 
 
 ## 5 - Conclusioni
 Lo stimolo iniziale che ha poi scatenato la nascita di questo progetto, arriva
@@ -381,6 +381,9 @@ dalle difficoltà incontrate cercando di accedere ai servizi del [Sistema Inform
 Credo che questo progetto possa essere utile a coloro che hanno la necessità di
 realizzare un servizio di autenticazione basato sulla TS-CNS e non sanno magari
 da dove iniziare. **Questo progetto potrebbe essere quindi un buon punto di partenza.**
+
+Ogni suggerimento e/o segnalazione di bug è gradito; consiglio eventualmente di 
+aprire una [issue](https://github.com/amusarra/apache-httpd-ts-cns-docker/issues)
 
 Per maggiori approfondimenti riguardo questo specifico argomento, ho già in 
 preparazione il prossimo articolo per [Antonio Musarra's Blog](https://www.dontesta.it).
