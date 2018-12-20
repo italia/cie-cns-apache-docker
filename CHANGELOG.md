@@ -4,6 +4,10 @@ Tutte le modifiche importanti a questo progetto saranno documentate in questo fi
 Il formato è basato su [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 e questo progetto aderisce a [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+### Added
+- Aggiornamento giornaliero dei certificati GOV tramite job cron.
+
 ## [1.2.0] - 2018-12-18
 ### Added
 - Verifica della Certificate Policies che sia quella della CNS (issue #1)
