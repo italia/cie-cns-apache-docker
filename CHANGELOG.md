@@ -7,6 +7,7 @@ e questo progetto aderisce a [Semantic Versioning](https://semver.org/spec/v2.0.
 ## [Unreleased]
 ### Added
 - Aggiornamento giornaliero dei certificati GOV tramite job cron.
+- File di log (access e error log) Apache per virtual host (esempio: cns.dontesta.it_access.log e cns.dontesta.it_error.log).
 
 ## [1.2.0] - 2018-12-18
 ### Added
