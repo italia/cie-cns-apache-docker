@@ -4,6 +4,11 @@ Tutte le modifiche importanti a questo progetto saranno documentate in questo fi
 Il formato è basato su [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 e questo progetto aderisce a [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.2.1] - 2018-12-20
+### Added
+- Aggiornamento giornaliero dei certificati GOV tramite job cron.
+- File di log (access e error log) Apache per virtual host (esempio: cns.dontesta.it_access.log e cns.dontesta.it_error.log).
+
 ## [1.2.0] - 2018-12-18
 ### Added
 - Verifica della Certificate Policies che sia quella della CNS (issue #1)

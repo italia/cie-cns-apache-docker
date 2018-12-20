@@ -1,5 +1,14 @@
 FROM ubuntu:18.04
+
 LABEL maintainer="Antonio Musarra <antonio.musarra@gmail.com>"
+LABEL name="httpd-cns-dontesta-it"
+LABEL description="Apache HTTP 2.4 per SmartCard TS-CNS (Tessera Sanitaria - Carta Nazionale Servizi)"
+LABEL version="1.2.1"
+LABEL it.dontesta.vendor="Antonio Musarra's Blog"
+LABEL it.dontesta.url="https://www.dontesta.it"
+LABEL it.dontesta.github="https://github.com/amusarra/apache-httpd-ts-cns-docker"
+LABEL it.dontesta.twitter="antonio_musarra"
+LABEL it.dontesta.is-beta="true"
 
 # Apache ENVs
 ENV APACHE_SERVER_NAME cns.dontesta.it
@@ -25,6 +34,7 @@ RUN apt update \
     && apt install -y php libapache2-mod-php \
     && apt install -y curl \
     && apt install -y python \
+    && apt install -y cron \
     && rm -rf /var/lib/apt/lists/*
 
 # Download Trusted CA certificate and copy to ssl system path
@@ -45,11 +55,26 @@ COPY configs/httpd/ports.conf /etc/apache2/
 COPY configs/certs/*_crt.pem /etc/ssl/certs/
 COPY configs/certs/*_key.pem /etc/ssl/private/
 
-# Copy phpinfo test script
+# Copy php samples script and other
 COPY configs/test/info.php /var/www/html/info.php
 COPY configs/test/index.php /var/www/html/index.php
 COPY configs/test/certificate_policy_check.php /var/www/html/certificate_policy_check.php
+COPY images/favicon.ico /var/www/html/favicon.ico
 
+# Copy auto-update-gov-certificates scripts and entrypoint
+COPY scripts/auto-update-gov-certificates /auto-update-gov-certificates
+COPY scripts/entrypoint /entrypoint
+
+# Set execute flag for entrypoint and crontab entry
+# Add Cron entry auto-update-gov-certificates
+# Create Project ENV for crontab
+RUN chmod +x /entrypoint \
+    && chmod +x /auto-update-gov-certificates \
+    && echo "0 0 6 1/1 * ? * root . /project_env.sh; /auto-update-gov-certificates >> /var/log/cron.log 2>&1" > /etc/cron.d/auto-update-gov-certificates \
+    && printenv | sed 's/^\(.*\)$/export \1/g' | grep -E "APACHE_|APPLICATION_URL|GOV_" > /project_env.sh \
+    && chmod +x /project_env.sh
+
+# Configure and enabled Apache features
 RUN a2enmod ssl \
     && a2enmod headers \
     && a2ensite default-ssl \
@@ -58,6 +83,9 @@ RUN a2enmod ssl \
 
 # Expose Apache
 EXPOSE ${APACHE_SSL_PORT}
- 
+
+# Define entry for setup contrab
+ENTRYPOINT ["/entrypoint"]
+
 # Launch Apache
 CMD ["/usr/sbin/apache2ctl", "-DFOREGROUND"]
