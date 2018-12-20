@@ -55,10 +55,11 @@ COPY configs/httpd/ports.conf /etc/apache2/
 COPY configs/certs/*_crt.pem /etc/ssl/certs/
 COPY configs/certs/*_key.pem /etc/ssl/private/
 
-# Copy php samples script
+# Copy php samples script and other
 COPY configs/test/info.php /var/www/html/info.php
 COPY configs/test/index.php /var/www/html/index.php
 COPY configs/test/certificate_policy_check.php /var/www/html/certificate_policy_check.php
+COPY images/favicon.ico /var/www/html/favicon.ico
 
 # Copy auto-update-gov-certificates scripts and entrypoint
 COPY scripts/auto-update-gov-certificates /auto-update-gov-certificates
