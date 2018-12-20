@@ -1,0 +1,26 @@
+#!/bin/sh
+
+echo `date "+%FT%T"` "Start auto upgrade Gov Certificates..." >> /var/log/auto-update-gov-certificates.log
+
+echo `date "+%FT%T"` "Remove temporary certificates file from ${GOV_TRUST_CERTS_OUTPUT_PATH}" >> /var/log/auto-update-gov-certificates.log
+rm -rf ${GOV_TRUST_CERTS_OUTPUT_PATH}
+
+echo `date "+%FT%T"` "Downloading Gov Certificates..." >> /var/log/auto-update-gov-certificates.log
+curl ${GOV_TRUST_CERTS_DOWNLOAD_SCRIPT_URL} \
+    | python /dev/stdin --output-folder ${GOV_TRUST_CERTS_OUTPUT_PATH} \
+    --service-type-identifier ${GOV_TRUST_CERTS_SERVICE_TYPE_IDENTIFIER}
+
+echo `date "+%FT%T"` "Downloading Gov Certificates...[END]" >> /var/log/auto-update-gov-certificates.log
+
+echo `date "+%FT%T"` "Save Gov Certificates into ${GOV_TRUST_CERTS_OUTPUT_PATH}" >> /var/log/auto-update-gov-certificates.log
+echo `date "+%FT%T"` "Copy Gov Certificates into /etc/ssl/certs/" >> /var/log/auto-update-gov-certificates.log
+cp ${GOV_TRUST_CERTS_OUTPUT_PATH}/*.pem /etc/ssl/certs/
+
+echo `date "+%FT%T"` "Re-Hashing /etc/ssl/certs/..." >> /var/log/auto-update-gov-certificates.log
+c_rehash /etc/ssl/certs/
+
+echo `date "+%FT%T"` "Start auto upgrade Gov Certificates...[END]" >> /var/log/auto-update-gov-certificates.log
+
+echo `date "+%FT%T"` "Restart Apache HTTP Service..." >> /var/log/auto-update-gov-certificates.log
+/usr/sbin/apachectl restart
+
