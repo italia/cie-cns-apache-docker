@@ -1,14 +1,19 @@
 FROM ubuntu:18.04
 
-LABEL maintainer="Antonio Musarra <antonio.musarra@gmail.com>"
-LABEL name="httpd-cns-dontesta-it"
-LABEL description="Apache HTTP 2.4 per SmartCard TS-CNS (Tessera Sanitaria - Carta Nazionale Servizi)"
-LABEL version="1.2.1"
-LABEL it.dontesta.vendor="Antonio Musarra's Blog"
-LABEL it.dontesta.url="https://www.dontesta.it"
-LABEL it.dontesta.github="https://github.com/amusarra/apache-httpd-ts-cns-docker"
-LABEL it.dontesta.twitter="antonio_musarra"
-LABEL it.dontesta.is-beta="true"
+ARG BUILD_DATE
+ARG VCS_REF
+ARG VERSION
+
+LABEL maintainer="Antonio Musarra <antonio.musarra@gmail.com>" \
+    org.label-schema.name="httpd-cns-dontesta-it" \
+    org.label-schema.description="Apache HTTP 2.4 per SmartCard TS-CNS (Tessera Sanitaria - Carta Nazionale Servizi)" \
+    org.label-schema.version=${VERSION} \
+    org.label-schema.build-date=${BUILD_DATE} \
+    org.label-schema.vendor="Antonio Musarra's Blog" \
+    org.label-schema.url="https://www.dontesta.it" \
+    org.label-schema.vcs-url="https://github.com/amusarra/apache-httpd-ts-cns-docker" \
+    org.label-schema.vcs-ref=${VCS_REF} \
+    org.label-schema.schema-version="1.0"
 
 # Apache ENVs
 ENV APACHE_SERVER_NAME cns.dontesta.it
@@ -56,9 +61,7 @@ COPY configs/certs/*_crt.pem /etc/ssl/certs/
 COPY configs/certs/*_key.pem /etc/ssl/private/
 
 # Copy php samples script and other
-COPY configs/test/info.php /var/www/html/info.php
-COPY configs/test/index.php /var/www/html/index.php
-COPY configs/test/certificate_policy_check.php /var/www/html/certificate_policy_check.php
+COPY configs/test/*.php /var/www/html/
 COPY images/favicon.ico /var/www/html/favicon.ico
 
 # Copy auto-update-gov-certificates scripts and entrypoint
