@@ -1,7 +1,9 @@
 FROM ubuntu:18.04
 
+# Metadata params
 ARG BUILD_DATE
 ARG VCS_REF
+ARG VCS_URL
 ARG VERSION
 
 LABEL maintainer="Antonio Musarra <antonio.musarra@gmail.com>" \
@@ -11,7 +13,7 @@ LABEL maintainer="Antonio Musarra <antonio.musarra@gmail.com>" \
     org.label-schema.build-date=${BUILD_DATE} \
     org.label-schema.vendor="Antonio Musarra's Blog" \
     org.label-schema.url="https://www.dontesta.it" \
-    org.label-schema.vcs-url="https://github.com/amusarra/apache-httpd-ts-cns-docker" \
+    org.label-schema.vcs-url=${VCS_URL} \
     org.label-schema.vcs-ref=${VCS_REF} \
     org.label-schema.schema-version="1.0"
 
