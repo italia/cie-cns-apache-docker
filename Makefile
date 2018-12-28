@@ -12,19 +12,25 @@ run: docker_build output docker_run
 # Run Docker image prune
 clean: docker_image_prune
 
+# Run Docker image remove
+remove: docker_image_remove_last_build output
+
 # Build and push Docker image
 release: docker_build docker_push output
 
 # Image can be overidden with env vars.
+# es: make build DOCKER_IMAGE=my-cns 
 DOCKER_IMAGE ?= amusarra/httpd-cns-dontesta-it
 
+# Expose HTTPS port can be overidden with env vars.
+# es: make run EXPOSE_HTTPS_PORT=90443
 EXPOSE_HTTPS_PORT ?= 10443
 
 # Get the latest commit.
 GIT_COMMIT = $(strip $(shell git rev-parse --short HEAD))
 
 # Get the version number from the code
-CODE_VERSION = $(strip $(shell git describe origin/master --tags))
+CODE_VERSION = $(strip $(shell git describe origin/master --tags | cut -c2-))
 
 # Find out if the working directory is clean
 GIT_NOT_CLEAN_CHECK = $(shell git status --porcelain)
@@ -61,11 +67,11 @@ endif
 docker_build:
 	# Build Docker image
 	docker build \
-  --build-arg BUILD_DATE=`date -u +"%Y-%m-%dT%H:%M:%SZ"` \
-  --build-arg VERSION=$(CODE_VERSION) \
-  --build-arg VCS_URL=`git config --get remote.origin.url` \
-  --build-arg VCS_REF=$(GIT_COMMIT) \
-	-t $(DOCKER_IMAGE):$(DOCKER_TAG) .
+  		--build-arg BUILD_DATE=`date -u +"%Y-%m-%dT%H:%M:%SZ"` \
+  		--build-arg VERSION=$(CODE_VERSION) \
+  		--build-arg VCS_URL=`git config --get remote.origin.url` \
+  		--build-arg VCS_REF=$(GIT_COMMIT) \
+		-t $(DOCKER_IMAGE):$(DOCKER_TAG) .
 
 docker_push:
 	# Tag image as latest
@@ -76,13 +82,20 @@ docker_push:
 	docker push $(DOCKER_IMAGE):latest
 
 docker_debug:
+	# Run bash shell on Container
 	docker run --rm -it $(DOCKER_IMAGE) /bin/bash
 
 docker_run:
-	docker run --rm -itd --name=cns -p ${EXPOSE_HTTPS_PORT}:10443 $(DOCKER_IMAGE)
+	# Run Container
+	docker run --rm -it -d --name=cns -p ${EXPOSE_HTTPS_PORT}:10443 $(DOCKER_IMAGE):$(DOCKER_TAG)
 
 docker_image_prune:
+	# Docker image prune
 	docker image prune --force
+
+docker_image_remove_last_build:
+	# Docker image remove
+	docker image rm $(DOCKER_IMAGE):$(DOCKER_TAG)
 
 output:
 	@echo Docker Image: $(DOCKER_IMAGE):$(DOCKER_TAG)
