@@ -1,7 +1,8 @@
 # Apache HTTP 2.4 per SmartCard TS-CNS (Tessera Sanitaria - Carta Nazionale Servizi)
 [![Antonio Musarra's Blog](https://img.shields.io/badge/maintainer-Antonio_Musarra's_Blog-purple.svg?colorB=6e60cc)](https://www.dontesta.it)
-[![](https://images.microbadger.com/badges/image/amusarra/httpd-cns-dontesta-it:1.2.1.svg)](https://microbadger.com/images/amusarra/httpd-cns-dontesta-it:1.2.1 "Get your own image badge on microbadger.com")
-[![](https://images.microbadger.com/badges/version/amusarra/httpd-cns-dontesta-it:1.2.1.svg)](https://microbadger.com/images/amusarra/httpd-cns-dontesta-it:1.2.1 "Get your own version badge on microbadger.com")
+[![](https://images.microbadger.com/badges/image/amusarra/httpd-cns-dontesta-it:1.2.2.svg)](https://microbadger.com/images/amusarra/httpd-cns-dontesta-it:1.2.2 "Get your own image badge on microbadger.com")
+[![](https://images.microbadger.com/badges/version/amusarra/httpd-cns-dontesta-it:1.2.2.svg)](https://microbadger.com/images/amusarra/httpd-cns-dontesta-it:1.2.2 "Get your own version badge on microbadger.com")
+[![](https://images.microbadger.com/badges/commit/amusarra/httpd-cns-dontesta-it:1.2.2.svg)](https://microbadger.com/images/amusarra/httpd-cns-dontesta-it:1.2.2 "Get your own commit badge on microbadger.com")
 [![Twitter Follow](https://img.shields.io/twitter/follow/antonio_musarra.svg?style=social&label=%40antonio_musarra%20on%20Twitter&style=plastic)](https://twitter.com/antonio_musarra)
 
 L'obiettivo di questo progetto è quello di fornire un **template** pronto all'uso
@@ -167,9 +168,8 @@ La sezione a seguire del Dockerfile, copia tre script PHP a scopo di test sulla
 
 ```docker
 # Copy phpinfo test script
-COPY configs/test/info.php /var/www/html/info.php
-COPY configs/test/index.php /var/www/html/index.php
-COPY configs/test/certificate_policy_check.php /var/www/html/certificate_policy_check.php
+COPY configs/test/*.php /var/www/html/
+COPY images/favicon.ico /var/www/html/favicon.ico
 ```
 
 La sezione a seguire del Dockerfile, copia gli script necessari attivare il cron
@@ -255,23 +255,26 @@ L'immagine di questo progetto docker è disponibile sul mio account docker hub
 [amusarra/httpd-cns-dontesta-it](
 https://hub.docker.com/r/amusarra/httpd-cns-dontesta-it). Potreste quindi fin
 da subito fare un test. A seguire il comando per il pull dell'immagine docker
-da docker hub.
+da docker hub. Il primo comando esegue il pull dell'ultima versione (tag latest),
+mentre il secondo comando esegue il pull della specifica versione dell'immagine,
+in questo caso la versione 1.2.2.
 
 ```bash
-docker pull amusarra/httpd-cns-dontesta-it:1.2.1
+docker pull amusarra/httpd-cns-dontesta-it
+docker pull amusarra/httpd-cns-dontesta-it:1.2.2
 ```
-Una volta eseguito il pull dell'immagine docker (versione 1.2.1) è possibile creare il nuovo
+Una volta eseguito il pull dell'immagine docker (versione 1.2.2) è possibile creare il nuovo
 container tramite il comando a seguire.
 
 ```bash
-docker run -i -t -d -p 10443:10443 --name=cns amusarra/httpd-cns-dontesta-it:1.2.1
+docker run -i -t -d -p 10443:10443 --name=cns amusarra/httpd-cns-dontesta-it:1.2.2
 ```
 Utilizzando il comando `docker ps` dovremmo poter vedere in lista il nuovo
 container, così come indicato a seguire.
 
 ```bash
 CONTAINER ID        IMAGE                                  COMMAND                  CREATED             STATUS              PORTS                      NAMES
-bb707fb00e89        amusarra/httpd-cns-dontesta-it:1.2.1   "/usr/sbin/apache2ct…"   6 seconds ago       Up 4 seconds        0.0.0.0:10443->10443/tcp   cns
+bb707fb00e89        amusarra/httpd-cns-dontesta-it:1.2.2   "/usr/sbin/apache2ct…"   6 seconds ago       Up 4 seconds        0.0.0.0:10443->10443/tcp   cns
 ```
 
 Nel caso in cui vogliate apportare delle modifiche, dovreste poi procedere con 
@@ -402,7 +405,23 @@ Il valore di `SSL_CLIENT_S_DN_CN` è inoltre impostato come **SSLUserName**, que
 fa in modo che la variabile `REMOTE_USER` sia impostata con il CN del certificato digitale 
 che identifica univocamente l'utente. 
 
-## 5 - Conclusioni
+## 5 - Build, Run e Push docker image via Makefile
+Al fine di semplificare le operazioni di build, run e push dell'immagine docker, 
+è stato introdotto il [Makefile](https://github.com/amusarra/apache-httpd-ts-cns-docker/blob/develop/Makefile) sulla versione [1.2.2](https://github.com/amusarra/apache-httpd-ts-cns-docker/tree/v1.2.2) del progetto.
+
+Per utilizzare il Makefile, occorre che sulla propria macchina siano installati
+correttamente i tools di build.
+
+I target disponibili sono i seguenti:
+
+1. **build**: Target di _default_ che esegue il build dell'immagine;
+2. **debug**: Esegue la build dell'immagine e successivamente apre un shell bash sul container; 
+3. **run**: Esegue la build dell'immagine e successivamente crea il container lanciando l'applicazione (Apache HTTPD 2.4);
+4. **clean**: Esegue un prune delle immagini;
+5. **remove**: Rimuove l'ultima immagine creata;
+6. **release**: Esegue la build dell'imaggine e successivamente effettua il push su dockerhub.
+
+## 6 - Conclusioni
 Lo stimolo iniziale che ha poi scatenato la nascita di questo progetto, arriva
 dalle difficoltà incontrate cercando di accedere ai servizi del [Sistema Informativo Veterinario](https://www.vetinfo.it/) utilizzando la mia TS-CNS su Mac OS.
 
