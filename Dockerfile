@@ -75,7 +75,7 @@ COPY scripts/entrypoint /entrypoint
 # Create Project ENV for crontab
 RUN chmod +x /entrypoint \
     && chmod +x /auto-update-gov-certificates \
-    && echo "0 0 6 1/1 * ? * root . /project_env.sh; /auto-update-gov-certificates >> /var/log/cron.log 2>&1" > /etc/cron.d/auto-update-gov-certificates \
+    && echo "30 23 * * * root . /project_env.sh; /auto-update-gov-certificates >> /var/log/cron.log 2>&1" > /etc/cron.d/auto-update-gov-certificates \
     && printenv | sed 's/^\(.*\)$/export \1/g' | grep -E "APACHE_|APPLICATION_URL|GOV_" > /project_env.sh \
     && chmod +x /project_env.sh
 
