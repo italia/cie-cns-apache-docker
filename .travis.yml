@@ -9,7 +9,7 @@ branches:
 services:
   - docker
 
-script: make build
+script: echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
 
 deploy:
   # deploy develop
