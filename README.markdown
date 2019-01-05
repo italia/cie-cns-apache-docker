@@ -1,5 +1,6 @@
 # Apache HTTP 2.4 per Smart Card TS-CNS (Tessera Sanitaria - Carta Nazionale Servizi)
 [![Antonio Musarra's Blog](https://img.shields.io/badge/maintainer-Antonio_Musarra's_Blog-purple.svg?colorB=6e60cc)](https://www.dontesta.it)
+[![Build Status](https://travis-ci.org/amusarra/apache-httpd-ts-cns-docker.svg?branch=develop)](https://travis-ci.org/amusarra/apache-httpd-ts-cns-docker)
 [![](https://images.microbadger.com/badges/image/amusarra/httpd-cns-dontesta-it:1.2.3.svg)](https://microbadger.com/images/amusarra/httpd-cns-dontesta-it:1.2.3 "Get your own image badge on microbadger.com")
 [![](https://images.microbadger.com/badges/version/amusarra/httpd-cns-dontesta-it:1.2.3.svg)](https://microbadger.com/images/amusarra/httpd-cns-dontesta-it:1.2.3 "Get your own version badge on microbadger.com")
 [![](https://images.microbadger.com/badges/commit/amusarra/httpd-cns-dontesta-it:1.2.3.svg)](https://microbadger.com/images/amusarra/httpd-cns-dontesta-it:1.2.3 "Get your own commit badge on microbadger.com")
