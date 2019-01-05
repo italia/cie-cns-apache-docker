@@ -30,7 +30,7 @@ EXPOSE_HTTPS_PORT ?= 10443
 GIT_COMMIT = $(strip $(shell git rev-parse --short HEAD))
 
 # Get the version number from the code
-CODE_VERSION = $(strip $(shell git describe origin/master --tags | cut -c2-))
+CODE_VERSION = $(strip $(shell git describe --tags | cut -c2-))
 
 # Find out if the working directory is clean
 GIT_NOT_CLEAN_CHECK = $(shell git status --porcelain)
