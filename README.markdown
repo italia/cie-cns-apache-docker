@@ -1,12 +1,12 @@
-# Apache HTTP 2.4 per SmartCard TS-CNS (Tessera Sanitaria - Carta Nazionale Servizi)
+# Apache HTTP 2.4 per Smart Card TS-CNS (Tessera Sanitaria - Carta Nazionale Servizi)
 [![Antonio Musarra's Blog](https://img.shields.io/badge/maintainer-Antonio_Musarra's_Blog-purple.svg?colorB=6e60cc)](https://www.dontesta.it)
-[![](https://images.microbadger.com/badges/image/amusarra/httpd-cns-dontesta-it:1.2.2.svg)](https://microbadger.com/images/amusarra/httpd-cns-dontesta-it:1.2.2 "Get your own image badge on microbadger.com")
-[![](https://images.microbadger.com/badges/version/amusarra/httpd-cns-dontesta-it:1.2.2.svg)](https://microbadger.com/images/amusarra/httpd-cns-dontesta-it:1.2.2 "Get your own version badge on microbadger.com")
-[![](https://images.microbadger.com/badges/commit/amusarra/httpd-cns-dontesta-it:1.2.2.svg)](https://microbadger.com/images/amusarra/httpd-cns-dontesta-it:1.2.2 "Get your own commit badge on microbadger.com")
+[![](https://images.microbadger.com/badges/image/amusarra/httpd-cns-dontesta-it:1.2.3.svg)](https://microbadger.com/images/amusarra/httpd-cns-dontesta-it:1.2.3 "Get your own image badge on microbadger.com")
+[![](https://images.microbadger.com/badges/version/amusarra/httpd-cns-dontesta-it:1.2.3.svg)](https://microbadger.com/images/amusarra/httpd-cns-dontesta-it:1.2.3 "Get your own version badge on microbadger.com")
+[![](https://images.microbadger.com/badges/commit/amusarra/httpd-cns-dontesta-it:1.2.3.svg)](https://microbadger.com/images/amusarra/httpd-cns-dontesta-it:1.2.3 "Get your own commit badge on microbadger.com")
 [![Twitter Follow](https://img.shields.io/twitter/follow/antonio_musarra.svg?style=social&label=%40antonio_musarra%20on%20Twitter&style=plastic)](https://twitter.com/antonio_musarra)
 
 L'obiettivo di questo progetto è quello di fornire un **template** pronto all'uso
-che realizza un sistema di autenticazione tramite la SmartCard **TS-CNS** basato 
+che realizza un sistema di autenticazione tramite la Smart Card **TS-CNS** basato 
 su [Apache HTTP](http://httpd.apache.org/docs/2.4/). **Ognuno può poi modificare 
 o specializzare questo progetto sulla base delle proprie esigenze**
 
@@ -16,7 +16,7 @@ Questo meccanismo di autenticazione richiede anche il certificato digitale
 da parte del client, certificato che in questo caso risiede all'interno della TS-CNS.
 
 La particolarità del sistema implementato (attraverso questo container) è quella 
-di consentire l'autenticazione tramite la propria SmartCard
+di consentire l'autenticazione tramite la propria Smart Card
 **TS-CNS (Tessera Sanitaria - Carta Nazionale Servizi)**, rilasciata dalla 
 regione di appartenenza.
 
@@ -137,6 +137,7 @@ raggiungibile al seguente URL https://eidas.agid.gov.it/TL/TSL-IT.xml
 RUN rm -rf ${GOV_TRUST_CERTS_OUTPUT_PATH} \
     && curl ${GOV_TRUST_CERTS_DOWNLOAD_SCRIPT_URL} \
     | python /dev/stdin --output-folder ${GOV_TRUST_CERTS_OUTPUT_PATH} \
+    --service-type-identifier ${GOV_TRUST_CERTS_SERVICE_TYPE_IDENTIFIER} \
     && cp ${GOV_TRUST_CERTS_OUTPUT_PATH}/*.pem /etc/ssl/certs/
 ```
  
@@ -190,10 +191,13 @@ finale di abilitare l'aggiornamento dei certificati della CNS.
 # Create Project ENV for crontab
 RUN chmod +x /entrypoint \
     && chmod +x /auto-update-gov-certificates \
-    && echo "0 0 6 1/1 * ? * root . /project_env.sh; /auto-update-gov-certificates >> /var/log/cron.log 2>&1" > /etc/cron.d/auto-update-gov-certificates \
+    && echo "30 23 * * * root . /project_env.sh; /auto-update-gov-certificates >> /var/log/cron.log 2>&1" > /etc/cron.d/auto-update-gov-certificates \
     && printenv | sed 's/^\(.*\)$/export \1/g' | grep -E "APACHE_|APPLICATION_URL|GOV_" > /project_env.sh \
     && chmod +x /project_env.sh
 ```
+L'aggiornamento dei certificati avviene una volta al giorno alle ore 23:30. L'esecuzione
+dello script di aggiornamento produce i due file di log cron.log e auto-update-gov-certificates.log.
+Entrambe i file di log risiedono all'interno del folder /var/log.
 
 La sezione a seguire del Dockerfile esegue le seguenti attività:
 
@@ -246,7 +250,7 @@ Il folder *configs* contiene al suo interno altri folder e file, in particolare:
 
 1. **certs**
     * contiene il certificato del server (chiave pubblica e chiave privata);
-2. **httpd**: contiene tutte le configurazioni di Apache necessarie per attivare l'autenticazione tramite la SmartCard TS-CNS;
+2. **httpd**: contiene tutte le configurazioni di Apache necessarie per attivare l'autenticazione tramite la Smart Card TS-CNS;
 3. **test**: contiene gli script PHP di test;
 4. **scripts**: contiene gli scripts di aggiornamento certificati e abiliatazione del servizio cron
 
@@ -257,24 +261,24 @@ https://hub.docker.com/r/amusarra/httpd-cns-dontesta-it). Potreste quindi fin
 da subito fare un test. A seguire il comando per il pull dell'immagine docker
 da docker hub. Il primo comando esegue il pull dell'ultima versione (tag latest),
 mentre il secondo comando esegue il pull della specifica versione dell'immagine,
-in questo caso la versione 1.2.2.
+in questo caso la versione 1.2.3.
 
 ```bash
 docker pull amusarra/httpd-cns-dontesta-it
-docker pull amusarra/httpd-cns-dontesta-it:1.2.2
+docker pull amusarra/httpd-cns-dontesta-it:1.2.3
 ```
-Una volta eseguito il pull dell'immagine docker (versione 1.2.2) è possibile creare il nuovo
+Una volta eseguito il pull dell'immagine docker (versione 1.2.3) è possibile creare il nuovo
 container tramite il comando a seguire.
 
 ```bash
-docker run -i -t -d -p 10443:10443 --name=cns amusarra/httpd-cns-dontesta-it:1.2.2
+docker run -i -t -d -p 10443:10443 --name=cns amusarra/httpd-cns-dontesta-it:1.2.3
 ```
 Utilizzando il comando `docker ps` dovremmo poter vedere in lista il nuovo
 container, così come indicato a seguire.
 
 ```bash
 CONTAINER ID        IMAGE                                  COMMAND                  CREATED             STATUS              PORTS                      NAMES
-bb707fb00e89        amusarra/httpd-cns-dontesta-it:1.2.2   "/usr/sbin/apache2ct…"   6 seconds ago       Up 4 seconds        0.0.0.0:10443->10443/tcp   cns
+bb707fb00e89        amusarra/httpd-cns-dontesta-it:1.2.3   "/usr/sbin/apache2ct…"   6 seconds ago       Up 4 seconds        0.0.0.0:10443->10443/tcp   cns
 ```
 
 Nel caso in cui vogliate apportare delle modifiche, dovreste poi procedere con 
@@ -327,7 +331,7 @@ In ambiente di collaudo e/o produzione il nome del servizio o FQDN sarà registr
 su un DNS.
 
 Lato **server-side** è tutto pronto, non resta fare altro che un test. 
-Nel caso disponiate di una vostra SmartCard TS-CNS e il vostro PC già 
+Nel caso disponiate di una vostra Smart Card TS-CNS e il vostro PC già 
 configurato per l'utilizzo, potreste eseguire da subito un test puntando il 
 vostro browser alla URL https://cns.dontesta.it:10443/
 
@@ -407,7 +411,7 @@ che identifica univocamente l'utente.
 
 ## 5 - Build, Run e Push docker image via Makefile
 Al fine di semplificare le operazioni di build, run e push dell'immagine docker, 
-è stato introdotto il [Makefile](https://github.com/amusarra/apache-httpd-ts-cns-docker/blob/develop/Makefile) sulla versione [1.2.2](https://github.com/amusarra/apache-httpd-ts-cns-docker/tree/v1.2.2) del progetto.
+è stato introdotto il [Makefile](https://github.com/amusarra/apache-httpd-ts-cns-docker/blob/develop/Makefile) sulla versione [1.2.3](https://github.com/amusarra/apache-httpd-ts-cns-docker/tree/v1.2.3) del progetto.
 
 Per utilizzare il Makefile, occorre che sulla propria macchina siano installati
 correttamente i tools di build.
