@@ -1,5 +1,22 @@
 language: c
+
+# branches safelist
+branches:
+  only:
+  - master
+  - develop
+
 services:
   - docker
-script:
-- make release
+
+deploy:
+  # deploy develop
+  - provider: script
+    script: make build
+    on:
+      branch: develop
+  # deploy master (build and push docker image on DockerHub)
+  - provider: script
+    script: make release
+    on:
+      branch: master
