@@ -83,7 +83,7 @@ docker_push:
 
 docker_debug:
 	# Run bash shell on Container
-	docker run --rm -it $(DOCKER_IMAGE) /bin/bash
+	docker run --rm -it $(DOCKER_IMAGE):$(DOCKER_TAG) /bin/bash
 
 docker_run:
 	# Run Container
