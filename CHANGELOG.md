@@ -4,6 +4,10 @@ Tutte le modifiche importanti a questo progetto saranno documentate in questo fi
 Il formato è basato su [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 e questo progetto aderisce a [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.2.3] - 2019-01-04
+### Changed
+- Fix crontab line per aggiornamento certificati CA
+
 ## [1.2.2] - 2018-12-28
 ### Added
 - Aggiunto Makefile per semplificazione di build, run e push dell'immagine docker
