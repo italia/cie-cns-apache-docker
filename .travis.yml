@@ -9,6 +9,8 @@ branches:
 services:
   - docker
 
+script: make build
+
 deploy:
   # deploy develop
   - provider: script
