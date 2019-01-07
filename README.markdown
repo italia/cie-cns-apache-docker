@@ -20,9 +20,9 @@ o della CIE.
 La particolarità del sistema implementato (attraverso questo container) è quella 
 di consentire l'autenticazione tramite:
 
-1. La propria Smart Card **TS-CNS (Tessera Sanitaria - Carta Nazionale Servizi)**, rilasciata dalla 
+1. La Smart Card **TS-CNS (Tessera Sanitaria - Carta Nazionale Servizi)**, rilasciata dalla 
 regione di appartenenza;
-2. La propria **CIE (Carta d'Identità Elettronica)**, rilasciata dal comune di residenza.
+2. La **CIE (Carta d'Identità Elettronica)**, rilasciata dal comune di residenza.
 
 La mia regione di appartenenza è la Regione Lazio il cui portale di riferimento
 per la TS-CNS è https://cns.regione.lazio.it/. Ogni regione ha il suo portale
@@ -37,7 +37,7 @@ Sul sito dell'Agenzia per l'Italia digitale (AgID) nella sezione [Piattaforme/Ca
 tutti i documenti tecnici che potreste consultare per eventuali approfondimenti.
 
 Sul sito del Ministero dell'Interno dedicato alla CIE, il documento [Carta d'Identità Elettronica CIE 3.0](https://www.cartaidentita.interno.gov.it/wp-content/uploads/2016/07/cie_3.0_-_specifiche_chip.pdf) descrive
-la CIE dal punto di vista prettamente tecnico.
+la CIE dal punto di vista prettamente tecnico e in modo approfondito.
  
 
 ## 1 - Overview
@@ -456,7 +456,7 @@ I target disponibili sono i seguenti:
 6. **release**: Esegue la build dell'imaggine e successivamente effettua il push su dockerhub.
 
 É possibile eseguire il target _release_ solo sul branch master, inoltre, il push dell'immagine su DockerHub richiede di aver eseguito l'accesso in precedenza tramite il comando 
-`docker login`. 
+`docker login`.
 `
 ## 6 - Conclusioni
 Lo stimolo iniziale che ha poi scatenato la nascita di questo progetto, arriva
