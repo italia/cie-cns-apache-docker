@@ -87,7 +87,7 @@ docker_debug:
 
 docker_run:
 	# Run Container
-	docker run --rm -it -d --name=cns -p ${EXPOSE_HTTPS_PORT}:10443 $(DOCKER_IMAGE):$(DOCKER_TAG)
+	docker run --rm -it -d --name=cie-cns -p ${EXPOSE_HTTPS_PORT}:10443 $(DOCKER_IMAGE):$(DOCKER_TAG)
 
 docker_image_prune:
 	# Docker image prune
