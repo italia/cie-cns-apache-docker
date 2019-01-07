@@ -457,7 +457,7 @@ I target disponibili sono i seguenti:
 
 É possibile eseguire il target _release_ solo sul branch master, inoltre, il push dell'immagine su DockerHub richiede di aver eseguito l'accesso in precedenza tramite il comando 
 `docker login`.
-`
+
 ## 6 - Conclusioni
 Lo stimolo iniziale che ha poi scatenato la nascita di questo progetto, arriva
 dalle difficoltà incontrate cercando di accedere ai servizi del [Sistema Informativo Veterinario](https://www.vetinfo.it/) utilizzando la mia TS-CNS su Mac OS.
