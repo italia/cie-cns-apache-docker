@@ -7,8 +7,8 @@ ARG VCS_URL
 ARG VERSION
 
 LABEL maintainer="Antonio Musarra <antonio.musarra@gmail.com>" \
-    org.label-schema.name="httpd-cns-dontesta-it" \
-    org.label-schema.description="Apache HTTP 2.4 per SmartCard TS-CNS (Tessera Sanitaria - Carta Nazionale Servizi)" \
+    org.label-schema.name="cie-cns-apache-httpd" \
+    org.label-schema.description="Apache HTTP 2.4 per SmartCard TS-CNS (Tessera Sanitaria - Carta Nazionale Servizi) e CIE (Carta Identità Elettronica)" \
     org.label-schema.version=${VERSION} \
     org.label-schema.build-date=${BUILD_DATE} \
     org.label-schema.vendor="Antonio Musarra's Blog" \

@@ -1,30 +1,44 @@
-# Apache HTTP 2.4 per Smart Card TS-CNS (Tessera Sanitaria - Carta Nazionale Servizi)
+# Apache HTTP 2.4 per Smart Card TS-CNS (Tessera Sanitaria - Carta Nazionale Servizi) e CIE (Carta d'Identità Elettronica)
 [![Antonio Musarra's Blog](https://img.shields.io/badge/maintainer-Antonio_Musarra's_Blog-purple.svg?colorB=6e60cc)](https://www.dontesta.it)
 [![Build Status](https://travis-ci.org/amusarra/apache-httpd-ts-cns-docker.svg?branch=develop)](https://travis-ci.org/amusarra/apache-httpd-ts-cns-docker)
-[![](https://images.microbadger.com/badges/image/amusarra/httpd-cns-dontesta-it:1.2.3.svg)](https://microbadger.com/images/amusarra/httpd-cns-dontesta-it:1.2.3 "Get your own image badge on microbadger.com")
-[![](https://images.microbadger.com/badges/version/amusarra/httpd-cns-dontesta-it:1.2.3.svg)](https://microbadger.com/images/amusarra/httpd-cns-dontesta-it:1.2.3 "Get your own version badge on microbadger.com")
-[![](https://images.microbadger.com/badges/commit/amusarra/httpd-cns-dontesta-it:1.2.3.svg)](https://microbadger.com/images/amusarra/httpd-cns-dontesta-it:1.2.3 "Get your own commit badge on microbadger.com")
+[![](https://images.microbadger.com/badges/image/amusarra/cie-cns-apache-httpd:1.3.0.svg)](https://microbadger.com/images/amusarra/cie-cns-apache-httpd:1.3.0 "Get your own image badge on microbadger.com")
+[![](https://images.microbadger.com/badges/version/amusarra/cie-cns-apache-httpd:1.3.0.svg)](https://microbadger.com/images/amusarra/cie-cns-apache-httpd:1.3.0 "Get your own version badge on microbadger.com")
+[![](https://images.microbadger.com/badges/commit/amusarra/cie-cns-apache-httpd:1.3.0.svg)](https://microbadger.com/images/amusarra/cie-cns-apache-httpd:1.3.0 "Get your own commit badge on microbadger.com")
 [![Twitter Follow](https://img.shields.io/twitter/follow/antonio_musarra.svg?style=social&label=%40antonio_musarra%20on%20Twitter&style=plastic)](https://twitter.com/antonio_musarra)
 
 L'obiettivo di questo progetto è quello di fornire un **template** pronto all'uso
-che realizza un sistema di autenticazione tramite la Smart Card **TS-CNS** basato 
-su [Apache HTTP](http://httpd.apache.org/docs/2.4/). **Ognuno può poi modificare 
-o specializzare questo progetto sulla base delle proprie esigenze**
+che realizza un sistema di autenticazione tramite la Smart Card **TS-CNS** (o CNS)
+e la **CIE** (Carta d'Identità Elettronica) basato su [Apache HTTP](http://httpd.apache.org/docs/2.4/). 
+**Ognuno può poi modificare o specializzare questo progetto sulla base delle proprie esigenze**
 
 Si tratta di un progetto [docker](https://www.docker.com/) per la creazione di 
 un container che implementa un sistema di **mutua autenticazione o autenticazione bilaterale SSL/TLS**.
 Questo meccanismo di autenticazione richiede anche il certificato digitale 
-da parte del client, certificato che in questo caso risiede all'interno della TS-CNS.
+da parte del client, certificato che in questo caso risiede all'interno della TS-CNS
+o della CIE.
 
 La particolarità del sistema implementato (attraverso questo container) è quella 
-di consentire l'autenticazione tramite la propria Smart Card
-**TS-CNS (Tessera Sanitaria - Carta Nazionale Servizi)**, rilasciata dalla 
-regione di appartenenza.
+di consentire l'autenticazione tramite:
+
+1. La Smart Card **TS-CNS (Tessera Sanitaria - Carta Nazionale Servizi)**, rilasciata dalla 
+regione di appartenenza;
+2. La **CIE (Carta d'Identità Elettronica)**, rilasciata dal comune di residenza.
 
 La mia regione di appartenenza è la Regione Lazio il cui portale di riferimento
 per la TS-CNS è https://cns.regione.lazio.it/. Ogni regione ha il suo portale
 di riferimento dov'è possibile trovare tutte le informazioni utili che riguardano
 appunto la TS-CNS.
+
+Anche per la CIE, la maggior parte dei comuni d'Italia è abilitato al rilascio.
+La pagina [La Carta di identità elettronica nei Comuni d’Italia](https://www.cartaidentita.interno.gov.it/la-carta-identita-nei-comuni-ditalia/)
+del Ministero dell'Interno mostra il dettaglio dei comuni abilitati. 
+
+Sul sito dell'Agenzia per l'Italia digitale (AgID) nella sezione [Piattaforme/Carta Nazionale Servizi](https://www.agid.gov.it/it/piattaforme/carta-nazionale-servizi), sono disponibili
+tutti i documenti tecnici che potreste consultare per eventuali approfondimenti.
+
+Sul sito del Ministero dell'Interno dedicato alla CIE, il documento [Carta d'Identità Elettronica CIE 3.0](https://www.cartaidentita.interno.gov.it/wp-content/uploads/2016/07/cie_3.0_-_specifiche_chip.pdf) descrive
+la CIE dal punto di vista prettamente tecnico e in modo approfondito.
+ 
 
 ## 1 - Overview
 Questo container parte dall'immagine base di [*ubuntu:18.04*](https://hub.docker.com/_/ubuntu), 
@@ -97,7 +111,7 @@ sono autorizzati dallo stato Italiano al rilascio di certificati digitali
 per il cittadino e le aziende.
 
 La variabile d'ambiente `GOV_TRUST_CERTS_SERVICE_TYPE_IDENTIFIER` applica il filtro
-sul Service Type Identifier, il cui valore assunto nel caso della CNS è
+sul Service Type Identifier, il cui valore assunto nel caso della CNS e CIE è
 http://uri.etsi.org/TrstSvc/Svctype/IdV
 
 
@@ -184,7 +198,7 @@ COPY scripts/entrypoint /entrypoint
 ```
 
 La sezione a seguire del Dockerfile, esegue una serie di comandi con l'obiettivo
-finale di abilitare l'aggiornamento dei certificati della CNS.
+finale di abilitare l'aggiornamento dei certificati della CNS e CIE.
 
 ```docker
 # Set execute flag for entrypoint and crontab entry
@@ -204,7 +218,7 @@ La sezione a seguire del Dockerfile esegue le seguenti attività:
 
 1. abilita il modulo SSL
 2. abilita il modulo headers
-3. abilita il site ssl di default con la configurazione per la TS-CNS
+3. abilita il site ssl di default con la configurazione per la TS-CNS e CIE
 4. abilita delle opzioni di configurazione al fine di rafforzare la sicurezza SSL/TLS
 5. esegue il re-hash dei certificati. Operazione necessaria affinché Apache sia in grado di leggere i nuovi certificati
 
@@ -251,35 +265,35 @@ Il folder *configs* contiene al suo interno altri folder e file, in particolare:
 
 1. **certs**
     * contiene il certificato del server (chiave pubblica e chiave privata);
-2. **httpd**: contiene tutte le configurazioni di Apache necessarie per attivare l'autenticazione tramite la Smart Card TS-CNS;
+2. **httpd**: contiene tutte le configurazioni di Apache necessarie per attivare l'autenticazione tramite la Smart Card TS-CNS e CIE;
 3. **test**: contiene gli script PHP di test;
 4. **scripts**: contiene gli scripts di aggiornamento certificati e abiliatazione del servizio cron
 
 ## 4 - Quickstart
 L'immagine di questo progetto docker è disponibile sul mio account docker hub
-[amusarra/httpd-cns-dontesta-it](
-https://hub.docker.com/r/amusarra/httpd-cns-dontesta-it). Potreste quindi fin
+[amusarra/cie-cns-apache-httpd](
+https://hub.docker.com/r/amusarra/cie-cns-apache-httpd). Potreste quindi fin
 da subito fare un test. A seguire il comando per il pull dell'immagine docker
 da docker hub. Il primo comando esegue il pull dell'ultima versione (tag latest),
 mentre il secondo comando esegue il pull della specifica versione dell'immagine,
-in questo caso la versione 1.2.3.
+in questo caso la versione 1.3.0.
 
 ```bash
-docker pull amusarra/httpd-cns-dontesta-it
-docker pull amusarra/httpd-cns-dontesta-it:1.2.3
+docker pull amusarra/cie-cns-apache-httpd
+docker pull amusarra/cie-cns-apache-httpd:1.3.0
 ```
-Una volta eseguito il pull dell'immagine docker (versione 1.2.3) è possibile creare il nuovo
+Una volta eseguito il pull dell'immagine docker (versione 1.3.0) è possibile creare il nuovo
 container tramite il comando a seguire.
 
 ```bash
-docker run -i -t -d -p 10443:10443 --name=cns amusarra/httpd-cns-dontesta-it:1.2.3
+docker run -i -t -d -p 10443:10443 --name=cie-cns amusarra/cie-cns-apache-httpd:1.3.0
 ```
 Utilizzando il comando `docker ps` dovremmo poter vedere in lista il nuovo
 container, così come indicato a seguire.
 
 ```bash
 CONTAINER ID        IMAGE                                  COMMAND                  CREATED             STATUS              PORTS                      NAMES
-bb707fb00e89        amusarra/httpd-cns-dontesta-it:1.2.3   "/usr/sbin/apache2ct…"   6 seconds ago       Up 4 seconds        0.0.0.0:10443->10443/tcp   cns
+bb707fb00e89        amusarra/cie-cns-apache-httpd:1.3.0   "/usr/sbin/apache2ct…"   6 seconds ago       Up 4 seconds        0.0.0.0:10443->10443/tcp   cie-cns
 ```
 
 Nel caso in cui vogliate apportare delle modifiche, dovreste poi procedere con 
@@ -290,12 +304,12 @@ _I comandi docker di build e run devono essere lanciati dalla root della directo
 di progetto dopo aver fatto il clone di questo repository._
 
 ```bash
-docker build -t httpd-cns-dontesta-it .
-docker run -i -t -d -p 10443:10443 --name=cns httpd-cns-dontesta-it:latest
+docker build -t cie-cns-apache-httpd .
+docker run -i -t -d -p 10443:10443 --name=cie-cns cie-cns-apache-httpd:latest
 ```
 
 A questo punto sul nostro sistema dovremmo avere la nuova immagine con il 
-nome **httpd-cns-dontesta-it** e in esecuzione il nuovo container chiamato
+nome **cie-cns-apache-httpd** e in esecuzione il nuovo container chiamato
 **cns**. 
 
 Utilizzando il comando `docker images` dovremmo poter vedere in lista la nuova
@@ -303,7 +317,7 @@ immagine, così come indicato a seguire.
 
 ```
 REPOSITORY                                      TAG                 IMAGE ID            CREATED             SIZE
-httpd-cns-dontesta-it                           latest              1a145475d1f1        30 minutes ago      208MB
+cie-cns-apache-httpd                           latest              1a145475d1f1        30 minutes ago      208MB
 ```
 
 Utilizzando il comando `docker ps` dovremmo poter vedere in lista il nuovo
@@ -311,11 +325,11 @@ container, così come indicato a seguire.
 
 ```
 CONTAINER ID        IMAGE                          COMMAND                  CREATED             STATUS              PORTS                      NAMES
-65c874216624        httpd-cns-dontesta-it:latest   "/usr/sbin/apache2ct…"   36 minutes ago      Up 36 minutes       0.0.0.0:10443->10443/tcp   cns
+65c874216624        cie-cns-apache-httpd:latest   "/usr/sbin/apache2ct…"   36 minutes ago      Up 36 minutes       0.0.0.0:10443->10443/tcp   cie-cns
 ```
 
 Da questo momento è possibile raggiungere il servizio di autenticazione basato
-sulla TS-CNS utilizzando il browser. 
+sulla TS-CNS e CIE utilizzando il browser. 
 
 Per evitare l'errore `SSL_ERROR_BAD_CERT_DOMAIN` da parte del browser, raggiungendo 
 il servizio tramite la URL https://127.0.0.1:10443/, bisogna aggiungere al proprio
@@ -332,20 +346,23 @@ In ambiente di collaudo e/o produzione il nome del servizio o FQDN sarà registr
 su un DNS.
 
 Lato **server-side** è tutto pronto, non resta fare altro che un test. 
-Nel caso disponiate di una vostra Smart Card TS-CNS e il vostro PC già 
+Nel caso disponiate di una vostra Smart Card TS-CNS o CIE e il vostro PC già 
 configurato per l'utilizzo, potreste eseguire da subito un test puntando il 
 vostro browser alla URL https://cns.dontesta.it:10443/
 
 Puntando all'indirizzo https://cns.dontesta.it:10443/ dovrebbe accadere quanto 
 segue:
 
-1. Richiesta del PIN CODE della vostra TS-CNS;
-2. Richiesta di selezione del vostro certificato digitale contenuto all'interno della CNS;
+1. Richiesta del PIN CODE della vostra TS-CNS o CIE;
+2. Richiesta di selezione del vostro certificato digitale;
 3. Visualizzazione della pagina di benvenuto.
 
-Oltre a verificare che il certificato digitale sulla CNS sia valido, è anche
+Oltre a verificare che il certificato digitale sulla CNS e CIE sia valido, è anche
 eseguito il controllo per cui tra le **Certificate Policies (Object ID: 2.5.29.32)** 
-ci sia quella specifica della CNS, identificata dall'OID [1.3.76.16.2.1](http://oid-info.com/cgi-bin/display?oid=1.3.76.16.2.1&action=display).
+ci sia quella specifica della CNS e CIE. Certification Policies:
+
+1. CNS identificata dall'OID [1.3.76.16.2.1](http://oid-info.com/cgi-bin/display?oid=1.3.76.16.2.1&action=display);
+2. CIE identificata dall'OID [1.3.76.47.4](http://oid-info.com/cgi-bin/display?oid=1.3.76.47&action=display)
 
 Questo check è demandato allo script PHP `configs/test/certificate_policy_check.php` 
 mostrato di seguito.
@@ -353,15 +370,28 @@ mostrato di seguito.
 ```php
 <?php
 $cnsCertificatePolicies = 'Policy: 1.3.76.16.2.1';
+$cieCertificatePolicies = 'Policy: 1.3.76.47.4';
+
 $ssl = openssl_x509_parse(getenv('SSL_CLIENT_CERT'));
 
-if(preg_match("/$cnsCertificatePolicies$/m", $ssl['extensions']['certificatePolicies']) == 0) {
+if((preg_match("/$cnsCertificatePolicies$/m", $ssl['extensions']['certificatePolicies']) == 0) && 
+    (preg_match("/$cieCertificatePolicies$/m", $ssl['extensions']['certificatePolicies']) == 0)) {
+    
     die("Il certificato è valido ma non dispone della Certification Policy 
-    che dovrebbe avere una CNS - Carta Nazionale Servizi. La Certification Policy
-    è definita dall'OID 1.3.76.16.2.1 
-    <a href='http://oid-info.com/cgi-bin/display?oid=1.3.76.16.2.1&action=display'
-    >{iso(1) identified-organization(3) uninfo(76) agid(16) authentication(2) cns(1)}
-    </a>");
+        che dovrebbe avere una CNS - Carta Nazionale Servizi o la CIE - Carta d'Identità Elettronica. 
+        <br>La Certification Policy per la CNS è definita dall'OID 1.3.76.16.2.1 mentre per la CIE
+        è definita dall'OID 1.3.76.47.4.
+
+        <ul>
+            <li>OID 1.3.76.16.2.1 => <a href='http://oid-info.com/cgi-bin/display?oid=1.3.76.16.2.1&action=display'
+                >{iso(1) identified-organization(3) uninfo(76) agid(16) authentication(2) cns(1)}
+                </a>
+            </li>
+            <li>OID 1.3.76.47.4 => <a href='http://oid-info.com/get/1.3.76.47'
+                >{iso(1) identified-organization(3) uninfo(76) 47}
+                </a>
+            </li>
+        </ul>");
 }
 ?>
 ```
@@ -369,7 +399,6 @@ if(preg_match("/$cnsCertificatePolicies$/m", $ssl['extensions']['certificatePoli
 Purtroppo la funzione [PeerExtList(object-ID)](https://httpd.apache.org/docs/2.4/mod/mod_ssl.html) 
 del modulo *mod_ssl* non permette il check dell'estensione *CertificatePolicies*
 perché strutturata.
-
 
 A seguire una serie di screenshot del mio caso di test, utilizzando proprio la 
 mia TS-CNS.
@@ -395,7 +424,7 @@ mia TS-CNS.
 
 ![ErrorPage](images/TS-CNS_CertificationPolicyFailed.png)
 
-**Figura 5 - Notifica di errore per check Policy CNS fallito**
+**Figura 5 - Notifica di errore per check Policy fallito**
 
 Accedendo agli access log di Apache è possibile notare queste due informazioni utili al tracciamento delle operazioni eseguite dall'utente:
 
@@ -426,6 +455,9 @@ I target disponibili sono i seguenti:
 5. **remove**: Rimuove l'ultima immagine creata;
 6. **release**: Esegue la build dell'imaggine e successivamente effettua il push su dockerhub.
 
+É possibile eseguire il target _release_ solo sul branch master, inoltre, il push dell'immagine su DockerHub richiede di aver eseguito l'accesso in precedenza tramite il comando 
+`docker login`.
+
 ## 6 - Conclusioni
 Lo stimolo iniziale che ha poi scatenato la nascita di questo progetto, arriva
 dalle difficoltà incontrate cercando di accedere ai servizi del [Sistema Informativo Veterinario](https://www.vetinfo.it/) utilizzando la mia TS-CNS su Mac OS.
@@ -437,8 +469,9 @@ da dove iniziare. **Questo progetto potrebbe essere quindi un buon punto di part
 Ogni suggerimento e/o segnalazione di bug è gradito; consiglio eventualmente di 
 aprire una [issue](https://github.com/amusarra/apache-httpd-ts-cns-docker/issues)
 
-Per maggiori approfondimenti riguardo questo specifico argomento, ho già in 
-preparazione il prossimo articolo per [Antonio Musarra's Blog](https://www.dontesta.it).
+Ho descritto la mia esperienza con il Sistema Informativo Veterinario sull'articolo
+[Come accedere al portale VETINFO tramite TS-CNS e Mac OS](https://www.dontesta.it/2019/01/04/come-accedere-vetinfo-tramite-ts-cns-e-mac-os/)
+pubblicato recentemente su [Antonio Musarra's Blog](https://www.dontesta.it).
 
 ## Project License
 The MIT License (MIT)

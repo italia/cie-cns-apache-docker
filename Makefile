@@ -20,7 +20,7 @@ release: docker_build docker_push output
 
 # Image can be overidden with env vars.
 # es: make build DOCKER_IMAGE=my-cns 
-DOCKER_IMAGE ?= amusarra/httpd-cns-dontesta-it
+DOCKER_IMAGE ?= amusarra/cie-cns-apache-httpd
 
 # Expose HTTPS port can be overidden with env vars.
 # es: make run EXPOSE_HTTPS_PORT=90443
@@ -30,7 +30,7 @@ EXPOSE_HTTPS_PORT ?= 10443
 GIT_COMMIT = $(strip $(shell git rev-parse --short HEAD))
 
 # Get the version number from the code
-CODE_VERSION = $(strip $(shell git describe --tags | cut -c2-))
+CODE_VERSION = $(strip $(shell git describe --tags --abbrev=0 | cut -c2-))
 
 # Find out if the working directory is clean
 GIT_NOT_CLEAN_CHECK = $(shell git status --porcelain)
@@ -87,7 +87,7 @@ docker_debug:
 
 docker_run:
 	# Run Container
-	docker run --rm -it -d --name=cns -p ${EXPOSE_HTTPS_PORT}:10443 $(DOCKER_IMAGE):$(DOCKER_TAG)
+	docker run --rm -it -d --name=cie-cns -p ${EXPOSE_HTTPS_PORT}:10443 $(DOCKER_IMAGE):$(DOCKER_TAG)
 
 docker_image_prune:
 	# Docker image prune
