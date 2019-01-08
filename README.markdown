@@ -1,9 +1,9 @@
 # Apache HTTP 2.4 per Smart Card TS-CNS (Tessera Sanitaria - Carta Nazionale Servizi) e CIE (Carta d'Identità Elettronica)
 [![Antonio Musarra's Blog](https://img.shields.io/badge/maintainer-Antonio_Musarra's_Blog-purple.svg?colorB=6e60cc)](https://www.dontesta.it)
-[![Build Status](https://travis-ci.org/amusarra/apache-httpd-ts-cns-docker.svg?branch=develop)](https://travis-ci.org/amusarra/apache-httpd-ts-cns-docker)
-[![](https://images.microbadger.com/badges/image/amusarra/cie-cns-apache-httpd:1.3.0.svg)](https://microbadger.com/images/amusarra/cie-cns-apache-httpd:1.3.0 "Get your own image badge on microbadger.com")
-[![](https://images.microbadger.com/badges/version/amusarra/cie-cns-apache-httpd:1.3.0.svg)](https://microbadger.com/images/amusarra/cie-cns-apache-httpd:1.3.0 "Get your own version badge on microbadger.com")
-[![](https://images.microbadger.com/badges/commit/amusarra/cie-cns-apache-httpd:1.3.0.svg)](https://microbadger.com/images/amusarra/cie-cns-apache-httpd:1.3.0 "Get your own commit badge on microbadger.com")
+[![Build Status](https://travis-ci.org/italia/cie-cns-apache-docker.svg?branch=master)](https://travis-ci.org/italia/cie-cns-apache-docker)
+[![](https://images.microbadger.com/badges/image/italia/cie-cns-apache-httpd:1.3.0.svg)](https://microbadger.com/images/italia/cie-cns-apache-httpd:1.3.0 "Get your own image badge on microbadger.com")
+[![](https://images.microbadger.com/badges/version/italia/cie-cns-apache-httpd:1.3.0.svg)](https://microbadger.com/images/italia/cie-cns-apache-httpd:1.3.0 "Get your own version badge on microbadger.com")
+[![](https://images.microbadger.com/badges/commit/italia/cie-cns-apache-httpd:1.3.0.svg)](https://microbadger.com/images/italia/cie-cns-apache-httpd:1.3.0 "Get your own commit badge on microbadger.com")
 [![Twitter Follow](https://img.shields.io/twitter/follow/antonio_musarra.svg?style=social&label=%40antonio_musarra%20on%20Twitter&style=plastic)](https://twitter.com/antonio_musarra)
 
 L'obiettivo di questo progetto è quello di fornire un **template** pronto all'uso
@@ -20,21 +20,20 @@ o della CIE.
 La particolarità del sistema implementato (attraverso questo container) è quella 
 di consentire l'autenticazione tramite:
 
-1. La Smart Card **TS-CNS (Tessera Sanitaria - Carta Nazionale Servizi)**, rilasciata dalla 
+1. La **TS-CNS (Tessera Sanitaria - Carta Nazionale Servizi)**, rilasciata dalla 
 regione di appartenenza;
 2. La **CIE (Carta d'Identità Elettronica)**, rilasciata dal comune di residenza.
 
-La mia regione di appartenenza è la Regione Lazio il cui portale di riferimento
-per la TS-CNS è https://cns.regione.lazio.it/. Ogni regione ha il suo portale
-di riferimento dov'è possibile trovare tutte le informazioni utili che riguardano
-appunto la TS-CNS.
+Per la Regione Lazio il portale di riferimento per la TS-CNS è https://cns.regione.lazio.it/. 
+Ogni regione ha il proprio portale dedicato alla TS-CNS dov'è possibile trovare 
+tutte le informazioni utili.
 
-Anche per la CIE, la maggior parte dei comuni d'Italia è abilitato al rilascio.
-La pagina [La Carta di identità elettronica nei Comuni d’Italia](https://www.cartaidentita.interno.gov.it/la-carta-identita-nei-comuni-ditalia/)
-del Ministero dell'Interno mostra il dettaglio dei comuni abilitati. 
+La maggior parte dei comuni d'Italia è abilitato al rilascio della CIE.
+La pagina [La Carta d'identità elettronica nei Comuni d’Italia](https://www.cartaidentita.interno.gov.it/la-carta-identita-nei-comuni-ditalia/)
+del Ministero dell'Interno mostra il dettaglio di quali sono i comuni abilitati. 
 
 Sul sito dell'Agenzia per l'Italia digitale (AgID) nella sezione [Piattaforme/Carta Nazionale Servizi](https://www.agid.gov.it/it/piattaforme/carta-nazionale-servizi), sono disponibili
-tutti i documenti tecnici che potreste consultare per eventuali approfondimenti.
+tutti i documenti tecnici da consultare per eventuali approfondimenti.
 
 Sul sito del Ministero dell'Interno dedicato alla CIE, il documento [Carta d'Identità Elettronica CIE 3.0](https://www.cartaidentita.interno.gov.it/wp-content/uploads/2016/07/cie_3.0_-_specifiche_chip.pdf) descrive
 la CIE dal punto di vista prettamente tecnico e in modo approfondito.
@@ -96,7 +95,7 @@ da [ZeroSSL](https://zerossl.com).
 Il CN di questo specifico certificato è impostato a *cns.dontesta.it*. La 
 scadenza prevista per questo certificato è il 13 marzo 2019.
 
-Di default della porta *HTTPS* è impostata a **10443** dalla variabile `APACHE_SSL_PORT`.
+Di default la porta *HTTPS* è impostata a **10443** dalla variabile `APACHE_SSL_PORT`.
 La variabile `APPLICATION_URL` definisce il path di redirect qualora si accedesse 
 via protocollo HTTP e non HTTPS.
 
@@ -106,20 +105,38 @@ il livello log generale e quello specifico per il modulo SSL. Il valore di defau
 [LogLevel Directive](https://httpd.apache.org/docs/2.4/mod/core.html#loglevel).
 
 A seguire c'è la sezione delle variabili di ambiente che sono prettamente 
-specifiche per lo script di download dei certificati pubblici degli enti che 
+specifiche per lo script di download dei certificati pubblici degli enti. Questi enti,
 sono autorizzati dallo stato Italiano al rilascio di certificati digitali 
 per il cittadino e le aziende.
 
 La variabile d'ambiente `GOV_TRUST_CERTS_SERVICE_TYPE_IDENTIFIER` applica il filtro
-sul Service Type Identifier, il cui valore assunto nel caso della CNS e CIE è
+sul **Service Type Identifier**, il cui valore assunto nel caso della CNS e CIE è
 http://uri.etsi.org/TrstSvc/Svctype/IdV
-
 
 ```docker
 # Env for Trusted CA certificate
-ENV GOV_TRUST_CERTS_DOWNLOAD_SCRIPT_URL https://raw.githubusercontent.com/amusarra/apache-httpd-ts-cns-docker/master/scripts/parse-gov-certs.py
+ENV GOV_TRUST_CERTS_DOWNLOAD_SCRIPT_URL https://raw.githubusercontent.com/italia/apache-httpd-ts-cns-docker/master/scripts/parse-gov-certs.py
 ENV GOV_TRUST_CERTS_OUTPUT_PATH /tmp/gov/trust/certs
 ENV GOV_TRUST_CERTS_SERVICE_TYPE_IDENTIFIER http://uri.etsi.org/TrstSvc/Svctype/IdV
+```
+
+A seguire un estratto dalla **Trust Service Status List** dov'è riportato il valore
+dell'elemento _ServiceTypeIdentifier_.
+
+```xml
+<ServiceInformation>
+<ServiceTypeIdentifier>http://uri.etsi.org/TrstSvc/Svctype/IdV</ServiceTypeIdentifier>
+<ServiceName>
+<Name xml:lang="en">CN=Provincia autonoma Bolzano - CA Cittadini, OU=Servizi di Certificazione, O=Actalis S.p.A., C=IT</Name>
+</ServiceName>
+<ServiceDigitalIdentity>
+<DigitalId>
+<X509Certificate>...</X509Certificate>
+</DigitalId>
+</ServiceDigitalIdentity>
+<ServiceStatus>http://uri.etsi.org/TrstSvc/TrustedList/Svcstatus/recognisedatnationallevel</ServiceStatus>
+<StatusStartingTime>2016-06-30T22:00:00Z</StatusStartingTime>
+</ServiceInformation>
 ```
 
 La sezione a seguire del Dockerfile, contiene tutte le direttive necessarie per 
@@ -232,7 +249,7 @@ RUN a2enmod ssl \
 ```
 
 Le due ultime direttive indicate sul Dockerfile, dichiarano la porta HTTPS 
-(`APACHE_SSL_PORT`) che deve essere pubblica e il comando da eseguire per mettere 
+(`APACHE_SSL_PORT`) che deve essere pubblicata e il comando da eseguire per mettere 
 in listen (o ascolto) il nuovo servizio Apache HTTP.
 
 ## 3 - Organizzazione
@@ -270,30 +287,29 @@ Il folder *configs* contiene al suo interno altri folder e file, in particolare:
 4. **scripts**: contiene gli scripts di aggiornamento certificati e abiliatazione del servizio cron
 
 ## 4 - Quickstart
-L'immagine di questo progetto docker è disponibile sul mio account docker hub
-[amusarra/cie-cns-apache-httpd](
-https://hub.docker.com/r/amusarra/cie-cns-apache-httpd). Potreste quindi fin
-da subito fare un test. A seguire il comando per il pull dell'immagine docker
-da docker hub. Il primo comando esegue il pull dell'ultima versione (tag latest),
-mentre il secondo comando esegue il pull della specifica versione dell'immagine,
-in questo caso la versione 1.3.0.
+L'immagine di questo progetto docker è disponibile sull'account docker hub
+[italia/cie-cns-apache-httpd](https://hub.docker.com/r/italia/cie-cns-apache-httpd).
+
+A seguire il comando per il pull dell'immagine docker su docker hub. Il primo comando 
+esegue il pull dell'ultima versione (tag latest), mentre il secondo comando esegue 
+il pull della specifica versione dell'immagine, in questo caso la versione 1.3.0.
 
 ```bash
-docker pull amusarra/cie-cns-apache-httpd
-docker pull amusarra/cie-cns-apache-httpd:1.3.0
+docker pull italia/cie-cns-apache-httpd
+docker pull italia/cie-cns-apache-httpd:1.3.0
 ```
 Una volta eseguito il pull dell'immagine docker (versione 1.3.0) è possibile creare il nuovo
 container tramite il comando a seguire.
 
 ```bash
-docker run -i -t -d -p 10443:10443 --name=cie-cns amusarra/cie-cns-apache-httpd:1.3.0
+docker run -i -t -d -p 10443:10443 --name=cie-cns italia/cie-cns-apache-httpd:1.3.0
 ```
 Utilizzando il comando `docker ps` dovremmo poter vedere in lista il nuovo
 container, così come indicato a seguire.
 
 ```bash
 CONTAINER ID        IMAGE                                  COMMAND                  CREATED             STATUS              PORTS                      NAMES
-bb707fb00e89        amusarra/cie-cns-apache-httpd:1.3.0   "/usr/sbin/apache2ct…"   6 seconds ago       Up 4 seconds        0.0.0.0:10443->10443/tcp   cie-cns
+bb707fb00e89        italia/cie-cns-apache-httpd:1.3.0   "/usr/sbin/apache2ct…"   6 seconds ago       Up 4 seconds        0.0.0.0:10443->10443/tcp   cie-cns
 ```
 
 Nel caso in cui vogliate apportare delle modifiche, dovreste poi procedere con 
@@ -310,7 +326,7 @@ docker run -i -t -d -p 10443:10443 --name=cie-cns cie-cns-apache-httpd:latest
 
 A questo punto sul nostro sistema dovremmo avere la nuova immagine con il 
 nome **cie-cns-apache-httpd** e in esecuzione il nuovo container chiamato
-**cns**. 
+**cie-cns**. 
 
 Utilizzando il comando `docker images` dovremmo poter vedere in lista la nuova
 immagine, così come indicato a seguire.
@@ -400,8 +416,10 @@ Purtroppo la funzione [PeerExtList(object-ID)](https://httpd.apache.org/docs/2.4
 del modulo *mod_ssl* non permette il check dell'estensione *CertificatePolicies*
 perché strutturata.
 
-A seguire una serie di screenshot del mio caso di test, utilizzando proprio la 
-mia TS-CNS.
+A seguire una serie di screenshot che mostrano l'esecuzione del test di autenticazione, 
+utilizzando la TS-CNS. L'esecuzione del test di autenticazione con la CIE è esattamente 
+identico a quello della TS-CNS.
+
 
 ![Inserimento PIN TS-CNS](images/TS-CNS_InserimentoPINCODE.png)
 
@@ -441,7 +459,7 @@ che identifica univocamente l'utente.
 
 ## 5 - Build, Run e Push docker image via Makefile
 Al fine di semplificare le operazioni di build, run e push dell'immagine docker, 
-è stato introdotto il [Makefile](https://github.com/amusarra/apache-httpd-ts-cns-docker/blob/develop/Makefile) sulla versione [1.2.3](https://github.com/amusarra/apache-httpd-ts-cns-docker/tree/v1.2.3) del progetto.
+è stato introdotto il [Makefile](https://github.com/italia/apache-httpd-ts-cns-docker/blob/develop/Makefile) sulla versione [1.2.3](https://github.com/italia/apache-httpd-ts-cns-docker/tree/v1.2.3) del progetto.
 
 Per utilizzare il Makefile, occorre che sulla propria macchina siano installati
 correttamente i tools di build.
@@ -455,19 +473,21 @@ I target disponibili sono i seguenti:
 5. **remove**: Rimuove l'ultima immagine creata;
 6. **release**: Esegue la build dell'imaggine e successivamente effettua il push su dockerhub.
 
-É possibile eseguire il target _release_ solo sul branch master, inoltre, il push dell'immagine su DockerHub richiede di aver eseguito l'accesso in precedenza tramite il comando 
-`docker login`.
+É possibile eseguire il target _release_ solo sul branch master, inoltre, il push 
+dell'immagine su DockerHub richiede l'accesso (via username e password) tramite 
+il comando `docker login`.
 
 ## 6 - Conclusioni
 Lo stimolo iniziale che ha poi scatenato la nascita di questo progetto, arriva
-dalle difficoltà incontrate cercando di accedere ai servizi del [Sistema Informativo Veterinario](https://www.vetinfo.it/) utilizzando la mia TS-CNS su Mac OS.
+dalle difficoltà incontrate cercando di accedere ai servizi del 
+[Sistema Informativo Veterinario](https://www.vetinfo.it/) utilizzando la mia TS-CNS su Mac OS.
 
 Credo che questo progetto possa essere utile a coloro che hanno la necessità di
-realizzare un servizio di autenticazione basato sulla TS-CNS e non sanno magari
+realizzare un servizio di autenticazione basato sulla TS-CNS o CIE e non sanno magari
 da dove iniziare. **Questo progetto potrebbe essere quindi un buon punto di partenza.**
 
 Ogni suggerimento e/o segnalazione di bug è gradito; consiglio eventualmente di 
-aprire una [issue](https://github.com/amusarra/apache-httpd-ts-cns-docker/issues)
+aprire una [issue](https://github.com/italia/apache-httpd-ts-cns-docker/issues)
 
 Ho descritto la mia esperienza con il Sistema Informativo Veterinario sull'articolo
 [Come accedere al portale VETINFO tramite TS-CNS e Mac OS](https://www.dontesta.it/2019/01/04/come-accedere-vetinfo-tramite-ts-cns-e-mac-os/)
