@@ -1,9 +1,9 @@
 # Apache HTTP 2.4 per Smart Card TS-CNS (Tessera Sanitaria - Carta Nazionale Servizi) e CIE (Carta d'Identità Elettronica)
 [![Antonio Musarra's Blog](https://img.shields.io/badge/maintainer-Antonio_Musarra's_Blog-purple.svg?colorB=6e60cc)](https://www.dontesta.it)
-[![Build Status](https://travis-ci.org/amusarra/apache-httpd-ts-cns-docker.svg?branch=develop)](https://travis-ci.org/amusarra/apache-httpd-ts-cns-docker)
-[![](https://images.microbadger.com/badges/image/amusarra/cie-cns-apache-httpd:1.3.0.svg)](https://microbadger.com/images/amusarra/cie-cns-apache-httpd:1.3.0 "Get your own image badge on microbadger.com")
-[![](https://images.microbadger.com/badges/version/amusarra/cie-cns-apache-httpd:1.3.0.svg)](https://microbadger.com/images/amusarra/cie-cns-apache-httpd:1.3.0 "Get your own version badge on microbadger.com")
-[![](https://images.microbadger.com/badges/commit/amusarra/cie-cns-apache-httpd:1.3.0.svg)](https://microbadger.com/images/amusarra/cie-cns-apache-httpd:1.3.0 "Get your own commit badge on microbadger.com")
+[![Build Status](https://travis-ci.org/italia/cie-cns-apache-docker.svg?branch=master)](https://travis-ci.org/italia/cie-cns-apache-docker)
+[![](https://images.microbadger.com/badges/image/italia/cie-cns-apache-httpd:1.3.0.svg)](https://microbadger.com/images/italia/cie-cns-apache-httpd:1.3.0 "Get your own image badge on microbadger.com")
+[![](https://images.microbadger.com/badges/version/italia/cie-cns-apache-httpd:1.3.0.svg)](https://microbadger.com/images/italia/cie-cns-apache-httpd:1.3.0 "Get your own version badge on microbadger.com")
+[![](https://images.microbadger.com/badges/commit/italia/cie-cns-apache-httpd:1.3.0.svg)](https://microbadger.com/images/italia/cie-cns-apache-httpd:1.3.0 "Get your own commit badge on microbadger.com")
 [![Twitter Follow](https://img.shields.io/twitter/follow/antonio_musarra.svg?style=social&label=%40antonio_musarra%20on%20Twitter&style=plastic)](https://twitter.com/antonio_musarra)
 
 L'obiettivo di questo progetto è quello di fornire un **template** pronto all'uso
@@ -117,7 +117,7 @@ http://uri.etsi.org/TrstSvc/Svctype/IdV
 
 ```docker
 # Env for Trusted CA certificate
-ENV GOV_TRUST_CERTS_DOWNLOAD_SCRIPT_URL https://raw.githubusercontent.com/amusarra/apache-httpd-ts-cns-docker/master/scripts/parse-gov-certs.py
+ENV GOV_TRUST_CERTS_DOWNLOAD_SCRIPT_URL https://raw.githubusercontent.com/italia/apache-httpd-ts-cns-docker/master/scripts/parse-gov-certs.py
 ENV GOV_TRUST_CERTS_OUTPUT_PATH /tmp/gov/trust/certs
 ENV GOV_TRUST_CERTS_SERVICE_TYPE_IDENTIFIER http://uri.etsi.org/TrstSvc/Svctype/IdV
 ```
@@ -271,29 +271,29 @@ Il folder *configs* contiene al suo interno altri folder e file, in particolare:
 
 ## 4 - Quickstart
 L'immagine di questo progetto docker è disponibile sul mio account docker hub
-[amusarra/cie-cns-apache-httpd](
-https://hub.docker.com/r/amusarra/cie-cns-apache-httpd). Potreste quindi fin
+[italia/cie-cns-apache-httpd](
+https://hub.docker.com/r/italia/cie-cns-apache-httpd). Potreste quindi fin
 da subito fare un test. A seguire il comando per il pull dell'immagine docker
 da docker hub. Il primo comando esegue il pull dell'ultima versione (tag latest),
 mentre il secondo comando esegue il pull della specifica versione dell'immagine,
 in questo caso la versione 1.3.0.
 
 ```bash
-docker pull amusarra/cie-cns-apache-httpd
-docker pull amusarra/cie-cns-apache-httpd:1.3.0
+docker pull italia/cie-cns-apache-httpd
+docker pull italia/cie-cns-apache-httpd:1.3.0
 ```
 Una volta eseguito il pull dell'immagine docker (versione 1.3.0) è possibile creare il nuovo
 container tramite il comando a seguire.
 
 ```bash
-docker run -i -t -d -p 10443:10443 --name=cie-cns amusarra/cie-cns-apache-httpd:1.3.0
+docker run -i -t -d -p 10443:10443 --name=cie-cns italia/cie-cns-apache-httpd:1.3.0
 ```
 Utilizzando il comando `docker ps` dovremmo poter vedere in lista il nuovo
 container, così come indicato a seguire.
 
 ```bash
 CONTAINER ID        IMAGE                                  COMMAND                  CREATED             STATUS              PORTS                      NAMES
-bb707fb00e89        amusarra/cie-cns-apache-httpd:1.3.0   "/usr/sbin/apache2ct…"   6 seconds ago       Up 4 seconds        0.0.0.0:10443->10443/tcp   cie-cns
+bb707fb00e89        italia/cie-cns-apache-httpd:1.3.0   "/usr/sbin/apache2ct…"   6 seconds ago       Up 4 seconds        0.0.0.0:10443->10443/tcp   cie-cns
 ```
 
 Nel caso in cui vogliate apportare delle modifiche, dovreste poi procedere con 
@@ -441,7 +441,7 @@ che identifica univocamente l'utente.
 
 ## 5 - Build, Run e Push docker image via Makefile
 Al fine di semplificare le operazioni di build, run e push dell'immagine docker, 
-è stato introdotto il [Makefile](https://github.com/amusarra/apache-httpd-ts-cns-docker/blob/develop/Makefile) sulla versione [1.2.3](https://github.com/amusarra/apache-httpd-ts-cns-docker/tree/v1.2.3) del progetto.
+è stato introdotto il [Makefile](https://github.com/italia/apache-httpd-ts-cns-docker/blob/develop/Makefile) sulla versione [1.2.3](https://github.com/italia/apache-httpd-ts-cns-docker/tree/v1.2.3) del progetto.
 
 Per utilizzare il Makefile, occorre che sulla propria macchina siano installati
 correttamente i tools di build.
@@ -467,7 +467,7 @@ realizzare un servizio di autenticazione basato sulla TS-CNS e non sanno magari
 da dove iniziare. **Questo progetto potrebbe essere quindi un buon punto di partenza.**
 
 Ogni suggerimento e/o segnalazione di bug è gradito; consiglio eventualmente di 
-aprire una [issue](https://github.com/amusarra/apache-httpd-ts-cns-docker/issues)
+aprire una [issue](https://github.com/italia/apache-httpd-ts-cns-docker/issues)
 
 Ho descritto la mia esperienza con il Sistema Informativo Veterinario sull'articolo
 [Come accedere al portale VETINFO tramite TS-CNS e Mac OS](https://www.dontesta.it/2019/01/04/come-accedere-vetinfo-tramite-ts-cns-e-mac-os/)
