@@ -45,11 +45,11 @@ require_once 'certificate_policy_check.php';
         <div class="menu-logo">
             <div class="navbar-brand">
                 <span class="navbar-logo">
-                    <a href="<?= getenv('APPLICATION_URL') ?>">
+                    <a href="<?= getenv('REQUEST_SCHEME') . '://' . getenv('SERVER_NAME') . ':' . getenv('SERVER_PORT') ?>">
                          <img src="../assets/images/iconfinder-21-3319623-1-174x174.png" alt="Mobirise" title="" style="height: 5.6rem;">
                     </a>
                 </span>
-                <span class="navbar-caption-wrap"><a class="navbar-caption text-white display-4" href="<?= getenv('APPLICATION_URL') ?>">CIE/TS-CNS</a></span>
+                <span class="navbar-caption-wrap"><a class="navbar-caption text-white display-4" href="<?= getenv('REQUEST_SCHEME') . '://' . getenv('SERVER_NAME') . ':' . getenv('SERVER_PORT') ?>">CIE/TS-CNS</a></span>
             </div>
         </div>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
@@ -66,7 +66,7 @@ require_once 'certificate_policy_check.php';
                         
                         Developers Italia</a></li></ul>
             <div class="navbar-buttons mbr-section-btn">
-                <a class="btn btn-sm btn-primary display-4" href="<?= getenv('APPLICATION_URL') ?>/secure">
+                <a class="btn btn-sm btn-primary display-4" href="<?= getenv('REQUEST_SCHEME') . '://' . getenv('SERVER_NAME') . ':' . getenv('SERVER_PORT') ?>/secure">
                     <span class="mbri-user mbr-iconfont mbr-iconfont-btn"></span><?= getenv('SSL_CLIENT_S_DN_G')?> <?= getenv('SSL_CLIENT_S_DN_S')?>
                 </a>
             </div>
@@ -116,7 +116,7 @@ require_once 'certificate_policy_check.php';
         <div class="media-container-row content text-white">
             <div class="col-12 col-md-3">
                 <div class="media-wrap">
-                    <a href="<?= getenv('APPLICATION_URL') ?>">
+                    <a href="<?= getenv('REQUEST_SCHEME') . '://' . getenv('SERVER_NAME') . ':' . getenv('SERVER_PORT') ?>">
                         <img src="../assets/images/iconfinder-21-3319623-1-174x174.png" alt="Mobirise" title="">
                     </a>
                 </div>
