@@ -41,11 +41,11 @@
         <div class="menu-logo">
             <div class="navbar-brand">
                 <span class="navbar-logo">
-                    <a href="<?= getenv('APPLICATION_URL') ?>">
+                    <a href="<?= getenv('REQUEST_SCHEME') . '://' . getenv('SERVER_NAME') . ':' . getenv('SERVER_PORT') ?>">
                          <img src="../assets/images/iconfinder-21-3319623-1-174x174.png" alt="Mobirise" title="" style="height: 5.6rem;">
                     </a>
                 </span>
-                <span class="navbar-caption-wrap"><a class="navbar-caption text-white display-4" href="<?= getenv('APPLICATION_URL') ?>">CIE/TS-CNS</a></span>
+                <span class="navbar-caption-wrap"><a class="navbar-caption text-white display-4" href="<?= getenv('REQUEST_SCHEME') . '://' . getenv('SERVER_NAME') . ':' . getenv('SERVER_PORT') ?>">CIE/TS-CNS</a></span>
             </div>
         </div>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
@@ -61,7 +61,7 @@
                         Agenzia per l'Italia Digitale</a></li><li class="nav-item dropdown"><a class="nav-link link text-white display-4" href="https://developers.italia.it/" aria-expanded="true">
                         
                         Developers Italia</a></li></ul>
-            <div class="navbar-buttons mbr-section-btn"><a class="btn btn-sm btn-primary display-4" href="<?= getenv('APPLICATION_URL') ?>/secure"><span class="mobi-mbri mobi-mbri-login mbr-iconfont mbr-iconfont-btn"></span>
+            <div class="navbar-buttons mbr-section-btn"><a class="btn btn-sm btn-primary display-4" href="<?= getenv('REQUEST_SCHEME') . '://' . getenv('SERVER_NAME') . ':' . getenv('SERVER_PORT') ?>/secure"><span class="mobi-mbri mobi-mbri-login mbr-iconfont mbr-iconfont-btn"></span>
                     
                     Accedi</a> 
             </div>
@@ -82,7 +82,7 @@
                 <h3 class="mbr-section-subtitle align-center mbr-light pb-3 mbr-fonts-style display-2">Non è stato possibile autenticarti :-(&nbsp;</h3>
                 <p class="mbr-text pb-3 mbr-fonts-style display-7">Il certificato presentato è valido ma non rispetta le&nbsp;<strong>Certificate Policies (Object ID: 2.5.29.32)</strong> previste per la CIE e TS-CNS.<br></p>
                 <div class="mbr-section-btn"><a class="btn btn-md btn-primary display-4" href="https://github.com/italia/cie-cns-apache-docker">VAI AL PROGETTO</a>
-                    <a class="btn btn-md btn-black display-4" href="<?= getenv('APPLICATION_URL') ?>/secure">ACCEDI CON LA TUA CIE o CNS</a></div>
+                    <a class="btn btn-md btn-black display-4" href="<?= getenv('REQUEST_SCHEME') . '://' . getenv('SERVER_NAME') . ':' . getenv('SERVER_PORT') ?>/secure">ACCEDI CON LA TUA CIE o CNS</a></div>
             </div>
         </div>
     </div>
@@ -103,7 +103,7 @@
         <div class="media-container-row content text-white">
             <div class="col-12 col-md-3">
                 <div class="media-wrap">
-                    <a href="<?= getenv('APPLICATION_URL') ?>">
+                    <a href="<?= getenv('REQUEST_SCHEME') . '://' . getenv('SERVER_NAME') . ':' . getenv('SERVER_PORT') ?>">
                         <img src="../assets/images/iconfinder-21-3319623-1-174x174.png" alt="Mobirise" title="">
                     </a>
                 </div>
