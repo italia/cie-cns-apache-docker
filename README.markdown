@@ -1,9 +1,9 @@
 # Apache HTTP 2.4 per Smart Card TS-CNS (Tessera Sanitaria - Carta Nazionale Servizi) e CIE (Carta d'Identità Elettronica)
 [![Antonio Musarra's Blog](https://img.shields.io/badge/maintainer-Antonio_Musarra's_Blog-purple.svg?colorB=6e60cc)](https://www.dontesta.it)
-[![Build Status](https://travis-ci.org/italia/cie-cns-apache-docker.svg?branch=master)](https://travis-ci.org/italia/cie-cns-apache-docker)
-[![](https://images.microbadger.com/badges/image/italia/cie-cns-apache-httpd:1.3.1.svg)](https://microbadger.com/images/italia/cie-cns-apache-httpd:1.3.1 "Get your own image badge on microbadger.com")
-[![](https://images.microbadger.com/badges/version/italia/cie-cns-apache-httpd:1.3.1.svg)](https://microbadger.com/images/italia/cie-cns-apache-httpd:1.3.1 "Get your own version badge on microbadger.com")
-[![](https://images.microbadger.com/badges/commit/italia/cie-cns-apache-httpd:1.3.1.svg)](https://microbadger.com/images/italia/cie-cns-apache-httpd:1.3.1 "Get your own commit badge on microbadger.com")
+[![Build Status](https://travis-ci.org/amusarra/cie-cns-apache-docker.svg?branch=master)](https://travis-ci.org/amusarra/cie-cns-apache-docker)
+[![](https://images.microbadger.com/badges/image/amusarra/cie-cns-apache-httpd:1.3.3.svg)](https://microbadger.com/images/amusarra/cie-cns-apache-httpd:1.3.3 "Get your own image badge on microbadger.com")
+[![](https://images.microbadger.com/badges/version/amusarra/cie-cns-apache-httpd:1.3.3.svg)](https://microbadger.com/images/amusarra/cie-cns-apache-httpd:1.3.3 "Get your own version badge on microbadger.com")
+[![](https://images.microbadger.com/badges/commit/amusarra/cie-cns-apache-httpd:1.3.3.svg)](https://microbadger.com/images/amusarra/cie-cns-apache-httpd:1.3.3 "Get your own commit badge on microbadger.com")
 [![Twitter Follow](https://img.shields.io/twitter/follow/antonio_musarra.svg?style=social&label=%40antonio_musarra%20on%20Twitter&style=plastic)](https://twitter.com/antonio_musarra)
 
 L'obiettivo di questo progetto è quello di fornire un **template** pronto all'uso
@@ -264,7 +264,106 @@ Le due ultime direttive indicate sul Dockerfile, dichiarano la porta HTTPS
 (`APACHE_SSL_PORT`) che deve essere pubblicata e il comando da eseguire per mettere 
 in listen (o ascolto) il nuovo servizio Apache HTTP.
 
-## 3 - Organizzazione
+## 3 - Qualche nota su OCSP
+Il protocollo **OCSP (Online Certificate Status Protocol)** definito dall'[RFC 2560](https://www.ietf.org/rfc/rfc2560.txt) 
+è un meccanismo per determinare se un certificato del server è stato revocato o meno. 
+Questo protocollo è stato creato in alternativa al **CRL (Certificate Revocation List)** 
+
+L'**OCSP Stapling** è una "forma speciale" di protocollo, in cui il server, 
+mantiene le risposte OCSP correnti per i suoi certificati e li invia ai client 
+che comunicano con il server.
+
+La maggior parte dei certificati contiene l'indirizzo di un risponditore OCSP 
+gestito dall'autorità di certificazione emittente, **mod_ssl** può comunicare con 
+tale risponditore per ottenere una risposta firmata che può essere inviata ai 
+client che comunicano con il server.
+
+Poiché il client può ottenere lo stato di revoca del certificato dal server, 
+senza richiedere una connessione aggiuntiva dal client all'autorità di certificazione, 
+il metodo OCSP Stapling, è il modo preferito per ottenere lo stato di revoca. 
+
+Altri vantaggi dell'eliminazione della comunicazione tra i client e l'autorità 
+di certificazione sono che la cronologia di navigazione del client non è esposta 
+all'autorità di certificazione e lo stato di ottenimento è più affidabile 
+non dipendendo da server di autorità di certificazione potenzialmente 
+pesantemente caricati.
+
+Poiché la risposta ottenuta dal server può essere riutilizzata per tutti i 
+client che utilizzano lo stesso certificato durante il tempo in cui la 
+risposta è valida, il sovraccarico per il server è minimo.
+
+Una volta che il supporto SSL è stato configurato correttamente, abilitare 
+l'OCSP Stapling generalmente richiede solo modifiche molto minori alla 
+configurazione httpd.
+
+A seguire la configurazione dell'OCSP Stapling applicata in questo progetto.
+
+```
+SSLUseStapling on
+SSLStaplingCache "shmcb:logs/stapling-cache(150000)"
+```
+
+È possibile utilizzare due metodi per verificare se l'OCSP Stapling funziona: 
+utilizzando il comando `openssl` e il test [SSL su Qualys](https://www.ssllabs.com/ssltest/).
+
+```bash
+echo QUIT | openssl s_client -connect cns.dontesta.it:443 -status 2> /dev/null | grep -A 17 'OCSP response:' | grep -B 17 'Next Update'
+```
+Risposta OCSP per il certificato del server cns.dontesta.it
+
+```
+OCSP response:
+======================================
+OCSP Response Data:
+    OCSP Response Status: successful (0x0)
+    Response Type: Basic OCSP Response
+    Version: 1 (0x0)
+    Responder Id: C = US, O = Let's Encrypt, CN = Let's Encrypt Authority X3
+    Produced At: Jan  9 10:22:00 2019 GMT
+    Responses:
+    Certificate ID:
+      Hash Algorithm: sha1
+      Issuer Name Hash: 7EE66AE7729AB3FCF8A220646C16A12D6071085D
+      Issuer Key Hash: A84A6A63047DDDBAE6D139B7A64565EFF3A8ECA1
+      Serial Number: 04EC8E170AD76F242AC72AD5F2767801B1C0
+    Cert Status: good
+    This Update: Jan  9 10:00:00 2019 GMT
+    Next Update: Jan 16 10:00:00 2019 GMT
+```
+
+A seguire l'estratto del test eseguito su https://cns.dontesta.it tramite
+[SSL Labs Qualys](https://www.ssllabs.com/ssltest/analyze.html?d=cns.dontesta.it) dove si evidenzia
+l'abilitazione dell'OCSP Stapling.
+
+![SSL Labs Qualys](images/SSLLABS_CNS_DONTESTA_IT.png)
+
+**Evidenza dell'abilitazione dell'OCSP Stapling**
+
+Il protocollo CRL richiede al browser di scaricare quantità potenzialmente elevate 
+di'informazioni di revoca del certificato SSL: numeri di serie del certificato e 
+stato dell'ultima data di pubblicazione di ciascun certificato. Il problema con 
+il protocollo CRL è che può aumentare il tempo impiegato per completare la 
+negoziazione SSL.
+
+### - Vantaggi
+
+OCSP ha alcuni vantaggi rispetto alle CRL:
+
+1. Elimina la necessità per i client di scaricare e analizzare le liste di revoca.
+2. Provvede ad un migliore utilizzo della banda: dal momento che un messaggio OCSP ha una dimensione trascurabile rispetto alle CRL.
+3. Supporta una catena fidata di OCSP richiesta tra i vari responder. Questo permette ai clienti di comunicare con un responder fidato per interrogare un altro responder.
+3. OCSP è più efficiente delle CRL e quindi scala in modo migliore.
+
+### - Svantaggi
+OCSP ha anche alcuni svantaggi rispetto alle CRL:
+
+1. Per ogni revoca è necessario fare una richiesta al responder, se il responder non risponde entro un timeout OCSP verrà ignorato silenziosamente.
+2. Ogni richiesta deve essere analizzata dal responder, di fatto si passa la cronologia di navigazione al responder, questo è un evidente problema di privacy.
+
+Consiglio la lettura della documentazione su [OCSP Stapling](http://httpd.apache.org/docs/2.4/ssl/ssl_howto.html#ocspstapling) per maggiori 
+informazioni sulla configurazione e le pratiche migliori d'utilizzo.
+
+## 4 - Organizzazione
 In termini di directory e file, il progetto è organizzato così come mostrato a 
 seguire. Il cuore di tutto è il folder **configs**.
 
@@ -295,30 +394,30 @@ Il folder *configs* contiene al suo interno altri folder e file, in particolare:
 3. **www**: contiene gli script PHP di test;
 4. **scripts**: contiene gli scripts di aggiornamento certificati e abiliatazione del servizio cron
 
-## 4 - Quickstart
+## 5 - Quickstart
 L'immagine di questo progetto docker è disponibile sull'account docker hub
-[italia/cie-cns-apache-httpd](https://hub.docker.com/r/italia/cie-cns-apache-httpd).
+[amusarra/cie-cns-apache-httpd](https://hub.docker.com/r/amusarra/cie-cns-apache-httpd).
 
 A seguire il comando per il pull dell'immagine docker su docker hub. Il primo comando 
 esegue il pull dell'ultima versione (tag latest), mentre il secondo comando esegue 
-il pull della specifica versione dell'immagine, in questo caso la versione 1.3.1.
+il pull della specifica versione dell'immagine, in questo caso la versione 1.3.3.
 
 ```bash
-docker pull italia/cie-cns-apache-httpd
-docker pull italia/cie-cns-apache-httpd:1.3.1
+docker pull amusarra/cie-cns-apache-httpd
+docker pull amusarra/cie-cns-apache-httpd:1.3.3
 ```
-Una volta eseguito il pull dell'immagine docker (versione 1.3.1) è possibile creare il nuovo
+Una volta eseguito il pull dell'immagine docker (versione 1.3.3) è possibile creare il nuovo
 container tramite il comando a seguire.
 
 ```bash
-docker run -i -t -d -p 10443:10443 --name=cie-cns italia/cie-cns-apache-httpd:1.3.1
+docker run -i -t -d -p 10443:10443 --name=cie-cns amusarra/cie-cns-apache-httpd:1.3.3
 ```
 Utilizzando il comando `docker ps` dovremmo poter vedere in lista il nuovo
 container, così come indicato a seguire.
 
 ```bash
 CONTAINER ID        IMAGE                                  COMMAND                  CREATED             STATUS              PORTS                      NAMES
-bb707fb00e89        italia/cie-cns-apache-httpd:1.3.1   "/usr/sbin/apache2ct…"   6 seconds ago       Up 4 seconds        0.0.0.0:10443->10443/tcp   cie-cns
+bb707fb00e89        amusarra/cie-cns-apache-httpd:1.3.3   "/usr/sbin/apache2ct…"   6 seconds ago       Up 4 seconds        0.0.0.0:10443->10443/tcp   cie-cns
 ```
 
 Nel caso in cui vogliate apportare delle modifiche, dovreste poi procedere con 
@@ -471,7 +570,7 @@ Il valore di `SSL_CLIENT_S_DN_CN` è inoltre impostato come **SSLUserName**, que
 fa in modo che la variabile `REMOTE_USER` sia impostata con il CN del certificato digitale 
 che identifica univocamente l'utente. 
 
-## 5 - Build, Run e Push docker image via Makefile
+## 6 - Build, Run e Push docker image via Makefile
 Al fine di semplificare le operazioni di build, run e push dell'immagine docker, 
 è stato introdotto il [Makefile](https://github.com/italia/apache-httpd-ts-cns-docker/blob/develop/Makefile) sulla versione [1.2.3](https://github.com/italia/apache-httpd-ts-cns-docker/tree/v1.2.3) del progetto.
 
@@ -491,7 +590,7 @@ I target disponibili sono i seguenti:
 dell'immagine su DockerHub richiede l'accesso (via username e password) tramite 
 il comando `docker login`.
 
-## 6 - Conclusioni
+## 7 - Conclusioni
 Lo stimolo iniziale che ha poi scatenato la nascita di questo progetto, arriva
 dalle difficoltà incontrate cercando di accedere ai servizi del 
 [Sistema Informativo Veterinario](https://www.vetinfo.it/) utilizzando la mia TS-CNS su Mac OS.
