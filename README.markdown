@@ -1,6 +1,6 @@
 # Apache HTTP 2.4 per Smart Card TS-CNS (Tessera Sanitaria - Carta Nazionale Servizi) e CIE (Carta d'Identità Elettronica)
 [![Antonio Musarra's Blog](https://img.shields.io/badge/maintainer-Antonio_Musarra's_Blog-purple.svg?colorB=6e60cc)](https://www.dontesta.it)
-[![Build Status](https://travis-ci.org/amusarra/cie-cns-apache-docker.svg?branch=master)](https://travis-ci.org/amusarra/cie-cns-apache-docker)
+[![Build Status](https://travis-ci.org/italia/cie-cns-apache-docker.svg?branch=master)](https://travis-ci.org/italia/cie-cns-apache-docker)
 [![](https://images.microbadger.com/badges/image/amusarra/cie-cns-apache-httpd:1.3.3.svg)](https://microbadger.com/images/amusarra/cie-cns-apache-httpd:1.3.3 "Get your own image badge on microbadger.com")
 [![](https://images.microbadger.com/badges/version/amusarra/cie-cns-apache-httpd:1.3.3.svg)](https://microbadger.com/images/amusarra/cie-cns-apache-httpd:1.3.3 "Get your own version badge on microbadger.com")
 [![](https://images.microbadger.com/badges/commit/amusarra/cie-cns-apache-httpd:1.3.3.svg)](https://microbadger.com/images/amusarra/cie-cns-apache-httpd:1.3.3 "Get your own commit badge on microbadger.com")
