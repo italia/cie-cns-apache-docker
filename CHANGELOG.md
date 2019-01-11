@@ -4,6 +4,12 @@ Tutte le modifiche importanti a questo progetto saranno documentate in questo fi
 Il formato è basato su [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 e questo progetto aderisce a [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.3.1] - 2019-01-11
+### Added
+- Aggiunta interfaccia utente meno "spartana"
+- Aggiunta possibilità per configurare il parametro SSLVerifyClient
+- Aggiunta la configurazione Apache per la separazione di una zona pubblica e una zona sicura
+
 ## [1.3.0] - 2019-01-08
 ### Added
 - Supporto per la CIE

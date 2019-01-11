@@ -25,7 +25,9 @@ ENV APACHE_SSL_PRIVATE cns-dontesta-it_key.pem
 ENV APACHE_SSL_PORT 10443
 ENV APACHE_LOG_LEVEL info
 ENV APACHE_SSL_LOG_LEVEL info
+ENV APACHE_SSL_VERIFY_CLIENT optional
 ENV APPLICATION_URL https://${APACHE_SERVER_NAME}:${APACHE_SSL_PORT}
+ENV CLIENT_VERIFY_LANDING_PAGE /error.php
 
 # Env for deb conf
 ENV DEBIAN_FRONTEND noninteractive
@@ -63,7 +65,9 @@ COPY configs/certs/*_crt.pem /etc/ssl/certs/
 COPY configs/certs/*_key.pem /etc/ssl/private/
 
 # Copy php samples script and other
-COPY configs/test/*.php /var/www/html/
+COPY configs/www/*.php /var/www/html/
+COPY configs/www/assets /var/www/html/assets
+COPY configs/www/secure /var/www/html/secure
 COPY images/favicon.ico /var/www/html/favicon.ico
 
 # Copy auto-update-gov-certificates scripts and entrypoint
@@ -82,6 +86,7 @@ RUN chmod +x /entrypoint \
 # Configure and enabled Apache features
 RUN a2enmod ssl \
     && a2enmod headers \
+    && a2enmod rewrite \
     && a2ensite default-ssl \
     && a2enconf ssl-params \
     && c_rehash /etc/ssl/certs/

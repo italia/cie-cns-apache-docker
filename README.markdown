@@ -1,9 +1,9 @@
 # Apache HTTP 2.4 per Smart Card TS-CNS (Tessera Sanitaria - Carta Nazionale Servizi) e CIE (Carta d'Identità Elettronica)
 [![Antonio Musarra's Blog](https://img.shields.io/badge/maintainer-Antonio_Musarra's_Blog-purple.svg?colorB=6e60cc)](https://www.dontesta.it)
 [![Build Status](https://travis-ci.org/italia/cie-cns-apache-docker.svg?branch=master)](https://travis-ci.org/italia/cie-cns-apache-docker)
-[![](https://images.microbadger.com/badges/image/italia/cie-cns-apache-httpd:1.3.0.svg)](https://microbadger.com/images/italia/cie-cns-apache-httpd:1.3.0 "Get your own image badge on microbadger.com")
-[![](https://images.microbadger.com/badges/version/italia/cie-cns-apache-httpd:1.3.0.svg)](https://microbadger.com/images/italia/cie-cns-apache-httpd:1.3.0 "Get your own version badge on microbadger.com")
-[![](https://images.microbadger.com/badges/commit/italia/cie-cns-apache-httpd:1.3.0.svg)](https://microbadger.com/images/italia/cie-cns-apache-httpd:1.3.0 "Get your own commit badge on microbadger.com")
+[![](https://images.microbadger.com/badges/image/italia/cie-cns-apache-httpd:1.3.1.svg)](https://microbadger.com/images/italia/cie-cns-apache-httpd:1.3.1 "Get your own image badge on microbadger.com")
+[![](https://images.microbadger.com/badges/version/italia/cie-cns-apache-httpd:1.3.1.svg)](https://microbadger.com/images/italia/cie-cns-apache-httpd:1.3.1 "Get your own version badge on microbadger.com")
+[![](https://images.microbadger.com/badges/commit/italia/cie-cns-apache-httpd:1.3.1.svg)](https://microbadger.com/images/italia/cie-cns-apache-httpd:1.3.1 "Get your own commit badge on microbadger.com")
 [![Twitter Follow](https://img.shields.io/twitter/follow/antonio_musarra.svg?style=social&label=%40antonio_musarra%20on%20Twitter&style=plastic)](https://twitter.com/antonio_musarra)
 
 L'obiettivo di questo progetto è quello di fornire un **template** pronto all'uso
@@ -75,9 +75,11 @@ ENV APACHE_SERVER_ADMIN cns@dontesta.it
 ENV APACHE_SSL_CERTS cns-dontesta-it_crt.pem
 ENV APACHE_SSL_PRIVATE cns-dontesta-it_key.pem
 ENV APACHE_SSL_PORT 10443
-ENV APPLICATION_URL https://${APACHE_SERVER_NAME}:${APACHE_SSL_PORT}
 ENV APACHE_LOG_LEVEL info
 ENV APACHE_SSL_LOG_LEVEL info
+ENV APACHE_SSL_VERIFY_CLIENT optional
+ENV APPLICATION_URL https://${APACHE_SERVER_NAME}:${APACHE_SSL_PORT}
+ENV CLIENT_VERIFY_LANDING_PAGE /error.php
 ```
 
 Le prime due variabili sono molto esplicative, la prima in particolare,
@@ -103,6 +105,15 @@ Le variabili `APACHE_LOG_LEVEL`e `APACHE_SSL_LOG_LEVEL`, consentono di modificar
 il livello log generale e quello specifico per il modulo SSL. Il valore di default
 è impostato a INFO. Per maggiori informazioni potete consultare la documentazione su
 [LogLevel Directive](https://httpd.apache.org/docs/2.4/mod/core.html#loglevel).
+
+La variabile `APACHE_SSL_VERIFY_CLIENT` agisce sulla configurazione del processo
+di verifica del certificato lato client. Il valore di default è impostato a **optional**.
+Rendere opzionale la verifica, consente una gestione più flessibile dell'errore 
+in caso che la validazione fallisse.
+
+Nel caso in cui il valore della direttiva di Apache **SSLVerifyClient** sia 
+optional o optional_no_ca, in caso di errore viene visualizzata una specifica
+pagina di errore definita dalla variabile `CLIENT_VERIFY_LANDING_PAGE`.
 
 A seguire c'è la sezione delle variabili di ambiente che sono prettamente 
 specifiche per lo script di download dei certificati pubblici degli enti. Questi enti,
@@ -243,6 +254,7 @@ La sezione a seguire del Dockerfile esegue le seguenti attività:
 ```docker
 RUN a2enmod ssl \
     && a2enmod headers \
+    && a2enmod rewrite \
     && a2ensite default-ssl \
     && a2enconf ssl-params \
     && c_rehash /etc/ssl/certs/
@@ -268,10 +280,7 @@ seguire. Il cuore di tutto è il folder **configs**.
 │    │   ├── dir.conf
 │    │   ├── ports.conf
 │    │   └── ssl-params.conf
-│    └── test
-│        ├── index.php
-│        ├── certificate_policy_check.php
-│        └── info.php
+│    └── wwww
 └── scripts
     ├── auto-update-gov-certificates
     ├── parse-gov-certs.py
@@ -283,7 +292,7 @@ Il folder *configs* contiene al suo interno altri folder e file, in particolare:
 1. **certs**
     * contiene il certificato del server (chiave pubblica e chiave privata);
 2. **httpd**: contiene tutte le configurazioni di Apache necessarie per attivare l'autenticazione tramite la Smart Card TS-CNS e CIE;
-3. **test**: contiene gli script PHP di test;
+3. **www**: contiene gli script PHP di test;
 4. **scripts**: contiene gli scripts di aggiornamento certificati e abiliatazione del servizio cron
 
 ## 4 - Quickstart
@@ -292,24 +301,24 @@ L'immagine di questo progetto docker è disponibile sull'account docker hub
 
 A seguire il comando per il pull dell'immagine docker su docker hub. Il primo comando 
 esegue il pull dell'ultima versione (tag latest), mentre il secondo comando esegue 
-il pull della specifica versione dell'immagine, in questo caso la versione 1.3.0.
+il pull della specifica versione dell'immagine, in questo caso la versione 1.3.1.
 
 ```bash
 docker pull italia/cie-cns-apache-httpd
-docker pull italia/cie-cns-apache-httpd:1.3.0
+docker pull italia/cie-cns-apache-httpd:1.3.1
 ```
-Una volta eseguito il pull dell'immagine docker (versione 1.3.0) è possibile creare il nuovo
+Una volta eseguito il pull dell'immagine docker (versione 1.3.1) è possibile creare il nuovo
 container tramite il comando a seguire.
 
 ```bash
-docker run -i -t -d -p 10443:10443 --name=cie-cns italia/cie-cns-apache-httpd:1.3.0
+docker run -i -t -d -p 10443:10443 --name=cie-cns italia/cie-cns-apache-httpd:1.3.1
 ```
 Utilizzando il comando `docker ps` dovremmo poter vedere in lista il nuovo
 container, così come indicato a seguire.
 
 ```bash
 CONTAINER ID        IMAGE                                  COMMAND                  CREATED             STATUS              PORTS                      NAMES
-bb707fb00e89        italia/cie-cns-apache-httpd:1.3.0   "/usr/sbin/apache2ct…"   6 seconds ago       Up 4 seconds        0.0.0.0:10443->10443/tcp   cie-cns
+bb707fb00e89        italia/cie-cns-apache-httpd:1.3.1   "/usr/sbin/apache2ct…"   6 seconds ago       Up 4 seconds        0.0.0.0:10443->10443/tcp   cie-cns
 ```
 
 Nel caso in cui vogliate apportare delle modifiche, dovreste poi procedere con 
@@ -380,7 +389,7 @@ ci sia quella specifica della CNS e CIE. Certification Policies:
 1. CNS identificata dall'OID [1.3.76.16.2.1](http://oid-info.com/cgi-bin/display?oid=1.3.76.16.2.1&action=display);
 2. CIE identificata dall'OID [1.3.76.47.4](http://oid-info.com/cgi-bin/display?oid=1.3.76.47&action=display)
 
-Questo check è demandato allo script PHP `configs/test/certificate_policy_check.php` 
+Questo check è demandato allo script PHP `configs/www/secure/certificate_policy_check.php` 
 mostrato di seguito.
 
 ```php
@@ -444,7 +453,12 @@ identico a quello della TS-CNS.
 
 **Figura 5 - Notifica di errore per check Policy fallito**
 
-Accedendo agli access log di Apache è possibile notare queste due informazioni utili al tracciamento delle operazioni eseguite dall'utente:
+![ErrorPage](images/TS-CNS_SSL_VERIFIY_Failed.png)
+
+**Figura 6 - Pagina di errore in caso di errore validazione certificato**
+
+Accedendo agli access log di Apache è possibile notare queste due informazioni 
+utili al tracciamento delle operazioni eseguite dall'utente:
 
 * Il protocollo SSL
 * Il SSL_CLIENT_S_DN_CN 
