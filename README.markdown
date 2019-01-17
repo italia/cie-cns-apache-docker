@@ -1,9 +1,9 @@
 # Apache HTTP 2.4 per Smart Card TS-CNS (Tessera Sanitaria - Carta Nazionale Servizi) e CIE (Carta d'Identità Elettronica)
 [![Antonio Musarra's Blog](https://img.shields.io/badge/maintainer-Antonio_Musarra's_Blog-purple.svg?colorB=6e60cc)](https://www.dontesta.it)
 [![Build Status](https://travis-ci.org/italia/cie-cns-apache-docker.svg?branch=master)](https://travis-ci.org/italia/cie-cns-apache-docker)
-[![](https://images.microbadger.com/badges/image/amusarra/cie-cns-apache-httpd:1.3.3.svg)](https://microbadger.com/images/amusarra/cie-cns-apache-httpd:1.3.3 "Get your own image badge on microbadger.com")
-[![](https://images.microbadger.com/badges/version/amusarra/cie-cns-apache-httpd:1.3.3.svg)](https://microbadger.com/images/amusarra/cie-cns-apache-httpd:1.3.3 "Get your own version badge on microbadger.com")
-[![](https://images.microbadger.com/badges/commit/amusarra/cie-cns-apache-httpd:1.3.3.svg)](https://microbadger.com/images/amusarra/cie-cns-apache-httpd:1.3.3 "Get your own commit badge on microbadger.com")
+[![](https://images.microbadger.com/badges/image/italia/cie-cns-apache-docker:1.3.3.svg)](https://microbadger.com/images/italia/cie-cns-apache-docker:1.3.3 "Get your own image badge on microbadger.com")
+[![](https://images.microbadger.com/badges/version/italia/cie-cns-apache-docker:1.3.3.svg)](https://microbadger.com/images/italia/cie-cns-apache-docker:1.3.3 "Get your own version badge on microbadger.com")
+[![](https://images.microbadger.com/badges/commit/italia/cie-cns-apache-docker:1.3.3.svg)](https://microbadger.com/images/italia/cie-cns-apache-docker:1.3.3 "Get your own commit badge on microbadger.com")
 [![Twitter Follow](https://img.shields.io/twitter/follow/antonio_musarra.svg?style=social&label=%40antonio_musarra%20on%20Twitter&style=plastic)](https://twitter.com/antonio_musarra)
 
 L'obiettivo di questo progetto è quello di fornire un **template** pronto all'uso
@@ -396,28 +396,28 @@ Il folder *configs* contiene al suo interno altri folder e file, in particolare:
 
 ## 5 - Quickstart
 L'immagine di questo progetto docker è disponibile sull'account docker hub
-[amusarra/cie-cns-apache-httpd](https://hub.docker.com/r/amusarra/cie-cns-apache-httpd).
+[italia/cie-cns-apache-docker](https://hub.docker.com/r/italia/cie-cns-apache-docker).
 
 A seguire il comando per il pull dell'immagine docker su docker hub. Il primo comando 
 esegue il pull dell'ultima versione (tag latest), mentre il secondo comando esegue 
 il pull della specifica versione dell'immagine, in questo caso la versione 1.3.3.
 
 ```bash
-docker pull amusarra/cie-cns-apache-httpd
-docker pull amusarra/cie-cns-apache-httpd:1.3.3
+docker pull italia/cie-cns-apache-docker
+docker pull italia/cie-cns-apache-docker:1.3.3
 ```
 Una volta eseguito il pull dell'immagine docker (versione 1.3.3) è possibile creare il nuovo
 container tramite il comando a seguire.
 
 ```bash
-docker run -i -t -d -p 10443:10443 --name=cie-cns amusarra/cie-cns-apache-httpd:1.3.3
+docker run -i -t -d -p 10443:10443 --name=cie-cns italia/cie-cns-apache-docker:1.3.3
 ```
 Utilizzando il comando `docker ps` dovremmo poter vedere in lista il nuovo
 container, così come indicato a seguire.
 
 ```bash
 CONTAINER ID        IMAGE                                  COMMAND                  CREATED             STATUS              PORTS                      NAMES
-bb707fb00e89        amusarra/cie-cns-apache-httpd:1.3.3   "/usr/sbin/apache2ct…"   6 seconds ago       Up 4 seconds        0.0.0.0:10443->10443/tcp   cie-cns
+bb707fb00e89        italia/cie-cns-apache-docker:1.3.3   "/usr/sbin/apache2ct…"   6 seconds ago       Up 4 seconds        0.0.0.0:10443->10443/tcp   cie-cns
 ```
 
 Nel caso in cui vogliate apportare delle modifiche, dovreste poi procedere con 
@@ -428,12 +428,12 @@ _I comandi docker di build e run devono essere lanciati dalla root della directo
 di progetto dopo aver fatto il clone di questo repository._
 
 ```bash
-docker build -t cie-cns-apache-httpd .
-docker run -i -t -d -p 10443:10443 --name=cie-cns cie-cns-apache-httpd:latest
+docker build -t cie-cns-apache-docker .
+docker run -i -t -d -p 10443:10443 --name=cie-cns cie-cns-apache-docker:latest
 ```
 
 A questo punto sul nostro sistema dovremmo avere la nuova immagine con il 
-nome **cie-cns-apache-httpd** e in esecuzione il nuovo container chiamato
+nome **cie-cns-apache-docker** e in esecuzione il nuovo container chiamato
 **cie-cns**. 
 
 Utilizzando il comando `docker images` dovremmo poter vedere in lista la nuova
@@ -441,7 +441,7 @@ immagine, così come indicato a seguire.
 
 ```
 REPOSITORY                                      TAG                 IMAGE ID            CREATED             SIZE
-cie-cns-apache-httpd                           latest              1a145475d1f1        30 minutes ago      208MB
+cie-cns-apache-docker                           latest              1a145475d1f1        30 minutes ago      208MB
 ```
 
 Utilizzando il comando `docker ps` dovremmo poter vedere in lista il nuovo
@@ -449,7 +449,7 @@ container, così come indicato a seguire.
 
 ```
 CONTAINER ID        IMAGE                          COMMAND                  CREATED             STATUS              PORTS                      NAMES
-65c874216624        cie-cns-apache-httpd:latest   "/usr/sbin/apache2ct…"   36 minutes ago      Up 36 minutes       0.0.0.0:10443->10443/tcp   cie-cns
+65c874216624        cie-cns-apache-docker:latest   "/usr/sbin/apache2ct…"   36 minutes ago      Up 36 minutes       0.0.0.0:10443->10443/tcp   cie-cns
 ```
 
 Da questo momento è possibile raggiungere il servizio di autenticazione basato
