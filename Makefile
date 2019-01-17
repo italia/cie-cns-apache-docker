@@ -20,7 +20,7 @@ release: docker_build docker_push output
 
 # Image can be overidden with env vars.
 # es: make build DOCKER_IMAGE=my-cns 
-DOCKER_IMAGE ?= amusarra/cie-cns-apache-httpd
+DOCKER_IMAGE ?= italia/cie-cns-apache-docker
 
 # Expose HTTPS port can be overidden with env vars.
 # es: make run EXPOSE_HTTPS_PORT=90443
