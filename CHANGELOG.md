@@ -4,6 +4,10 @@ Tutte le modifiche importanti a questo progetto saranno documentate in questo fi
 Il formato è basato su [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 e questo progetto aderisce a [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.3.4] - 2019-05-22
+### Changed
+- Aggiornamento Certificati SSL/TLS by Let's Encrypt Authority X3
+
 ## [1.3.3] - 2019-01-11
 ### Changed
 - Aggiornamento README circa l'OCSP

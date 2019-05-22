@@ -54,7 +54,6 @@ RUN rm -rf ${GOV_TRUST_CERTS_OUTPUT_PATH} \
     && cp ${GOV_TRUST_CERTS_OUTPUT_PATH}/*.pem /etc/ssl/certs/
 
 # Copy Apache configuration file
-COPY configs/httpd/000-default.conf /etc/apache2/sites-available/
 COPY configs/httpd/default-ssl.conf /etc/apache2/sites-available/
 COPY configs/httpd/ssl-params.conf /etc/apache2/conf-available/
 COPY configs/httpd/dir.conf /etc/apache2/mods-enabled/
