@@ -95,7 +95,7 @@ Il certificato utilizzato in questo progetto è stato rilasciato da
 da [ZeroSSL](https://zerossl.com).
 
 Il CN di questo specifico certificato è impostato a *cns.dontesta.it*. La 
-scadenza prevista per questo certificato è il 13 marzo 2019.
+scadenza prevista per questo certificato è il 20 Agosto 2019.
 
 Di default la porta *HTTPS* è impostata a **10443** dalla variabile `APACHE_SSL_PORT`.
 La variabile `APPLICATION_URL` definisce il path di redirect qualora si accedesse 
