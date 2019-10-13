@@ -1,0 +1,6 @@
+version: '3.3'
+services:
+  apache-ssl-tls-mutual-authentication:
+    image: italia/cie-cns-apache-docker
+    ports: 
+      - "443:10443"

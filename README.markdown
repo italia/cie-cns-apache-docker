@@ -37,7 +37,10 @@ tutti i documenti tecnici da consultare per eventuali approfondimenti.
 
 Sul sito del Ministero dell'Interno dedicato alla CIE, il documento [Carta d'Identità Elettronica CIE 3.0](https://www.cartaidentita.interno.gov.it/wp-content/uploads/2016/07/cie_3.0_-_specifiche_chip.pdf) descrive
 la CIE dal punto di vista prettamente tecnico e in modo approfondito.
- 
+
+Sei impaziente? Bene, allora potresti provare con Play-With-Docker ;-)
+
+[![Try in PWD](https://raw.githubusercontent.com/play-with-docker/stacks/master/assets/images/button.png)](https://labs.play-with-docker.com/?stack=https://raw.githubusercontent.com/italia/cie-cns-apache-docker/master/docker-compose.yml) 
 
 ## 1 - Overview
 Questo container parte dall'immagine base di [*ubuntu:18.04*](https://hub.docker.com/_/ubuntu), 
