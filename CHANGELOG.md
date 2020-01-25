@@ -4,6 +4,12 @@ Tutte le modifiche importanti a questo progetto saranno documentate in questo fi
 Il formato è basato su [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 e questo progetto aderisce a [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.3.6] - 2020-01-25
+### Changed
+- Aggiornamento badge sul file README
+- Aggiunta icona repository GitHub sul footer
+- Aggiornamento link DockerHub
+
 ## [1.3.5] - 2020-01-24
 ### Changed
 - Aggiornamento Certificati SSL/TLS by Let's Encrypt Authority X3

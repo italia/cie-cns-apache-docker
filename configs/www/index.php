@@ -121,7 +121,7 @@
                 <h5 class="pb-3">
                     Links
                 </h5>
-                <p class="mbr-text"><a href="https://www.dontesta.it">Antonio Musarra's Blog</a>&nbsp;<br><a href="https://github.com/italia/cie-cns-apache-docker">Progetto italia/cie-cns-apache-docker</a>&nbsp;<br><a href="https://hub.docker.com/r/amusarra/cie-cns-apache-httpd">Docker Image</a></p>
+                <p class="mbr-text"><a href="https://www.dontesta.it">Antonio Musarra's Blog</a>&nbsp;<br><a href="https://github.com/italia/cie-cns-apache-docker">Progetto italia/cie-cns-apache-docker</a>&nbsp;<br><a href="https://hub.docker.com/r/italia/cie-cns-apache-docker/">Docker Image</a></p>
             </div>
         </div>
         <div class="footer-lower">
@@ -133,7 +133,7 @@
             <div class="media-container-row mbr-white">
                 <div class="col-sm-6 copyright">
                     <p class="mbr-text mbr-fonts-style display-7"><a href="https://www.dontesta.it">
-                        © Copyright 2018 Antonio Musarra's Blog - All Rights Reserved
+                        © Copyright 2020 Antonio Musarra's Blog - All Rights Reserved
                     </a></p>
                 </div>
                 <div class="col-md-6">
@@ -156,6 +156,11 @@
                         <div class="soc-item">
                             <a href="https://www.linkedin.com/in/amusarra/" target="_blank">
                                 <span class="mbr-iconfont mbr-iconfont-social socicon-linkedin socicon"></span>
+                            </a>
+                        </div>
+                        <div class="soc-item">
+                            <a href="https://github.com/amusarra" target="_blank">
+                                <span class="mbr-iconfont mbr-iconfont-social socicon-github socicon"></span>
                             </a>
                         </div>
                         
