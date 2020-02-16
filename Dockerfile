@@ -33,7 +33,6 @@ ENV CLIENT_VERIFY_LANDING_PAGE /error.php
 ENV DEBIAN_FRONTEND noninteractive
 
 # Env for Trusted CA certificate
-ENV GOV_TRUST_CERTS_DOWNLOAD_SCRIPT_URL https://raw.githubusercontent.com/amusarra/apache-httpd-ts-cns-docker/master/scripts/parse-gov-certs.py
 ENV GOV_TRUST_CERTS_SERVICE_TYPE_IDENTIFIER http://uri.etsi.org/TrstSvc/Svctype/IdV
 ENV GOV_TRUST_CERTS_OUTPUT_PATH /tmp/gov/trust/certs
 
@@ -42,17 +41,18 @@ SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 # Install services, packages and do cleanup
 RUN apt update \
     && apt install -y apache2 \
+    && apt install -y ca-certificates \
     && apt install -y php libapache2-mod-php \
-    && apt install -y curl \
     && apt install -y python \
     && apt install -y cron \
     && rm -rf /var/lib/apt/lists/*
 
+COPY scripts/parse-gov-certs.py /usr/local/bin/
+
 # Download Trusted CA certificate and copy to ssl system path
-RUN rm -rf ${GOV_TRUST_CERTS_OUTPUT_PATH} \
-    && curl ${GOV_TRUST_CERTS_DOWNLOAD_SCRIPT_URL} \
-    | python /dev/stdin --output-folder ${GOV_TRUST_CERTS_OUTPUT_PATH} \
-    --service-type-identifier ${GOV_TRUST_CERTS_SERVICE_TYPE_IDENTIFIER} \
+RUN /usr/local/bin/parse-gov-certs.py \
+        --output-folder ${GOV_TRUST_CERTS_OUTPUT_PATH} \
+        --service-type-identifier ${GOV_TRUST_CERTS_SERVICE_TYPE_IDENTIFIER} \
     && cp ${GOV_TRUST_CERTS_OUTPUT_PATH}/*.pem /etc/ssl/certs/
 
 # Copy Apache configuration file

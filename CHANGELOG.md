@@ -4,6 +4,12 @@ Tutte le modifiche importanti a questo progetto saranno documentate in questo fi
 Il formato è basato su [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 e questo progetto aderisce a [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.3.8] - 2020-02-16
+### Changed
+- Use parse-gov-certs.py from the local repo (by [@bfabio](https://github.com/bfabio))
+- Set pipefail in order to have the piped RUNs fail even if the
+last command exits successfully (by [@bfabio](https://github.com/bfabio)). 
+
 ## [1.3.7] - 2020-02-16
 ### Changed
 - Travis CI: Moved docker login on deploy master section 

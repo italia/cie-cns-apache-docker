@@ -1,11 +1,9 @@
 # Apache HTTP 2.4 per Smart Card TS-CNS (Tessera Sanitaria - Carta Nazionale Servizi) e CIE (Carta d'Identità Elettronica)
-[![Antonio Musarra's Blog](https://img.shields.io/badge/maintainer-Antonio_Musarra's_Blog-purple.svg?colorB=6e60cc)](https://www.dontesta.it)[![Twitter Follow](https://img.shields.io/twitter/follow/antonio_musarra.svg?style=social&label=%40antonio_musarra%20on%20Twitter&style=plastic)](https://twitter.com/antonio_musarra)
-[![Twitter Follow](https://img.shields.io/twitter/follow/developersITA.svg?style=social&label=%40developersITA%20on%20Twitter&style=plastic)](https://twitter.com/developersITA)[![Join the #design channel](https://img.shields.io/badge/Slack%20Channell-%23cie-green)](https://developersitalia.slack.com/archives/C75U26411)
+[![Antonio Musarra's Blog](https://img.shields.io/badge/maintainer-Antonio_Musarra's_Blog-purple.svg?colorB=6e60cc)](https://www.dontesta.it) [![Twitter Follow](https://img.shields.io/twitter/follow/antonio_musarra.svg?style=social&label=%40antonio_musarra%20on%20Twitter&style=plastic)](https://twitter.com/antonio_musarra) 
+[![Twitter Follow](https://img.shields.io/twitter/follow/developersITA.svg?style=social&label=%40developersITA%20on%20Twitter&style=plastic)](https://twitter.com/developersITA) [![Join the #design channel](https://img.shields.io/badge/Slack%20Channell-%23cie-green)](https://developersitalia.slack.com/archives/C75U26411)
 
-[![Build Status](https://travis-ci.org/italia/cie-cns-apache-docker.svg?branch=master)](https://travis-ci.org/italia/cie-cns-apache-docker)
-[![](https://images.microbadger.com/badges/image/italia/cie-cns-apache-docker:1.3.6.svg)](https://microbadger.com/images/italia/cie-cns-apache-docker:1.3.6 "Get your own image badge on microbadger.com")
-[![](https://images.microbadger.com/badges/version/italia/cie-cns-apache-docker:1.3.6.svg)](https://microbadger.com/images/italia/cie-cns-apache-docker:1.3.6 "Get your own version badge on microbadger.com")
-[![](https://images.microbadger.com/badges/commit/italia/cie-cns-apache-docker:1.3.6.svg)](https://microbadger.com/images/italia/cie-cns-apache-docker:1.3.6 "Get your own commit badge on microbadger.com")[![Tag](https://img.shields.io/github/tag/italia/cie-cns-apache-docker.svg)](https://github.com/italia/cie-cns-apache-docker/releases)
+[![Build Status](https://travis-ci.org/italia/cie-cns-apache-docker.svg?branch=master)](https://travis-ci.org/italia/cie-cns-apache-docker) 
+[![Tag](https://img.shields.io/github/tag/italia/cie-cns-apache-docker.svg)](https://github.com/italia/cie-cns-apache-docker/releases)
 
 
 L'obiettivo di questo progetto è quello di fornire un **template** pronto all'uso
@@ -131,7 +129,6 @@ http://uri.etsi.org/TrstSvc/Svctype/IdV
 
 ```docker
 # Env for Trusted CA certificate
-ENV GOV_TRUST_CERTS_DOWNLOAD_SCRIPT_URL https://raw.githubusercontent.com/italia/apache-httpd-ts-cns-docker/master/scripts/parse-gov-certs.py
 ENV GOV_TRUST_CERTS_OUTPUT_PATH /tmp/gov/trust/certs
 ENV GOV_TRUST_CERTS_SERVICE_TYPE_IDENTIFIER http://uri.etsi.org/TrstSvc/Svctype/IdV
 ```
@@ -164,16 +161,17 @@ responsabile della gestione dei package, quindi dell'installazione.
 # Install services, packages and do cleanup
 RUN apt update \
     && apt install -y apache2 \
+    && apt install -y ca-certificates \
     && apt install -y php libapache2-mod-php \
-    && apt install -y curl \
     && apt install -y python \
+    && apt install -y cron \
     && rm -rf /var/lib/apt/lists/*
 ```
 
-L'installazione di cURL è necessaria per scaricare lo script `parse-gov-certs.py`,
-mentre python per eseguire lo script. La sezione a seguire scarica e copia tutti
-i certificati pubblici degli enti che sono autorizzati dallo stato Italiano al 
-rilascio di certificati digitali per il cittadino e le aziende.
+L'installazione di Python è necessaria per eseguire lo script `parse-gov-certs.py`
+responsabile del download di tutti i certificati pubblici degli enti che sono 
+autorizzati dallo stato Italiano al rilascio di certificati digitali per 
+il cittadino e le aziende.
 
 Il punto di distribuzione dei certificati (chiamato [Trust Service Status List](http://uri.etsi.org/02231/v3.1.2/)) 
 è gestito dall'[Agenzia per l'Italia Digitale o AgID](https://www.agid.gov.it/) e 
@@ -182,10 +180,9 @@ raggiungibile al seguente URL https://eidas.agid.gov.it/TL/TSL-IT.xml
 
 ```docker
 # Download Trusted CA certificate and copy to ssl system path
-RUN rm -rf ${GOV_TRUST_CERTS_OUTPUT_PATH} \
-    && curl ${GOV_TRUST_CERTS_DOWNLOAD_SCRIPT_URL} \
-    | python /dev/stdin --output-folder ${GOV_TRUST_CERTS_OUTPUT_PATH} \
-    --service-type-identifier ${GOV_TRUST_CERTS_SERVICE_TYPE_IDENTIFIER} \
+RUN /usr/local/bin/parse-gov-certs.py \
+        --output-folder ${GOV_TRUST_CERTS_OUTPUT_PATH} \
+        --service-type-identifier ${GOV_TRUST_CERTS_SERVICE_TYPE_IDENTIFIER} \
     && cp ${GOV_TRUST_CERTS_OUTPUT_PATH}/*.pem /etc/ssl/certs/
 ```
  
