@@ -9,7 +9,7 @@ branches:
 services:
   - docker
 
-script: echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+script: make clean
 
 deploy:
   # deploy develop
@@ -19,6 +19,6 @@ deploy:
       branch: develop
   # deploy master (build and push docker image on DockerHub)
   - provider: script
-    script: make release
+    script: echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin && make release
     on:
       branch: master

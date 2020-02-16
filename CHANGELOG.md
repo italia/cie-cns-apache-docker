@@ -4,6 +4,10 @@ Tutte le modifiche importanti a questo progetto saranno documentate in questo fi
 Il formato è basato su [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 e questo progetto aderisce a [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.3.7] - 2020-02-16
+### Changed
+- Travis CI: Moved docker login on deploy master section 
+
 ## [1.3.6] - 2020-01-25
 ### Changed
 - Aggiornamento badge sul file README
