@@ -37,6 +37,8 @@ ENV GOV_TRUST_CERTS_DOWNLOAD_SCRIPT_URL https://raw.githubusercontent.com/amusar
 ENV GOV_TRUST_CERTS_SERVICE_TYPE_IDENTIFIER http://uri.etsi.org/TrstSvc/Svctype/IdV
 ENV GOV_TRUST_CERTS_OUTPUT_PATH /tmp/gov/trust/certs
 
+SHELL ["/bin/bash", "-o", "pipefail", "-c"]
+
 # Install services, packages and do cleanup
 RUN apt update \
     && apt install -y apache2 \
