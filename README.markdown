@@ -38,19 +38,22 @@ tutti i documenti tecnici da consultare per eventuali approfondimenti.
 Sul sito del Ministero dell'Interno dedicato alla CIE, il documento [Carta d'Identità Elettronica CIE 3.0](https://www.cartaidentita.interno.gov.it/wp-content/uploads/2016/07/cie_3.0_-_specifiche_chip.pdf) descrive
 la CIE dal punto di vista prettamente tecnico e in modo approfondito.
 
+Se vuoi conoscere di più sul progetto, invito a leggere l'articolo 
+[Cos’è il progetto CIE/CNS Apache Docker](http://bit.ly/3aJ5Gbl)
+
 Sei impaziente? Bene, allora potresti provare con Play-With-Docker ;-)
 
 [![Try in PWD](https://raw.githubusercontent.com/play-with-docker/stacks/master/assets/images/button.png)](https://labs.play-with-docker.com/?stack=https://raw.githubusercontent.com/italia/cie-cns-apache-docker/master/docker-compose.yml) 
 
 ## 1 - Overview
-Questo container parte dall'immagine base di [*ubuntu:18.04*](https://hub.docker.com/_/ubuntu), 
+Questo container parte dall'immagine base di [*ubuntu:20.04*](https://hub.docker.com/_/ubuntu), 
 poi specializzato al fine di soddisfare i requisiti minimi per un sistema di 
 autenticazione basato sulla TS-CNS.
 
 Il software di base installato è:
 
-* Apache HTTP 2.4 (2.4.29)
-* PHP 7 (7.2.10-0ubuntu0.18.04.1)
+* Apache HTTP 2.4 (2.4.41)
+* PHP 7 (7.4.3)
 * Modulo PHP per Apache
 
 _L'installazione di PHP e del modulo per Apache è del tutto opzionale_. I due 
@@ -61,10 +64,10 @@ estratte dal certificato digitale.
 ## 2 - Struttura del Docker File
 Cerchiamo di capire quali sono le sezioni più significative del Dockefile. 
 La prima riga del file (come anticipato in precedenza) fa in modo che il 
-container parta dall'immagine docker *ubuntu:18.04*.
+container parta dall'immagine docker *ubuntu:20.04*.
 
 ```docker
-FROM ubuntu:18.04
+FROM ubuntu:20.04
 ```
 
 A seguire c'è la sezione delle variabili di ambiente che sono prettamente 
@@ -94,11 +97,11 @@ Le due variabili `APACHE_SSL_CERTS` e `APACHE_SSL_PRIVATE` impostano:
 2. il nome del file che contiene la chiave privata (in formato PEM) del certificato pubblico.
 
 Il certificato utilizzato in questo progetto è stato rilasciato da 
-[Let's Encrypt](https://letsencrypt.org/) e richiesto tramite il servizio offerto
-da [ZeroSSL](https://zerossl.com).
+ZeroSSL RSA Domain Secure Site CA e richiesto tramite il servizio offerto da 
+[ZeroSSL](https://zerossl.com).
 
 Il CN di questo specifico certificato è impostato a *cns.dontesta.it*. La 
-scadenza prevista per questo certificato è il 23 Aprile 2020.
+scadenza prevista per questo certificato è il 14 dicembre 2020.
 
 Di default la porta *HTTPS* è impostata a **10443** dalla variabile `APACHE_SSL_PORT`.
 La variabile `APPLICATION_URL` definisce il path di redirect qualora si accedesse 
@@ -206,6 +209,7 @@ chiave privata.
 ```docker
 # Copy Server (pub and key) cns.dontesta.it
 COPY configs/certs/*_crt.pem /etc/ssl/certs/
+COPY configs/certs/*_ca_bundle.pem /etc/ssl/certs/
 COPY configs/certs/*_key.pem /etc/ssl/private/
 ``` 
 
@@ -314,23 +318,22 @@ echo QUIT | openssl s_client -connect cns.dontesta.it:443 -status 2> /dev/null |
 Risposta OCSP per il certificato del server cns.dontesta.it
 
 ```
-OCSP response:
 ======================================
 OCSP Response Data:
     OCSP Response Status: successful (0x0)
     Response Type: Basic OCSP Response
     Version: 1 (0x0)
-    Responder Id: C = US, O = Let's Encrypt, CN = Let's Encrypt Authority X3
-    Produced At: Jan  9 10:22:00 2019 GMT
+    Responder Id: C8D97868A2D91968D53D72DE5F0A3EDCB58686A6
+    Produced At: Sep 15 08:25:56 2020 GMT
     Responses:
     Certificate ID:
       Hash Algorithm: sha1
-      Issuer Name Hash: 7EE66AE7729AB3FCF8A220646C16A12D6071085D
-      Issuer Key Hash: A84A6A63047DDDBAE6D139B7A64565EFF3A8ECA1
-      Serial Number: 04EC8E170AD76F242AC72AD5F2767801B1C0
+      Issuer Name Hash: 082E3FF9058CFE8A7C18BD13EFDF1D1660707A6B
+      Issuer Key Hash: C8D97868A2D91968D53D72DE5F0A3EDCB58686A6
+      Serial Number: 080CC4FB1AF19C207030C0526416C449
     Cert Status: good
-    This Update: Jan  9 10:00:00 2019 GMT
-    Next Update: Jan 16 10:00:00 2019 GMT
+    This Update: Sep 15 08:25:56 2020 GMT
+    Next Update: Sep 22 08:25:56 2020 GMT
 ```
 
 A seguire l'estratto del test eseguito su https://cns.dontesta.it tramite
