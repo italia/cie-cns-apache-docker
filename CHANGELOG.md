@@ -4,6 +4,13 @@ Tutte le modifiche importanti a questo progetto saranno documentate in questo fi
 Il formato è basato su [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 e questo progetto aderisce a [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.3.9] - 2020-09-15
+### Changed
+- Aggiornamento Certificati SSL/TLS via ZeroSSL
+- Aggiunta del carattere di fine linea allo script parse-gov-certs.py
+- Aggiornamento di Ubuntu alla versione 20.04 
+- Aggiornamento della documentazione README
+
 ## [1.3.8] - 2020-02-16
 ### Changed
 - Use parse-gov-certs.py from the local repo (by [@bfabio](https://github.com/bfabio))
