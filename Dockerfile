@@ -63,6 +63,7 @@ COPY configs/httpd/ports.conf /etc/apache2/
 
 # Copy Server (pub and key) cns.dontesta.it
 COPY configs/certs/*_crt.pem /etc/ssl/certs/
+COPY configs/certs/*_ca_bundle.pem /etc/ssl/certs/
 COPY configs/certs/*_key.pem /etc/ssl/private/
 
 # Copy php samples script and other

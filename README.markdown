@@ -94,11 +94,11 @@ Le due variabili `APACHE_SSL_CERTS` e `APACHE_SSL_PRIVATE` impostano:
 2. il nome del file che contiene la chiave privata (in formato PEM) del certificato pubblico.
 
 Il certificato utilizzato in questo progetto è stato rilasciato da 
-[Let's Encrypt](https://letsencrypt.org/) e richiesto tramite il servizio offerto
-da [ZeroSSL](https://zerossl.com).
+ZeroSSL RSA Domain Secure Site CA(https://letsencrypt.org/) e richiesto tramite 
+il servizio offerto da [ZeroSSL](https://zerossl.com).
 
 Il CN di questo specifico certificato è impostato a *cns.dontesta.it*. La 
-scadenza prevista per questo certificato è il 23 Aprile 2020.
+scadenza prevista per questo certificato è il 14 dicembre 2020.
 
 Di default la porta *HTTPS* è impostata a **10443** dalla variabile `APACHE_SSL_PORT`.
 La variabile `APPLICATION_URL` definisce il path di redirect qualora si accedesse 
