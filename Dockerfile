@@ -61,6 +61,10 @@ COPY configs/httpd/ssl-params.conf /etc/apache2/conf-available/
 COPY configs/httpd/dir.conf /etc/apache2/mods-enabled/
 COPY configs/httpd/ports.conf /etc/apache2/
 
+# Copy OpenSSL Configuration
+# See https://askubuntu.com/questions/1233186/ubuntu-20-04-how-to-set-lower-ssl-security-level
+COPY configs/openssl/openssl.cnf /etc/ssl/
+
 # Copy Server (pub and key) cns.dontesta.it
 COPY configs/certs/*_crt.pem /etc/ssl/certs/
 COPY configs/certs/*_ca_bundle.pem /etc/ssl/certs/
