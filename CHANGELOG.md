@@ -4,6 +4,10 @@ Tutte le modifiche importanti a questo progetto saranno documentate in questo fi
 Il formato è basato su [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 e questo progetto aderisce a [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.0.1] - 2020-09-18
+### Changed
+- Fixed the volume path on docker-compose
+
 ## [2.0.0] - 2020-09-18
 ### Added
 - Nuovo design grafico basato sul progetto [Bootstrap Italia](https://italia.github.io/bootstrap-italia/)
