@@ -1,191 +1,421 @@
-<!DOCTYPE html>
-<html >
+<!doctype html>
+<html lang="en">
+
 <head>
-  <!-- Site made with Mobirise Website Builder v4.8.10, https://mobirise.com -->
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="generator" content="Mobirise v4.8.10, mobirise.com">
-  <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
-  <link rel="shortcut icon" href="assets/images/iconfinder-21-3319623-1-174x174.png" type="image/x-icon">
-  <meta name="description" content="">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="Home - CIE/TS-CNS Test Environment">
+  <meta name="author" content="">
+  <meta name="generator" content="">
+  <meta name="robots" content="noindex">
+
   <title>Home - CIE/TS-CNS Test Environment</title>
-  <link rel="stylesheet" href="assets/web/assets/mobirise-icons/mobirise-icons.css">
-  <link rel="stylesheet" href="assets/web/assets/mobirise-icons2/mobirise2.css">
-  <link rel="stylesheet" href="assets/tether/tether.min.css">
-  <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
-  <link rel="stylesheet" href="assets/bootstrap/css/bootstrap-grid.min.css">
-  <link rel="stylesheet" href="assets/bootstrap/css/bootstrap-reboot.min.css">
-  <link rel="stylesheet" href="assets/dropdown/css/style.css">
-  <link rel="stylesheet" href="assets/socicon/css/styles.css">
-  <link rel="stylesheet" href="assets/animatecss/animate.min.css">
-  <link rel="stylesheet" href="assets/theme/css/style.css">
-  <link rel="stylesheet" href="assets/mobirise/css/mbr-additional.css" type="text/css">
-  
-  
-  
+
+  <!-- Bootstrap Italia CSS -->
+  <link href="/bootstrap-italia/css/bootstrap-italia.min.css" rel="stylesheet">
+
+  <!-- Bootstrap Italia custom CSS -->
+  <!-- <link href="/css/compiled/bootstrap-italia-custom.min.css" rel="stylesheet"> -->
+
+  <!-- App styles -->
+  <link href="/css/main.css" rel="stylesheet">
+  <link href="/css/compiled/bootstrap-italia-custom.min.css" rel="stylesheet">
+
+  <!-- Favicons -->
+  <link rel="apple-touch-icon" href="/img/favicons/apple-touch-icon.png">
+  <link rel="icon" href="/img/favicons/favicon-32x32.png" sizes="32x32" type="image/png">
+  <link rel="icon" href="/img/favicons/favicon-16x16.png" sizes="16x16" type="image/png">
+  <link rel="manifest" href="/img/favicons/manifest.webmanifest">
+  <link rel="mask-icon" href="/img/favicons/safari-pinned-tab.svg" color="#0066CC">
+  <link rel="icon" href="/img/favicons/favicon.ico">
+  <meta name="msapplication-config" content="/img/favicons/browserconfig.xml">
+  <meta name="theme-color" content="#0066CC">
+
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:site" content="@https://twitter.com/developersita">
+  <meta name="twitter:creator" content="Account ufficiale della community italiana di sviluppatori dei servizi pubblici digitali, creata in collaborazione tra @AgidGov e @teamdigitaleIT">
+  <meta name="twitter:title" content="Home - CIE/TS-CNS Test Environment">
+  <meta name="twitter:description" content="Home - CIE/TS-CNS Test Environment. Ambiente autenticazione di test per CIE e TS-CNS">
+  <meta name="twitter:image" content="/img/favicons/social-card.png">
+
+  <!-- Facebook -->
+  <meta property="og:url" content="/">
+  <meta property="og:title" content="Home - CIE/TS-CNS Test Environment">
+  <meta property="og:description" content="Home - CIE/TS-CNS Test Environment. Ambiente autenticazione di test per CIE e TS-CNS">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="/img/favicons/social-card.png">
+  <meta property="og:image:secure_url" content="/img/favicons/social-card.png">
+  <meta property="og:image:type" content="image/png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+
 </head>
+
 <body>
-  <section class="menu cid-qTkzRZLJNu" once="menu" id="menu1-0">
 
-    
-
-    <nav class="navbar navbar-expand beta-menu navbar-dropdown align-items-center navbar-toggleable-sm">
-        <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <div class="hamburger">
-                <span></span>
-                <span></span>
-                <span></span>
-                <span></span>
+  <div class="it-header-wrapper">
+    <div class="it-header-slim-wrapper">
+      <div class="container">
+        <div class="row">
+          <div class="col-12">
+            <div class="it-header-slim-wrapper-content">
+              <a class="d-none d-lg-block navbar-brand" href="#">AgID</a>
+              <div class="nav-mobile">
+                <nav>
+                  <a class="it-opener d-lg-none" data-toggle="collapse" href="#menu-principale" role="button" aria-expanded="false" aria-controls="menu-principale">
+                    <span>AgID</span>
+                    <svg class="icon">
+                      <use xlink:href="/bootstrap-italia/svg/sprite.svg#it-expand"></use>
+                    </svg>
+                  </a>
+                  <div class="link-list-wrapper collapse" id="menu-principale">
+                    <ul class="link-list">
+                      <li class="nav-item"><a href="https://www.agid.gov.it/">Agenzia per l'Italia Digitale</a></li>
+                      <li class="nav-item"><a href="https://innovazione.gov.it/it/chi-siamo/dipartimento/">Dipartimento per la Trasformazione Digitale</a></li>
+                      <li class="nav-item"><a href="https://developers.italia.it/">Developers Italia</a></li>
+                    </ul>
+                  </div>
+                </nav>
+              </div>
+              <div class="header-slim-right-zone">
+                <div class="it-access-top-wrapper">
+                  <a class="btn btn-primary bg-primary btn-icon btn-full" role="button" href="/secure">
+                    <span class="rounded-icon">
+                      <svg class="icon icon-primary">
+                        <use xlink:href="/bootstrap-italia/svg/sprite.svg#it-user"></use>
+                      </svg>
+                    </span>
+                    <span>Accedi</span>
+                  </a>
+                </div>
+              </div>
             </div>
-        </button>
-        <div class="menu-logo">
-            <div class="navbar-brand">
-                <span class="navbar-logo">
-                    <a href="<?= getenv('REQUEST_SCHEME') . '://' . getenv('SERVER_NAME') . ':' . getenv('SERVER_PORT') ?>">
-                         <img src="assets/images/iconfinder-21-3319623-1-174x174.png" alt="Mobirise" title="" style="height: 5.6rem;">
-                    </a>
-                </span>
-                <span class="navbar-caption-wrap"><a class="navbar-caption text-white display-4" href="<?= getenv('REQUEST_SCHEME') . '://' . getenv('SERVER_NAME') . ':' . getenv('SERVER_PORT') ?>">CIE/TS-CNS</a></span>
-            </div>
+          </div>
         </div>
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav nav-dropdown" data-app-modern-menu="true"><li class="nav-item">
-                    <a class="nav-link link text-white display-4" href="https://mobirise.com">
-                        </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link link text-white display-4" href="https://mobirise.com">
-                        </a>
-                </li><li class="nav-item"><a class="nav-link link text-white display-4" href="https://www.agid.gov.it/">
-                        
-                        Agenzia per l'Italia Digitale</a></li><li class="nav-item"><a class="nav-link link text-white display-4" href="https://developers.italia.it/">
-                        
-                        Developers Italia</a></li></ul>
-            <div class="navbar-buttons mbr-section-btn"><a class="btn btn-sm btn-primary display-4" href="<?= getenv('REQUEST_SCHEME') . '://' . getenv('SERVER_NAME') . ':' . getenv('SERVER_PORT') ?>/secure"><span class="mobi-mbri mobi-mbri-login mbr-iconfont mbr-iconfont-btn"></span>
-                    
-                    Accedi</a></div>
-        </div>
-    </nav>
-</section>
-
-<section class="engine"><a href="https://mobirise.info/e">make a site for free</a></section><section class="cid-qTkA127IK8 mbr-fullscreen mbr-parallax-background" id="header2-1">
-
-    
-
-    <div class="mbr-overlay" style="opacity: 0.5; background-color: rgb(118, 118, 118);"></div>
-
-    <div class="container align-center">
-        <div class="row justify-content-md-center">
-            <div class="mbr-white col-md-10">
-                <h1 class="mbr-section-title mbr-bold pb-3 mbr-fonts-style display-1">
-                    CIE/TS-CNS<br></h1>
-                <h3 class="mbr-section-subtitle align-center mbr-light pb-3 mbr-fonts-style display-2">Test Environment</h3>
-                <p class="mbr-text pb-3 mbr-fonts-style display-7">L'obiettivo di questo progetto è quello di fornire un template pronto all'uso che realizza un sistema di autenticazione tramite la <strong>Smart Card TS-CNS (o CNS)</strong> e la <strong>CIE (Carta d'Identità Elettronica)</strong> basato su <strong>Apache HTTP</strong>.&nbsp;<br><br>Potete utilizzare questo ambiente per eseguire un test di autenticazione tramite la vostra <strong>TS-CNS</strong> o <strong>CIE</strong></p>
-                <div class="mbr-section-btn"><a class="btn btn-md btn-primary display-4" href="https://github.com/italia/cie-cns-apache-docker">VAI AL PROGETTO</a>
-                    <a class="btn btn-md btn-danger display-4" href="<?= getenv('REQUEST_SCHEME') . '://' . getenv('SERVER_NAME') . ':' . getenv('SERVER_PORT') ?>/secure">ACCEDI CON LA TUA CIE o CNS</a></div>
-            </div>
-        </div>
+      </div>
     </div>
-    <div class="mbr-arrow hidden-sm-down" aria-hidden="true">
-        <a href="#next">
-            <i class="mbri-down mbr-iconfont"></i>
-        </a>
-    </div>
-</section>
-
-<section class="cid-qTkAaeaxX5" id="footer1-2">
-
-    
-
-    
-
-    <div class="container">
-        <div class="media-container-row content text-white">
-            <div class="col-12 col-md-3">
-                <div class="media-wrap">
-                    <a href="https://mobirise.com/">
-                        <img src="assets/images/iconfinder-21-3319623-1-174x174.png" alt="Mobirise" title="">
-                    </a>
-                </div>
-            </div>
-            <div class="col-12 col-md-3 mbr-fonts-style display-7">
-                <h5 class="pb-3">AgID</h5>
-                <p class="mbr-text"><a href="https://www.agid.gov.it/it/piattaforme/carta-nazionale-servizi">Carta Nazionale dei Servizi</a><br><a href="https://www.agid.gov.it/sites/default/files/repository_files/documentazione_trasparenza/strutturacertificatoautenticazionecns_v1.1_.pdf">Struttura del certificato di autenticazione</a><br><a href="https://www.agid.gov.it/it/piattaforme/carta-nazionale-servizi">Sistema operativo (APDU) v1.1.6</a><br><a href="https://www.agid.gov.it/sites/default/files/repository_files/documentazione_trasparenza/strutturacertificatoautenticazionecns_v1.1_.pdf">Struttura del certificato di autenticazione</a><a href="https://www.agid.gov.it/it/piattaforme/carta-nazionale-servizi"><br></a><a href="https://www.agid.gov.it/it/piattaforme/carta-nazionale-servizi"><br></a><a href="https://www.agid.gov.it/it/piattaforme/carta-nazionale-servizi"><br></a><br></p>
-            </div>
-            <div class="col-12 col-md-3 mbr-fonts-style display-7">
-                <h5 class="pb-3">
-                    Ministero dell'interno</h5>
-                <p class="mbr-text"><a href="https://www.cartaidentita.interno.gov.it/descrizione/">Progetto CIE</a><br><a href="https://www.cartaidentita.interno.gov.it/caratteristiche-del-documento/">Caratteristiche della CIE</a><br><a href="https://www.cartaidentita.interno.gov.it/il-microprocessore/">Il microprocessore</a></p>
-            </div>
-            <div class="col-12 col-md-3 mbr-fonts-style display-7">
-                <h5 class="pb-3">
-                    Links
-                </h5>
-                <p class="mbr-text"><a href="https://www.dontesta.it">Antonio Musarra's Blog</a>&nbsp;<br><a href="https://github.com/italia/cie-cns-apache-docker">Progetto italia/cie-cns-apache-docker</a>&nbsp;<br><a href="https://hub.docker.com/r/italia/cie-cns-apache-docker/">Docker Image</a></p>
-            </div>
-        </div>
-        <div class="footer-lower">
-            <div class="media-container-row">
-                <div class="col-sm-12">
-                    <hr>
-                </div>
-            </div>
-            <div class="media-container-row mbr-white">
-                <div class="col-sm-6 copyright">
-                    <p class="mbr-text mbr-fonts-style display-7"><a href="https://www.dontesta.it">
-                        © Copyright 2020 Antonio Musarra's Blog - All Rights Reserved
-                    </a></p>
-                </div>
-                <div class="col-md-6">
-                    <div class="social-list align-right">
-                        <div class="soc-item">
-                            <a href="https://twitter.com/antonio_musarra" target="_blank">
-                                <span class="mbr-iconfont mbr-iconfont-social socicon-twitter socicon"></span>
-                            </a>
-                        </div>
-                        <div class="soc-item">
-                            <a href="https://www.facebook.com/antoniomusarrablog/" target="_blank">
-                                <span class="mbr-iconfont mbr-iconfont-social socicon-facebook socicon"></span>
-                            </a>
-                        </div>
-                        <div class="soc-item">
-                            <a href="https://www.youtube.com/channel/UC5D3_EtVPbZYUhrUcEK_THA" target="_blank">
-                                <span class="mbr-iconfont mbr-iconfont-social socicon-youtube socicon"></span>
-                            </a>
-                        </div>
-                        <div class="soc-item">
-                            <a href="https://www.linkedin.com/in/amusarra/" target="_blank">
-                                <span class="mbr-iconfont mbr-iconfont-social socicon-linkedin socicon"></span>
-                            </a>
-                        </div>
-                        <div class="soc-item">
-                            <a href="https://github.com/amusarra" target="_blank">
-                                <span class="mbr-iconfont mbr-iconfont-social socicon-github socicon"></span>
-                            </a>
-                        </div>
-                        
-                        
+    <div class="it-nav-wrapper">
+      <div class="it-header-center-wrapper">
+        <div class="container">
+          <div class="row">
+            <div class="col-12">
+              <div class="it-header-center-content-wrapper">
+                <div class="it-brand-wrapper">
+                  <a href="/">
+                    <img src="/img/logo-cie-ts-cns.png" alt="" class="icon" />
+                    <div class="it-brand-text">
+                      <h2 class="no_toc">CIE/TS-CNS</h2>
+                      <h3 class="no_toc d-none d-md-block">Ambiente autenticazione di test</h3>
                     </div>
+                  </a>
                 </div>
+                <div class="it-right-zone">
+                  <div class="it-socials d-none d-md-flex">
+                    <span>Seguici su</span>
+                    <ul>
+                      <li>
+                        <a href="https://developers.italia.it/" aria-label="Developers Italia" target="_blank">
+                          <svg class="icon">
+                            <use xlink:href="/bootstrap-italia/svg/sprite.svg#it-designers-italia"></use>
+                          </svg>
+                        </a>
+                      </li>
+                      <li>
+                        <a href="https://github.com/italia/cie-cns-apache-docker" aria-label="Github" target="_blank">
+                          <svg class="icon">
+                            <use xlink:href="/bootstrap-italia/svg/sprite.svg#it-github"></use>
+                          </svg>
+                        </a>
+                      </li>
+                      <li>
+                        <a href="https://twitter.com/developersita" target="_blank" aria-label="Twitter">
+                          <svg class="icon">
+                            <use xlink:href="/bootstrap-italia/svg/sprite.svg#it-twitter"></use>
+                          </svg>
+                        </a>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
             </div>
+          </div>
         </div>
+      </div>
     </div>
-</section>
+  </div>
 
+  <div class="it-hero-wrapper it-dark it-overlay it-bottom-overlapping-content">
+    <!-- - img-->
+    <div class="img-responsive-wrapper">
+      <div class="img-responsive">
+        <div class="img-wrapper"><img src="img/hero-homepage-background.png" title="CIE/TS-CN - Accesso ai servizi" alt="CIE/TS-CN - Accesso ai servizi"></div>
+      </div>
+    </div>
+    <!-- - texts-->
+    <div class="container">
+      <div class="row">
+        <div class="col-12">
+          <div class="it-hero-text-wrapper bg-dark">
+            <span class="it-category">Accesso ai servizi</span>
+            <h1 class="no_toc">CIE/TS-CN</h1>
+            <h2 class="no_toc white-color">Test Environment</h2>
+            <p class="d-none d-lg-block">L'obiettivo di questo progetto è quello di fornire un template pronto all'uso che
+              realizza un sistema di autenticazione tramite la <strong>Smart Card TS-CNS (o CNS) e la
+                CIE (Carta d'Identità Elettronica)</strong> basato su <strong>Apache HTTP</strong>.</p>
+            <p class="d-none d-lg-block">Potete utilizzare questo ambiente per eseguire un test di autenticazione tramite
+              la vostra TS-CNS o CIE</p>
+            <div class="it-btn-container">
+              <a class="btn btn-primary" href="https://github.com/italia/cie-cns-apache-docker">Vai al Progetto</a>
+              <a class="btn btn-primary" href="/secure/">Accedi con la tua CIE o CNS</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 
-  <script src="assets/web/assets/jquery/jquery.min.js"></script>
-  <script src="assets/popper/popper.min.js"></script>
-  <script src="assets/tether/tether.min.js"></script>
-  <script src="assets/bootstrap/js/bootstrap.min.js"></script>
-  <script src="assets/dropdown/js/script.min.js"></script>
-  <script src="assets/viewportchecker/jquery.viewportchecker.js"></script>
-  <script src="assets/parallax/jarallax.min.js"></script>
-  <script src="assets/smoothscroll/smooth-scroll.js"></script>
-  <script src="assets/touchswipe/jquery.touch-swipe.min.js"></script>
-  <script src="assets/theme/js/script.js"></script>
-  
-  
- <div id="scrollToTop" class="scrollToTop mbr-arrow-up"><a style="text-align: center;"><i></i></a></div>
-    <input name="animation" type="hidden">
-  </body>
+  <div class="container">
+    <div class="row">
+      <div class="col-4">
+        <div class="card-wrapper card-space">
+          <div class="card card-bg">
+            <div class="card-body">
+              <h5 class="card-title">Cos'è il progetto CIE/CNS Apache Docker</h5>
+              <img src="/img/FeatureImage_Cose_CIE_CNS_Apache_Docker-720x340.png" alt="Cos'è il progetto CIE/CNS Apache Docker" class="img-fluid" />
+              <p class="card-text">Il progetto CIE/CNS Apache Docker, è per l'appunto, un'immagine Docker per la creazione di un container che implementa un sistema di mutua autenticazione o autenticazione bilaterale SSL/TLS</p>
+              <a class="read-more" href="https://www.dontesta.it/en/2020/01/26/cose-il-progetto-cie-cns-apache-docker/">
+                <span class="text">Leggi di più</span>
+                <svg class="icon">
+                  <use xlink:href="/bootstrap-italia/svg/sprite.svg#it-arrow-right"></use>
+                </svg>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-4">
+        <div class="card-wrapper card-space">
+          <div class="card card-bg">
+            <div class="card-body">
+              <h5 class="card-title">Raspberry Pi – Un esempio di applicazione della TS-CNS</h5>
+              <img src="/img/Raspberry-Pi-Un-esempio-di-applicazione-della-TS-CNS-720x340.png" alt="Raspberry Pi – Un esempio di applicazione della TS-CNS" class="img-fluid" />
+              <p class="card-text">Realizzare un sistema di sicurezza che tramite il Raspberry Pi e la TS-CNS consenta di attivare una serie di relè dopo essere stati autenticati.</p>
+              <a class="read-more" href="https://www.dontesta.it/en/2020/07/17/raspberry-pi-esempio-applicazione-ts-cns-smartcard/">
+                <span class="text">Leggi di più</span>
+                <svg class="icon">
+                  <use xlink:href="/bootstrap-italia/svg/sprite.svg#it-arrow-right"></use>
+                </svg>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-4">
+        <div class="card-wrapper card-space">
+          <div class="card card-bg">
+            <div class="card-body">
+              <h5 class="card-title">Un sistema di accesso basato sulla Smart Card TS-CNS e Raspberry Pi</h5>
+              <div class="embed-responsive embed-responsive-16by9">
+                <iframe class="embed-responsive-item" title="Un sistema di accesso basato sulla Smart Card TS-CNS e Raspberry Pi" src="https://www.youtube.com/embed/_lOdD6tjSDo" allowfullscreen></iframe>
+              </div>
+              <p class="card-text">Se siete impazienti di vedere il risultato ottenuto, vi invito a vedere il video Un sistema di accesso basato sulla Smart Card TS-CNS e Raspberry Pi</p>
+              <a class="read-more" href="https://youtu.be/_lOdD6tjSDo">
+                <span class="text">Leggi di più</span>
+                <svg class="icon">
+                  <use xlink:href="/bootstrap-italia/svg/sprite.svg#it-arrow-right"></use>
+                </svg>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <section class="home-discuss">
+    <div class="container">
+      <div class="d-flex align-items-baseline titlewrapper mb-3 mb-md-5">
+        <h1>Partecipa</h1>
+        <!--
+      <a href="/it/come-partecipo" class="ml-auto more">Come partecipo &rarr;</a>
+      -->
+      </div>
+      <div class="row row-eq-height">
+
+        <div class="col-sm col-md-6 col-lg-3 my-3 mb-md-4 my-md-0 px-3">
+          <a target="_blank" href="https://forum.italia.it/" class="decoration-none" title="Forum">
+            <article class="d-flex flex-column align-items-start h-100 bg-white p-2 p-4 ">
+              <figure class="d-flex w-100 align-items-center">
+                <img src="/img/tools/Forum_Logo.svg" alt="Logo Forum Italia" height="32">
+              </figure>
+              <div class="decoration-none">
+                <p>In <strong>forum.italia.it</strong> si discute dei servizi pubblici digitali: piattaforme, API, software, sicurezza ed altro. Unisciti alla discussione!</p>
+              </div>
+            </article>
+          </a>
+        </div>
+
+        <div class="col-sm col-md-6 col-lg-3 my-3 mb-md-4 my-md-0 px-3">
+          <a target="_blank" href="https://slack.developers.italia.it/" class="decoration-none" title="Slack">
+            <article class="d-flex flex-column align-items-start h-100 bg-white p-2 p-4 ">
+              <figure class="d-flex w-100 align-items-center">
+                <img src="/img/tools/Slack_Logo.svg" alt="Logo Slack" height="32">
+              </figure>
+              <div class="decoration-none">
+                <p><strong>Dialoga e collabora in tempo reale</strong> con i maintainer e gli altri sviluppatori sullo Slack di Developers Italia.</p>
+              </div>
+            </article>
+          </a>
+        </div>
+
+        <div class="col-sm col-md-6 col-lg-3 my-3 mb-md-4 my-md-0 px-3">
+          <a target="_blank" href="https://github.com/italia" class="decoration-none" title="Codice sorgente">
+            <article class="d-flex flex-column align-items-start h-100 bg-white p-2 p-4 ">
+              <figure class="d-flex w-100 align-items-center">
+                <img src="/img/tools/GitHub_Logo.svg" alt="Logo GitHub" height="32">
+              </figure>
+              <div class="decoration-none">
+                <p>In <strong>github.com/italia</strong> sviluppiamo (insieme) gli SDK e gli esempi di supporto delle piattaforme nazionali.</p>
+              </div>
+            </article>
+          </a>
+        </div>
+
+        <div class="col-sm col-md-6 col-lg-3 my-3 mb-md-4 my-md-0 px-3">
+          <a target="_blank" href="https://docs.italia.it/" class="decoration-none" title="Documentazione">
+            <article class="d-flex flex-column align-items-start h-100 bg-white p-2 p-4 ">
+              <figure class="d-flex w-100 align-items-center">
+                <img src="/img/tools/Docs_Logo.svg" alt="Logo Docs Italia" height="32">
+              </figure>
+              <div class="decoration-none">
+                <p><strong>Docs Italia</strong> è la piattaforma per la pubblicazione di documenti tecnici ed amministrativi, basata su git e ReadTheDocs.</p>
+              </div>
+            </article>
+          </a>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <footer class="it-footer">
+    <div class="it-footer-main">
+      <div class="container">
+        <section>
+          <div class="row clearfix">
+            <div class="col-sm-12">
+              <div class="it-brand-wrapper">
+                <a href="/">
+                  <img src="/img/logo-cie-ts-cns.png" alt="" class="icon" />
+                  <div class="it-brand-text">
+                    <h2 class="no_toc">CIE/TS-CNS</h2>
+                    <h3 class="no_toc d-none d-md-block">Ambiente autenticazione di test</h3>
+                  </div>
+                </a>
+              </div>
+            </div>
+          </div>
+        </section>
+        <section>
+          <div class="row">
+            <div class="col-lg-3 col-md-3 col-sm-6 pb-2">
+              <h4>
+                <a href="#" title="Vai alla pagina: Amministrazione">AgID</a>
+              </h4>
+              <div class="link-list-wrapper">
+                <ul class="footer-list link-list clearfix">
+                  <li><a class="list-item" href="https://www.agid.gov.it/it/piattaforme/carta-nazionale-servizi" title="Vai alla pagina: Carta Nazionale dei Servizi">Carta Nazionale dei Servizi</a></li>
+                  <li><a class="list-item" href="https://www.agid.gov.it/sites/default/files/repository_files/documentazione_trasparenza/strutturacertificatoautenticazionecns_v1.1_.pdf" title="Vai alla pagina: Struttura del certificato di autenticazione">Struttura del certificato di autenticazione</a></li>
+                  <li><a class="list-item" href="https://www.agid.gov.it/it/piattaforme/carta-nazionale-servizi" title="Vai alla pagina: Sistema operativo (APDU) v1.1.6">Sistema operativo (APDU) v1.1.6</a></li>
+                </ul>
+              </div>
+            </div>
+            <div class="col-lg-3 col-md-3 col-sm-6 pb-2">
+              <h4>
+                <a href="#" title="Vai alla pagina: Servizi">Ministero dell'interno</a>
+              </h4>
+              <div class="link-list-wrapper">
+                <ul class="footer-list link-list clearfix">
+                  <li><a class="list-item" href="https://www.cartaidentita.interno.gov.it/descrizione/" title="Vai alla pagina: Progetto CIE">Progetto CIE</a></li>
+                  <li><a class="list-item" href="https://www.cartaidentita.interno.gov.it/caratteristiche-del-documento/" title="Vai alla pagina: Caratteristiche della CIE">Caratteristiche della CIE</a></li>
+                  <li><a class="list-item" href="https://www.cartaidentita.interno.gov.it/il-microprocessore/" title="Vai alla pagina: Il microprocessore">Il microprocessore</a></li>
+                </ul>
+              </div>
+            </div>
+            <div class="col-lg-3 col-md-3 col-sm-6 pb-2">
+              <h4>
+                <a href="#" title="Vai alla pagina: Novità">Risorse Utili</a>
+              </h4>
+              <div class="link-list-wrapper">
+                <ul class="footer-list link-list clearfix">
+                  <li><a class="list-item" href="https://github.com/italia/cie-cns-apache-docker" title="Vai alla pagina: Progetto italia/cie-cns-apache-docker">Progetto italia/cie-cns-apache-docker</a></li>
+                  <li><a class="list-item" href="https://hub.docker.com/r/italia/cie-cns-apache-docker/" title="Vai alla pagina: Docker Image">Docker Image</a></li>
+                  <li><a class="list-item" href="https://www.dontesta.it/en/2020/01/26/cose-il-progetto-cie-cns-apache-docker/" title="Vai alla pagina: Cos'è il progetto CIE/CNS Apache Docker">Cos'è il progetto CIE/CNS Apache Docker</a></li>
+                  <li><a class="list-item" href="https://www.dontesta.it/2020/07/17/raspberry-pi-esempio-applicazione-ts-cns-smartcard/" title="Vai alla pagina: Raspberry Pi – Un esempio di applicazione della TS-CNS">Raspberry Pi – Un esempio di applicazione della TS-CNS</a></li>
+                  <li><a class="list-item" href="https://youtu.be/_lOdD6tjSDo" title="Vai alla pagina: Un sistema di accesso basato sulla Smart Card TS-CNS e Raspberry Pi">Un sistema di accesso basato sulla Smart Card TS-CNS e Raspberry Pi</a></li>
+                </ul>
+              </div>
+            </div>
+            <div class="col-lg-3 col-md-3 col-sm-6">
+              <h4>
+                <a href="#" title="Vai alla pagina: Documenti">Seguici su</a>
+              </h4>
+              <ul class="list-inline text-left social">
+                <li class="list-inline-item"><a class="p-2 text-white" href="https://developers.italia.it/" target="_blank"><svg class="icon icon-sm icon-white align-top">
+                      <use xlink:href="/bootstrap-italia/svg/sprite.svg#it-designers-italia"></use>
+                    </svg><span class="sr-only">Developers Italia</span></a></li>
+                <li class="list-inline-item"><a class="p-2 text-white" href="https://twitter.com/developersita" target="_blank"><svg class="icon icon-sm icon-white align-top">
+                      <use xlink:href="/bootstrap-italia/svg/sprite.svg#it-twitter"></use>
+                    </svg><span class="sr-only">Twitter</span></a></li>
+                <li class="list-inline-item"><a class="p-2 text-white" href="https://github.com/italia/cie-cns-apache-docker" target="_blank"><svg class="icon icon-sm icon-white align-top">
+                      <use xlink:href="/bootstrap-italia/svg/sprite.svg#it-github"></use>
+                    </svg><span class="sr-only">GitHub</span></a></li>
+              </ul>
+            </div>
+          </div>
+        </section>
+      </div>
+    </div>
+    <div class="it-footer-small-prints clearfix">
+      <div class="container">
+        <h3 class="sr-only">Sezione Link Utili</h3>
+        <ul class="it-footer-small-prints-list list-inline mb-0 d-flex flex-column flex-md-row">
+          <li class="list-inline-item"><a href="#" title="Note Legali">Media policy</a></li>
+          <li class="list-inline-item"><a href="#" title="Note Legali">Note legali</a></li>
+          <li class="list-inline-item"><a href="https://developers.italia.it/it/privacy-policy" title="Privacy-Cookies">Privacy policy</a></li>
+          <li class="list-inline-item"><a href="#" title="Mappa del sito">Mappa del sito</a> </li>
+        </ul>
+      </div>
+    </div>
+  </footer>
+
+  <div class="cookiebar bg-dark p-4 hide" aria-hidden="true">
+    <div class="container">
+      <div class="row d-flex align-items-center">
+        <div class="col-12 col-md-6">
+          <span class="text-white small">Questo sito utilizza cookie tecnici, analytics e di terze parti.<br>Proseguendo nella navigazione accetti l’utilizzo dei cookie.</span>
+        </div>
+        <div class="col-12 col-md-6 mt-4 mt-md-0 d-flex justify-content-end">
+          <a class="btn btn-link" href="https://developers.italia.it/it/privacy-policy">Privacy policy</a>
+          <button class="btn btn-primary mr-2" data-accept="cookiebar">Accetto</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- window.__PUBLIC_PATH__ points to fonts folder location -->
+  <script>
+    window.__PUBLIC_PATH__ = '/bootstrap-italia/fonts'
+  </script>
+
+  <!-- alternatively, just use the bundled version of the library -->
+  <script src="/bootstrap-italia/js/bootstrap-italia.bundle.min.js"></script>
+
+  <!-- App scripts -->
+  <script src="/js/main.js"></script>
+
+</body>
+
 </html>

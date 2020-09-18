@@ -72,7 +72,10 @@ COPY configs/certs/*_key.pem /etc/ssl/private/
 
 # Copy php samples script and other
 COPY configs/www/*.php /var/www/html/
-COPY configs/www/assets /var/www/html/assets
+COPY configs/www/bootstrap-italia /var/www/html/bootstrap-italia
+COPY configs/www/css /var/www/html/css
+COPY configs/www/img /var/www/html/img
+COPY configs/www/js /var/www/html/js
 COPY configs/www/secure /var/www/html/secure
 COPY images/favicon.ico /var/www/html/favicon.ico
 
