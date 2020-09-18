@@ -1,6 +1,11 @@
 version: '3.3'
 services:
-  apache-ssl-tls-mutual-authentication:
+  cns-cie:
     image: italia/cie-cns-apache-docker
+    volumes:
+      - type: bind
+        source: .configs/www
+        target: /var/www/html
+        consistency: cached
     ports: 
       - "443:10443"
