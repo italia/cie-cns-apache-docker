@@ -213,13 +213,17 @@ COPY configs/certs/*_ca_bundle.pem /etc/ssl/certs/
 COPY configs/certs/*_key.pem /etc/ssl/private/
 ``` 
 
-La sezione a seguire del Dockerfile, copia tre script PHP a scopo di test sulla 
-*document root* standard di Apache.
+La sezione a seguire del Dockerfile, copia una semplice applicazione a scopo 
+di test sulla *document root* standard di Apache.
 
 ```docker
-# Copy phpinfo test script
-COPY configs/test/*.php /var/www/html/
-COPY images/favicon.ico /var/www/html/favicon.ico
+# Copy php samples script and other
+COPY configs/www/*.php /var/www/html/
+COPY configs/www/bootstrap-italia /var/www/html/bootstrap-italia
+COPY configs/www/css /var/www/html/css
+COPY configs/www/img /var/www/html/img
+COPY configs/www/js /var/www/html/js
+COPY configs/www/secure /var/www/html/secure
 ```
 
 La sezione a seguire del Dockerfile, copia gli script necessari attivare il cron
@@ -355,12 +359,12 @@ negoziazione SSL.
 OCSP ha alcuni vantaggi rispetto alle CRL:
 
 1. Elimina la necessità per i client di scaricare e analizzare le liste di revoca.
-2. Provvede ad un migliore utilizzo della banda: dal momento che un messaggio OCSP ha una dimensione trascurabile rispetto alle CRL.
+2. Provvede a un migliore utilizzo della banda: dal momento che un messaggio OCSP ha una dimensione trascurabile rispetto alle CRL.
 3. Supporta una catena fidata di OCSP richiesta tra i vari responder. Questo permette ai clienti di comunicare con un responder fidato per interrogare un altro responder.
-3. OCSP è più efficiente delle CRL e quindi scala in modo migliore.
+4. OCSP è più efficiente delle CRL e quindi scala in modo migliore.
 
 ### - Svantaggi
-OCSP ha anche alcuni svantaggi rispetto alle CRL:
+OCSP ha anche alcuni punti sfavorevoli rispetto alle CRL:
 
 1. Per ogni revoca è necessario fare una richiesta al responder, se il responder non risponde entro un timeout OCSP verrà ignorato silenziosamente.
 2. Ogni richiesta deve essere analizzata dal responder, di fatto si passa la cronologia di navigazione al responder, questo è un evidente problema di privacy.
@@ -396,7 +400,7 @@ Il folder *configs* contiene al suo interno altri folder e file, in particolare:
 1. **certs**
     * contiene il certificato del server (chiave pubblica e chiave privata);
 2. **httpd**: contiene tutte le configurazioni di Apache necessarie per attivare l'autenticazione tramite la Smart Card TS-CNS e CIE;
-3. **www**: contiene gli script PHP di test;
+3. **www**: contiene la piccolissima applicazione di test;
 4. **scripts**: contiene gli scripts di aggiornamento certificati e abiliatazione del servizio cron
 
 ## 5 - Quickstart
@@ -405,29 +409,40 @@ L'immagine di questo progetto docker è disponibile sull'account docker hub
 
 A seguire il comando per il pull dell'immagine docker su docker hub. Il primo comando 
 esegue il pull dell'ultima versione (tag latest), mentre il secondo comando esegue 
-il pull della specifica versione dell'immagine, in questo caso la versione 1.3.3.
+il pull della specifica versione dell'immagine, in questo caso la versione 2.0.0.
 
 ```bash
 docker pull italia/cie-cns-apache-docker
-docker pull italia/cie-cns-apache-docker:1.3.3
+docker pull italia/cie-cns-apache-docker:2.0.0
 ```
-Una volta eseguito il pull dell'immagine docker (versione 1.3.3) è possibile creare il nuovo
-container tramite il comando a seguire.
+Una volta eseguito il pull dell'immagine docker (versione 2.0.0) è possibile creare il nuovo
+container tramite il comando a seguire. È possibile utilizzare la porta HTTPS 
+standard (443) se libera e se in ogni caso le policy del sistema operativo ne 
+consentano l'uso.
 
 ```bash
-docker run -i -t -d -p 10443:10443 --name=cie-cns italia/cie-cns-apache-docker:1.3.3
+# Run del container per l'ultima versione dell'immagine
+docker run -i -t -d -p 443:10443 --name=cie-cns italia/cie-cns-apache-docker
+
+# Run del container per l'immagine versione 2.0.0
+docker run -i -t -d -p 10443:10443 --name=cie-cns italia/cie-cns-apache-docker:2.0.0
+
+# Per usare la porta standard HTTPS fare il mount della directory locale dove
+# risiedono le pagine dell'applicazione d'esempio.
+docker run -i -t -d -p 443:10443 --name=cie-cns --mount type=bind,source="$(pwd)"/configs/www,destination=/var/www/html,consistency=cached italia/cie-cns-apache-docker:2.0.0
 ```
+
 Utilizzando il comando `docker ps` dovremmo poter vedere in lista il nuovo
 container, così come indicato a seguire.
 
 ```bash
 CONTAINER ID        IMAGE                                  COMMAND                  CREATED             STATUS              PORTS                      NAMES
-bb707fb00e89        italia/cie-cns-apache-docker:1.3.3   "/usr/sbin/apache2ct…"   6 seconds ago       Up 4 seconds        0.0.0.0:10443->10443/tcp   cie-cns
+bb707fb00e89        italia/cie-cns-apache-docker:2.0.0   "/usr/sbin/apache2ct…"   6 seconds ago       Up 4 seconds        0.0.0.0:10443->10443/tcp   cie-cns
 ```
 
 Nel caso in cui vogliate apportare delle modifiche, dovreste poi procedere con 
-la build della nuova immagine e al termine della build lanciare l'immagine ottenuta. 
-A seguire sono indicati i comandi *docker* da lanciare dal proprio terminale.
+la build della nuova immagine e al termine di questa lanciare l'immagine ottenuta. 
+A seguire sono indicati i comandi *docker* da eseguire dal proprio terminale.
 
 _I comandi docker di build e run devono essere lanciati dalla root della directory 
 di progetto dopo aver fatto il clone di questo repository._
@@ -450,7 +465,7 @@ cie-cns-apache-docker                           latest              1a145475d1f1
 ```
 
 Utilizzando il comando `docker ps` dovremmo poter vedere in lista il nuovo
-container, così come indicato a seguire.
+container con le modifiche apportate, così come indicato a seguire.
 
 ```
 CONTAINER ID        IMAGE                          COMMAND                  CREATED             STATUS              PORTS                      NAMES
@@ -477,7 +492,16 @@ su un DNS.
 Lato **server-side** è tutto pronto, non resta fare altro che un test. 
 Nel caso disponiate di una vostra Smart Card TS-CNS o CIE e il vostro PC già 
 configurato per l'utilizzo, potreste eseguire da subito un test puntando il 
-vostro browser alla URL https://cns.dontesta.it:10443/
+vostro browser alla URL https://cns.dontesta.it:10443/.
+
+Riguardo il lettore di Smart Card, personalmente utilizzo due modelli prodotti
+da Bit4id per i quali non ho riscontrato problemi di compatibilità con i più
+diffusi sistemi operativi.
+
+1. [miniLector CIE](https://shop.bit4id.com/prodotto/minilector-cie/?utm_source=ref_blog&utm_medium=post&utm_campaign=ref_dontesta&utm_content=v1)
+2. [miniLector CIE Datasheet](https://www.bit4id.com/wp-content/uploads/2019/05/minilector_cie.pdf?utm_source=blog&utm_medium=post&utm_campaign=ref_dontesta&utm_content=v1)
+3. [miniLector EVO](https://shop.bit4id.com/prodotto/minilector-evo/?utm_source=ref_blog&utm_medium=post&utm_campaign=ref_dontesta&utm_content=v1)
+4. [miniLector EVO Datasheet](https://support.bit4id.com/files/downloads/documents/datasheet/ds_minilector_evo_it.pdf?utm_source=blog&utm_medium=post&utm_campaign=ref_dontesta&utm_content=v1)
 
 Puntando all'indirizzo https://cns.dontesta.it:10443/ dovrebbe accadere quanto 
 segue:
@@ -550,22 +574,27 @@ identico a quello della TS-CNS.
 
 ![WelcomePage](images/TS-CNS_WelcomePage_2.png)
 
-**Figura 4 - Pagina di benvenuto dopo l'autenticazione**
+**Figura 4 - Visualizzazione del certificato pubblico in formato strutturato**
+
+
+![WelcomePage](images/TS-CNS_WelcomePage_3.png)
+
+**Figura 5 - Visualizzazione del certificato pubblico in formato x509 PEM**
 
 
 ![ErrorPage](images/TS-CNS_CertificationPolicyFailed.png)
 
-**Figura 5 - Notifica di errore per check Policy fallito**
+**Figura 6 - Notifica di errore per check Policy fallito**
 
 ![ErrorPage](images/TS-CNS_SSL_VERIFIY_Failed.png)
 
-**Figura 6 - Pagina di errore in caso di errore validazione certificato**
+**Figura 7 - Pagina di errore in caso di errore validazione certificato**
 
 Accedendo agli access log di Apache è possibile notare queste due informazioni 
 utili al tracciamento delle operazioni eseguite dall'utente:
 
 * Il protocollo SSL
-* Il SSL_CLIENT_S_DN_CN 
+* Il SSL_CLIENT_S_DN_CN
 
 ```log
 172.17.0.1 TLSv1.2 - MSRNTN77H15C351X/6120016461039008.i1ZpZfaCX/eKyikBfnF8to+M2T8= [18/Dec/2018:17:48:53 +0000] "GET / HTTP/1.1" 200 2787 "-" "Mozilla/5.0 (Macintosh; Intel Mac OSX 10.14; rv:64.0) Gecko/20100101 Firefox/64.0"
@@ -573,7 +602,16 @@ utili al tracciamento delle operazioni eseguite dall'utente:
 
 Il valore di `SSL_CLIENT_S_DN_CN` è inoltre impostato come **SSLUserName**, questo
 fa in modo che la variabile `REMOTE_USER` sia impostata con il CN del certificato digitale 
-che identifica univocamente l'utente. 
+che identifica univocamente l'utente.
+
+```
+...
+SSLVerifyClient ${APACHE_SSL_VERIFY_CLIENT}
+SSLVerifyDepth  5
+
+SSLUserName SSL_CLIENT_S_DN_CN
+...
+```
 
 ## 6 - Build, Run e Push docker image via Makefile
 Al fine di semplificare le operazioni di build, run e push dell'immagine docker, 
