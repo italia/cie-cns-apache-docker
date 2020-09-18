@@ -77,7 +77,6 @@ COPY configs/www/css /var/www/html/css
 COPY configs/www/img /var/www/html/img
 COPY configs/www/js /var/www/html/js
 COPY configs/www/secure /var/www/html/secure
-COPY images/favicon.ico /var/www/html/favicon.ico
 
 # Copy auto-update-gov-certificates scripts and entrypoint
 COPY scripts/auto-update-gov-certificates /auto-update-gov-certificates
