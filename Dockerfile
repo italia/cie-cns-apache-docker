@@ -61,6 +61,10 @@ COPY configs/httpd/ssl-params.conf /etc/apache2/conf-available/
 COPY configs/httpd/dir.conf /etc/apache2/mods-enabled/
 COPY configs/httpd/ports.conf /etc/apache2/
 
+# Copy OpenSSL Configuration
+# See https://askubuntu.com/questions/1233186/ubuntu-20-04-how-to-set-lower-ssl-security-level
+COPY configs/openssl/openssl.cnf /etc/ssl/
+
 # Copy Server (pub and key) cns.dontesta.it
 COPY configs/certs/*_crt.pem /etc/ssl/certs/
 COPY configs/certs/*_ca_bundle.pem /etc/ssl/certs/
@@ -68,9 +72,11 @@ COPY configs/certs/*_key.pem /etc/ssl/private/
 
 # Copy php samples script and other
 COPY configs/www/*.php /var/www/html/
-COPY configs/www/assets /var/www/html/assets
+COPY configs/www/bootstrap-italia /var/www/html/bootstrap-italia
+COPY configs/www/css /var/www/html/css
+COPY configs/www/img /var/www/html/img
+COPY configs/www/js /var/www/html/js
 COPY configs/www/secure /var/www/html/secure
-COPY images/favicon.ico /var/www/html/favicon.ico
 
 # Copy auto-update-gov-certificates scripts and entrypoint
 COPY scripts/auto-update-gov-certificates /auto-update-gov-certificates
