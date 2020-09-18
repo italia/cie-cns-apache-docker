@@ -4,6 +4,14 @@ Tutte le modifiche importanti a questo progetto saranno documentate in questo fi
 Il formato è basato su [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 e questo progetto aderisce a [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.0.0] - 2020-09-18
+### Added
+- Nuovo design grafico basato sul progetto [Bootstrap Italia](https://italia.github.io/bootstrap-italia/)
+
+### Changed
+- Aggiornamento della documentazione (README)
+- Aggiornamento del docker-compose per il supporto dei local volumes
+
 ## [1.3.9] - 2020-09-15
 ### Changed
 - Aggiornamento Certificati SSL/TLS via ZeroSSL
