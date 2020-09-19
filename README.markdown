@@ -43,7 +43,7 @@ Se vuoi conoscere di più sul progetto, invito a leggere l'articolo
 
 Sei impaziente? Bene, allora potresti provare con Play-With-Docker ;-)
 
-[![Try in PWD](https://raw.githubusercontent.com/play-with-docker/stacks/master/assets/images/button.png)](https://labs.play-with-docker.com/?stack=https://raw.githubusercontent.com/italia/cie-cns-apache-docker/master/docker-compose.yml) 
+[![Try in PWD](https://raw.githubusercontent.com/play-with-docker/stacks/master/assets/images/button.png)](https://labs.play-with-docker.com/?stack=https://raw.githubusercontent.com/italia/cie-cns-apache-docker/master/docker-compose-play-with-docker.yml) 
 
 ## 1 - Overview
 Questo container parte dall'immagine base di [*ubuntu:20.04*](https://hub.docker.com/_/ubuntu), 
