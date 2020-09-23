@@ -150,7 +150,7 @@
     <!-- - img-->
     <div class="img-responsive-wrapper">
       <div class="img-responsive">
-        <div class="img-wrapper"><img src="img/hero-homepage-background.png" title="CIE/TS-CN - Accesso ai servizi" alt="CIE/TS-CN - Accesso ai servizi"></div>
+        <div class="img-wrapper"><img src="img/hero-homepage-background.png" title="CIE/TS-CNS - Accesso ai servizi" alt="CIE/TS-CNS - Accesso ai servizi"></div>
       </div>
     </div>
     <!-- - texts-->
@@ -159,7 +159,7 @@
         <div class="col-12">
           <div class="it-hero-text-wrapper bg-dark">
             <span class="it-category">Accesso ai servizi</span>
-            <h1 class="no_toc">CIE/TS-CN</h1>
+            <h1 class="no_toc">CIE/TS-CNS</h1>
             <h2 class="no_toc white-color">Test Environment</h2>
             <p class="d-none d-lg-block">L'obiettivo di questo progetto è quello di fornire un template pronto all'uso che
               realizza un sistema di autenticazione tramite la <strong>Smart Card TS-CNS (o CNS) e la
