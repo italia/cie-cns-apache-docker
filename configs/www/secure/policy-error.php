@@ -80,7 +80,7 @@
               </div>
               <div class="header-slim-right-zone">
                 <div class="it-access-top-wrapper">
-                  <a class="btn btn-primary bg-primary btn-icon btn-full" role="button" href="https://www.dontesta.it">
+                  <a class="btn btn-primary bg-primary btn-icon btn-full" role="button" href="/secure">
                     <span class="rounded-icon">
                       <svg class="icon icon-primary">
                         <use xlink:href="/bootstrap-italia/svg/sprite.svg#it-user"></use>
