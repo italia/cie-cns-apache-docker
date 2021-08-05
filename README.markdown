@@ -2,7 +2,6 @@
 [![Antonio Musarra's Blog](https://img.shields.io/badge/maintainer-Antonio_Musarra's_Blog-purple.svg?colorB=6e60cc)](https://www.dontesta.it) [![Twitter Follow](https://img.shields.io/twitter/follow/antonio_musarra.svg?style=social&label=%40antonio_musarra%20on%20Twitter&style=plastic)](https://twitter.com/antonio_musarra) 
 [![Twitter Follow](https://img.shields.io/twitter/follow/developersITA.svg?style=social&label=%40developersITA%20on%20Twitter&style=plastic)](https://twitter.com/developersITA) [![Join the #design channel](https://img.shields.io/badge/Slack%20Channell-%23cie-green)](https://developersitalia.slack.com/archives/C75U26411)
 
-[![Build Status](https://travis-ci.org/italia/cie-cns-apache-docker.svg?branch=master)](https://travis-ci.org/italia/cie-cns-apache-docker) 
 [![Tag](https://img.shields.io/github/tag/italia/cie-cns-apache-docker.svg)](https://github.com/italia/cie-cns-apache-docker/releases)
 
 
