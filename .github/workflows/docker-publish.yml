@@ -1,0 +1,20 @@
+name: Build and Publish Docker image
+
+on:
+  push:
+    branches: [ master ]
+  release:
+    types: [published]
+
+jobs:
+
+  push_to_registry:
+    name: Build and Publish Docker image (via Makefile)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the repo
+        uses: actions/checkout@v2
+
+      - name: Build Docker Image
+        run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin && make release
+      
