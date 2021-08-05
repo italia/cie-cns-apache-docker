@@ -4,6 +4,10 @@ Tutte le modifiche importanti a questo progetto saranno documentate in questo fi
 Il formato è basato su [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 e questo progetto aderisce a [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.0.3] - 2021-01-24
+### Changed
+- Rinnovo certificato SSL via ZeroSSL
+
 ## [2.0.2] - 2020-09-19
 ### Changed
 - Create docker-compose-play-with-docker.yml per PWD

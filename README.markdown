@@ -76,10 +76,10 @@ essere modificate in base alle proprie esigenze.
 
 ```docker
 # Apache ENVs
-ENV APACHE_SERVER_NAME cns.dontesta.it
-ENV APACHE_SERVER_ADMIN cns@dontesta.it
-ENV APACHE_SSL_CERTS cns-dontesta-it_crt.pem
-ENV APACHE_SSL_PRIVATE cns-dontesta-it_key.pem
+ENV APACHE_SERVER_NAME entra-cns-cie.dontesta.it
+ENV APACHE_SERVER_ADMIN entra-cns-cie@dontesta.it
+ENV APACHE_SSL_CERTS entra-cns-cie.dontesta.it_crt.pem
+ENV APACHE_SSL_PRIVATE entra-cns-cie.dontesta.it_key.pem
 ENV APACHE_SSL_PORT 10443
 ENV APACHE_LOG_LEVEL info
 ENV APACHE_SSL_LOG_LEVEL info
@@ -100,8 +100,8 @@ Il certificato utilizzato in questo progetto è stato rilasciato da
 ZeroSSL RSA Domain Secure Site CA e richiesto tramite il servizio offerto da 
 [ZeroSSL](https://zerossl.com).
 
-Il CN di questo specifico certificato è impostato a *cns.dontesta.it*. La 
-scadenza prevista per questo certificato è il 14 dicembre 2020.
+Il CN di questo specifico certificato è impostato a *entra-cns-cie.dontesta.it*. La 
+scadenza prevista per questo certificato è il 03 novembre 2021.
 
 Di default la porta *HTTPS* è impostata a **10443** dalla variabile `APACHE_SSL_PORT`.
 La variabile `APPLICATION_URL` definisce il path di redirect qualora si accedesse 
@@ -380,8 +380,8 @@ seguire. Il cuore di tutto è il folder **configs**.
 ├── Dockerfile
 ├── configs
 │    ├── certs
-│    │   ├── cns-dontesta-it_crt.pem
-│    │   └── cns-dontesta-it_key.pem
+│    │   ├── entra-cns-cie.dontesta.it_crt.pem
+│    │   └── entra-cns-cie.dontesta.it_key.pem
 │    ├── httpd
 │    │   ├── 000-default.conf
 │    │   ├── default-ssl.conf
@@ -483,7 +483,7 @@ file di _hosts_ la riga a seguire.
 ##
 # Servizio di autenticazione via TS-CNS
 ##
-127.0.0.1       cns.dontesta.it
+127.0.0.1       entra-cns-cie.dontesta.it
 ```
 
 In ambiente di collaudo e/o produzione il nome del servizio o FQDN sarà registrato 
@@ -492,7 +492,7 @@ su un DNS.
 Lato **server-side** è tutto pronto, non resta fare altro che un test. 
 Nel caso disponiate di una vostra Smart Card TS-CNS o CIE e il vostro PC già 
 configurato per l'utilizzo, potreste eseguire da subito un test puntando il 
-vostro browser alla URL https://cns.dontesta.it:10443/.
+vostro browser alla URL https://entra-cns-cie.dontesta.it:10443/.
 
 Riguardo il lettore di Smart Card, personalmente utilizzo due modelli prodotti
 da Bit4id per i quali non ho riscontrato problemi di compatibilità con i più
@@ -503,7 +503,7 @@ diffusi sistemi operativi.
 3. [miniLector EVO](https://shop.bit4id.com/prodotto/minilector-evo/?utm_source=ref_blog&utm_medium=post&utm_campaign=ref_dontesta&utm_content=v1)
 4. [miniLector EVO Datasheet](https://support.bit4id.com/files/downloads/documents/datasheet/ds_minilector_evo_it.pdf?utm_source=blog&utm_medium=post&utm_campaign=ref_dontesta&utm_content=v1)
 
-Puntando all'indirizzo https://cns.dontesta.it:10443/ dovrebbe accadere quanto 
+Puntando all'indirizzo https://entra-cns-cie.dontesta.it:10443/ dovrebbe accadere quanto 
 segue:
 
 1. Richiesta del PIN CODE della vostra TS-CNS o CIE;
