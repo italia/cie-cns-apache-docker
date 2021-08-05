@@ -2,7 +2,7 @@ MIT License
 
 Apache 2.4 per SmartCard TS-CNS (Tessera Sanitaria - Carta Nazionale Servizi)
 
-Copyright (c) 2018 Antonio Musarra's Blog - https://www.dontesta.it
+Copyright (c) 2021 Antonio Musarra's Blog - https://www.dontesta.it
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

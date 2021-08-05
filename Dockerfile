@@ -18,10 +18,10 @@ LABEL maintainer="Antonio Musarra <antonio.musarra@gmail.com>" \
     org.label-schema.schema-version="1.0"
 
 # Apache ENVs
-ENV APACHE_SERVER_NAME cns.dontesta.it
-ENV APACHE_SERVER_ADMIN cns@dontesta.it
-ENV APACHE_SSL_CERTS cns-dontesta-it_crt.pem
-ENV APACHE_SSL_PRIVATE cns-dontesta-it_key.pem
+ENV APACHE_SERVER_NAME entra-cns-cie.dontesta.it
+ENV APACHE_SERVER_ADMIN entra-cns-cie@dontesta.it
+ENV APACHE_SSL_CERTS entra-cns-cie.dontesta.it_crt.pem
+ENV APACHE_SSL_PRIVATE entra-cns-cie.dontesta.it_key.pem
 ENV APACHE_SSL_PORT 10443
 ENV APACHE_LOG_LEVEL info
 ENV APACHE_SSL_LOG_LEVEL info
