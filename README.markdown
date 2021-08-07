@@ -88,7 +88,7 @@ ENV CLIENT_VERIFY_LANDING_PAGE /error.php
 ```
 
 Le prime due variabili sono molto esplicative, la prima in particolare,
-imposta il server name, che in questo caso è: cns.dontesta.it.
+imposta il server name, che in questo caso è: entra-cns-cie.dontesta.it.
 
 Le due variabili `APACHE_SSL_CERTS` e `APACHE_SSL_PRIVATE` impostano:
 
@@ -206,7 +206,7 @@ La sezione a seguire del Dockerfile, copia il certificato pubblico e la relativa
 chiave privata.
 
 ```docker
-# Copy Server (pub and key) cns.dontesta.it
+# Copy Server (pub and key) entra-cns-cie.dontesta.it
 COPY configs/certs/*_crt.pem /etc/ssl/certs/
 COPY configs/certs/*_ca_bundle.pem /etc/ssl/certs/
 COPY configs/certs/*_key.pem /etc/ssl/private/
@@ -316,31 +316,32 @@ SSLStaplingCache "shmcb:logs/stapling-cache(150000)"
 utilizzando il comando `openssl` e il test [SSL su Qualys](https://www.ssllabs.com/ssltest/).
 
 ```bash
-echo QUIT | openssl s_client -connect cns.dontesta.it:443 -status 2> /dev/null | grep -A 17 'OCSP response:' | grep -B 17 'Next Update'
+echo QUIT | openssl s_client -connect entra-cns-cie.dontesta.it:443 -status 2> /dev/null | grep -A 17 'OCSP response:' | grep -B 17 'Next Update'
 ```
-Risposta OCSP per il certificato del server cns.dontesta.it
+Risposta OCSP per il certificato del server entra-cns-cie.dontesta.it
 
 ```
+OCSP response:
 ======================================
 OCSP Response Data:
     OCSP Response Status: successful (0x0)
     Response Type: Basic OCSP Response
     Version: 1 (0x0)
     Responder Id: C8D97868A2D91968D53D72DE5F0A3EDCB58686A6
-    Produced At: Sep 15 08:25:56 2020 GMT
+    Produced At: Aug  7 05:34:48 2021 GMT
     Responses:
     Certificate ID:
       Hash Algorithm: sha1
       Issuer Name Hash: 082E3FF9058CFE8A7C18BD13EFDF1D1660707A6B
       Issuer Key Hash: C8D97868A2D91968D53D72DE5F0A3EDCB58686A6
-      Serial Number: 080CC4FB1AF19C207030C0526416C449
+      Serial Number: 42F5FA2D3D023DEDD74CC743E7657B69
     Cert Status: good
-    This Update: Sep 15 08:25:56 2020 GMT
-    Next Update: Sep 22 08:25:56 2020 GMT
+    This Update: Aug  7 05:34:48 2021 GMT
+    Next Update: Aug 14 05:34:48 2021 GMT
 ```
 
-A seguire l'estratto del test eseguito su https://cns.dontesta.it tramite
-[SSL Labs Qualys](https://www.ssllabs.com/ssltest/analyze.html?d=cns.dontesta.it) dove si evidenzia
+A seguire l'estratto del test eseguito su https://entra-cns-cie.dontesta.it tramite
+[SSL Labs Qualys](https://www.ssllabs.com/ssltest/analyze.html?d=entra-cns-cie.dontesta.it) dove si evidenzia
 l'abilitazione dell'OCSP Stapling.
 
 ![SSL Labs Qualys](images/SSLLABS_CNS_DONTESTA_IT.png)
@@ -408,13 +409,13 @@ L'immagine di questo progetto docker è disponibile sull'account docker hub
 
 A seguire il comando per il pull dell'immagine docker su docker hub. Il primo comando 
 esegue il pull dell'ultima versione (tag latest), mentre il secondo comando esegue 
-il pull della specifica versione dell'immagine, in questo caso la versione 2.0.0.
+il pull della specifica versione dell'immagine, in questo caso la versione 2.1.0.
 
 ```bash
 docker pull italia/cie-cns-apache-docker
-docker pull italia/cie-cns-apache-docker:2.0.0
+docker pull italia/cie-cns-apache-docker:2.1.0
 ```
-Una volta eseguito il pull dell'immagine docker (versione 2.0.0) è possibile creare il nuovo
+Una volta eseguito il pull dell'immagine docker (versione 2.1.0) è possibile creare il nuovo
 container tramite il comando a seguire. È possibile utilizzare la porta HTTPS 
 standard (443) se libera e se in ogni caso le policy del sistema operativo ne 
 consentano l'uso.
@@ -423,12 +424,12 @@ consentano l'uso.
 # Run del container per l'ultima versione dell'immagine
 docker run -i -t -d -p 443:10443 --name=cie-cns italia/cie-cns-apache-docker
 
-# Run del container per l'immagine versione 2.0.0
-docker run -i -t -d -p 10443:10443 --name=cie-cns italia/cie-cns-apache-docker:2.0.0
+# Run del container per l'immagine versione 2.1.0
+docker run -i -t -d -p 10443:10443 --name=cie-cns italia/cie-cns-apache-docker:2.1.0
 
 # Per usare la porta standard HTTPS fare il mount della directory locale dove
 # risiedono le pagine dell'applicazione d'esempio.
-docker run -i -t -d -p 443:10443 --name=cie-cns --mount type=bind,source="$(pwd)"/configs/www,destination=/var/www/html,consistency=cached italia/cie-cns-apache-docker:2.0.0
+docker run -i -t -d -p 443:10443 --name=cie-cns --mount type=bind,source="$(pwd)"/configs/www,destination=/var/www/html,consistency=cached italia/cie-cns-apache-docker:2.1.0
 ```
 
 Utilizzando il comando `docker ps` dovremmo poter vedere in lista il nuovo
@@ -436,7 +437,7 @@ container, così come indicato a seguire.
 
 ```bash
 CONTAINER ID        IMAGE                                  COMMAND                  CREATED             STATUS              PORTS                      NAMES
-bb707fb00e89        italia/cie-cns-apache-docker:2.0.0   "/usr/sbin/apache2ct…"   6 seconds ago       Up 4 seconds        0.0.0.0:10443->10443/tcp   cie-cns
+bb707fb00e89        italia/cie-cns-apache-docker:2.1.0   "/usr/sbin/apache2ct…"   6 seconds ago       Up 4 seconds        0.0.0.0:10443->10443/tcp   cie-cns
 ```
 
 Nel caso in cui vogliate apportare delle modifiche, dovreste poi procedere con 
@@ -589,6 +590,14 @@ identico a quello della TS-CNS.
 
 **Figura 7 - Pagina di errore in caso di errore validazione certificato**
 
+![Richiesta PIN CIE](images/accesso_via_cie_docker_1_2.png)
+
+**Figura 8 - Richiesta PIN della CIE**
+
+![Accesso tramite CIE](images/accesso_via_cie_docker_1_4.png)
+
+**Figura 9 - Pagina di benvenuto dopo autenticazione via CIE**
+
 Accedendo agli access log di Apache è possibile notare queste due informazioni 
 utili al tracciamento delle operazioni eseguite dall'utente:
 
@@ -651,7 +660,7 @@ pubblicato recentemente su [Antonio Musarra's Blog](https://www.dontesta.it).
 ## Project License
 The MIT License (MIT)
 
-Copyright &copy; 2020 Antonio Musarra's Blog - [https://www.dontesta.it](https://www.dontesta.it "Antonio Musarra's Blog"), 
+Copyright &copy; 2021 Antonio Musarra's Blog - [https://www.dontesta.it](https://www.dontesta.it "Antonio Musarra's Blog"), 
 [antonio.musarra@gmail.com](mailto:antonio.musarra@gmail.com "Antonio Musarra Email")
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
