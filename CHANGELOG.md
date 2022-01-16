@@ -4,6 +4,10 @@ Tutte le modifiche importanti a questo progetto saranno documentate in questo fi
 Il formato è basato su [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 e questo progetto aderisce a [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.2.0] - 2022-01-16
+### Changed
+- Aggiornamento versione di Ubunto da 20.04 a 22.04
+
 ## [2.1.0] - 2021-08-05
 ### Changed
 - Rinnovo certificato SSL via ZeroSSL
