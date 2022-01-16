@@ -1,4 +1,4 @@
-FROM ubuntu:20.04
+FROM ubuntu:22.04
 
 # Metadata params
 ARG BUILD_DATE
@@ -43,7 +43,7 @@ RUN apt update \
     && apt install -y apache2 \
     && apt install -y ca-certificates \
     && apt install -y php libapache2-mod-php \
-    && apt install -y python \
+    && apt install -y python2 \
     && apt install -y cron \
     && rm -rf /var/lib/apt/lists/*
 
