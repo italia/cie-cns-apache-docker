@@ -45,14 +45,14 @@ Sei impaziente? Bene, allora potresti provare con Play-With-Docker ;-)
 [![Try in PWD](https://raw.githubusercontent.com/play-with-docker/stacks/master/assets/images/button.png)](https://labs.play-with-docker.com/?stack=https://raw.githubusercontent.com/italia/cie-cns-apache-docker/master/docker-compose-play-with-docker.yml) 
 
 ## 1 - Overview
-Questo container parte dall'immagine base di [*ubuntu:20.04*](https://hub.docker.com/_/ubuntu), 
+Questo container parte dall'immagine base di [*ubuntu:22.04*](https://hub.docker.com/_/ubuntu), 
 poi specializzato al fine di soddisfare i requisiti minimi per un sistema di 
 autenticazione basato sulla TS-CNS.
 
 Il software di base installato è:
 
-* Apache HTTP 2.4 (2.4.41)
-* PHP 7 (7.4.3)
+* Apache HTTP 2.4 (2.4.51)
+* PHP 8 (8.0.8)
 * Modulo PHP per Apache
 
 _L'installazione di PHP e del modulo per Apache è del tutto opzionale_. I due 
@@ -63,10 +63,10 @@ estratte dal certificato digitale.
 ## 2 - Struttura del Docker File
 Cerchiamo di capire quali sono le sezioni più significative del Dockefile. 
 La prima riga del file (come anticipato in precedenza) fa in modo che il 
-container parta dall'immagine docker *ubuntu:20.04*.
+container parta dall'immagine docker *ubuntu:22.04*.
 
 ```docker
-FROM ubuntu:20.04
+FROM ubuntu:22.04
 ```
 
 A seguire c'è la sezione delle variabili di ambiente che sono prettamente 
@@ -660,7 +660,7 @@ pubblicato recentemente su [Antonio Musarra's Blog](https://www.dontesta.it).
 ## Project License
 The MIT License (MIT)
 
-Copyright &copy; 2021 Antonio Musarra's Blog - [https://www.dontesta.it](https://www.dontesta.it "Antonio Musarra's Blog"), 
+Copyright &copy; 2022 Antonio Musarra's Blog - [https://www.dontesta.it](https://www.dontesta.it "Antonio Musarra's Blog"), 
 [antonio.musarra@gmail.com](mailto:antonio.musarra@gmail.com "Antonio Musarra Email")
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
