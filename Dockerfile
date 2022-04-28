@@ -25,9 +25,16 @@ ENV APACHE_SSL_PRIVATE entra-cns-cie.dontesta.it_key.pem
 ENV APACHE_SSL_PORT 10443
 ENV APACHE_LOG_LEVEL info
 ENV APACHE_SSL_LOG_LEVEL info
-ENV APACHE_SSL_VERIFY_CLIENT optional
+ENV APACHE_SSL_VERIFY_CLIENT require
+ENV APACHE_SSL_USE_STAPLING off
 ENV APPLICATION_URL https://${APACHE_SERVER_NAME}:${APACHE_SSL_PORT}
 ENV CLIENT_VERIFY_LANDING_PAGE /error.php
+ENV HEADER_X_AUTH_ORIGIN CIE_CNS_RP
+
+# Reverse Proxy Application
+ENV APACHE_PROXY_PRESERVE_HOST On
+ENV APPLICATION_BACKEND_BASE_PATH /
+ENV APPLICATION_BACKEND_BASE_URL http://127.0.0.1:8080${APPLICATION_BACKEND_BASE_PATH}
 
 # Env for deb conf
 ENV DEBIAN_FRONTEND noninteractive
@@ -97,6 +104,9 @@ RUN a2enmod ssl \
     && a2enmod rewrite \
     && a2ensite default-ssl \
     && a2enconf ssl-params \
+    && a2enmod proxy \
+    && a2enmod proxy_http \
+    && a2enmod remoteip \    
     && c_rehash /etc/ssl/certs/
 
 # Expose Apache
