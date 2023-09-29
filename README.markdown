@@ -195,7 +195,6 @@ la mutua autenticazione.
 
 ```docker
 # Copy Apache configuration file
-COPY configs/httpd/000-default.conf /etc/apache2/sites-available/
 COPY configs/httpd/default-ssl.conf /etc/apache2/sites-available/
 COPY configs/httpd/ssl-params.conf /etc/apache2/conf-available/
 COPY configs/httpd/dir.conf /etc/apache2/mods-enabled/
