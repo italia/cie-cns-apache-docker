@@ -10,13 +10,16 @@ rm -rf "${GOV_TRUST_CERTS_OUTPUT_PATH}"
 
 echo "$(date "+%FT%T") Downloading Gov Certificates..." >> "${LOG_FILE}"
 /usr/local/bin/parse-gov-certs.py \
-    --output-folder ${GOV_TRUST_CERTS_OUTPUT_PATH} \
-    --service-type-identifier ${GOV_TRUST_CERTS_SERVICE_TYPE_IDENTIFIER}
+    --output-folder "${GOV_TRUST_CERTS_OUTPUT_PATH}" \
+    --service-type-identifier "${GOV_TRUST_CERTS_SERVICE_TYPE_IDENTIFIER}"
 
-echo "$(date "+%FT%T") Downloading Gov Certificates...[END]" >> "${LOG_FILE}"
+{
+    echo "$(date "+%FT%T") Downloading Gov Certificates...[END]"
 
-echo "$(date "+%FT%T") Save Gov Certificates into ${GOV_TRUST_CERTS_OUTPUT_PATH}" >> "${LOG_FILE}"
-echo "$(date "+%FT%T") Copy Gov Certificates into /etc/ssl/certs/" >> "${LOG_FILE}"
+    echo "$(date "+%FT%T") Save Gov Certificates into ${GOV_TRUST_CERTS_OUTPUT_PATH}"
+    echo "$(date "+%FT%T") Copy Gov Certificates into /etc/ssl/certs/"
+} >> "${LOG_FILE}"
+
 cp "${GOV_TRUST_CERTS_OUTPUT_PATH}"/*.pem /etc/ssl/certs/
 
 echo "$(date "+%FT%T") Re-Hashing /etc/ssl/certs/..." >> "${LOG_FILE}"

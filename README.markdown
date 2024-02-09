@@ -165,8 +165,10 @@ RUN apt update \
     && apt install -y apache2 \
     && apt install -y ca-certificates \
     && apt install -y php libapache2-mod-php \
-    && apt install -y python \
+    && apt install -y python3 \
     && apt install -y cron \
+    && apt install -y pip \
+    && pip install lxml \
     && rm -rf /var/lib/apt/lists/*
 ```
 
@@ -659,7 +661,7 @@ pubblicato recentemente su [Antonio Musarra's Blog](https://www.dontesta.it).
 ## Project License
 The MIT License (MIT)
 
-Copyright &copy; 2022 Antonio Musarra's Blog - [https://www.dontesta.it](https://www.dontesta.it "Antonio Musarra's Blog"), 
+Copyright &copy; 2024 Antonio Musarra's Blog - [https://www.dontesta.it](https://www.dontesta.it "Antonio Musarra's Blog"), 
 [antonio.musarra@gmail.com](mailto:antonio.musarra@gmail.com "Antonio Musarra Email")
 
 Permission is hereby granted, free of charge, to any person obtaining a copy

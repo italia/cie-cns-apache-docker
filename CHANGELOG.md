@@ -4,6 +4,15 @@ Tutte le modifiche importanti a questo progetto saranno documentate in questo fi
 Il formato è basato su [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 e questo progetto aderisce a [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.2.1] - 2022-01-16
+### Fixed
+- CWE-23: Relative Path Traversal
+- CWE-643: Improper Neutralization of Data within XPath Expressions ('XPath Injection')
+- CWE-611: Improper Restriction of XML External Entity Reference ('XXE')
+- SC2086: Double quote to prevent globbing and word splitting
+- SC2129: Consider using { cmd1; cmd2; } >> file instead of individual redirects
+
+
 ## [2.2.0] - 2022-01-16
 ### Changed
 - Aggiornamento versione di Ubunto da 20.04 a 22.04

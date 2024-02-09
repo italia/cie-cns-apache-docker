@@ -43,8 +43,10 @@ RUN apt update \
     && apt install -y apache2 \
     && apt install -y ca-certificates \
     && apt install -y php libapache2-mod-php \
-    && apt install -y python2 \
+    && apt install -y python3 \
     && apt install -y cron \
+    && apt install -y pip \
+    && pip install lxml \
     && rm -rf /var/lib/apt/lists/*
 
 COPY scripts/parse-gov-certs.py /usr/local/bin/
