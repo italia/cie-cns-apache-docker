@@ -4,7 +4,7 @@ Tutte le modifiche importanti a questo progetto saranno documentate in questo fi
 Il formato è basato su [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 e questo progetto aderisce a [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [2.2.1] - 2022-01-16
+## [2.2.1] - 2024-02-09
 ### Fixed
 - CWE-23: Relative Path Traversal
 - CWE-643: Improper Neutralization of Data within XPath Expressions ('XPath Injection')
