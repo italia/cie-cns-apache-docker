@@ -10,8 +10,8 @@ rm -rf "${GOV_TRUST_CERTS_OUTPUT_PATH}"
 
 echo "$(date "+%FT%T") Downloading Gov Certificates..." >> "${LOG_FILE}"
 /usr/local/bin/parse-gov-certs.py \
-    --output-folder ${GOV_TRUST_CERTS_OUTPUT_PATH} \
-    --service-type-identifier ${GOV_TRUST_CERTS_SERVICE_TYPE_IDENTIFIER}
+    --output-folder "${GOV_TRUST_CERTS_OUTPUT_PATH}" \
+    --service-type-identifier "${GOV_TRUST_CERTS_SERVICE_TYPE_IDENTIFIER}"
 
 echo "$(date "+%FT%T") Downloading Gov Certificates...[END]" >> "${LOG_FILE}"
 
