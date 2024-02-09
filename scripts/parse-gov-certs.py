@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 # Copyright (C) Marco Trevisan
 #
@@ -33,10 +33,11 @@
 # Current XML file:
 #  - https://eidas.agid.gov.it/TL/TSL-IT.xml
 
+from pathlib import Path
+from lxml import etree
 import argparse
 import re
 import sys
-import xml.etree.ElementTree as ET
 import textwrap
 import os
 
@@ -59,10 +60,27 @@ def write_certificate(f, x509_cert):
     f.write(line+'\n')
   f.write('-----END CERTIFICATE-----\n')
 
-def get_service_info(service):
-  name = service.find("*/"+ns+"Name").text
-  x509_cert = service.find("*//"+ns+"X509Certificate").text
+def get_service_info(service, namespace):
+  name = service.find("*/"+namespace+"Name").text
+  x509_cert = service.find("*//"+namespace+"X509Certificate").text
   return {'name': name, 'x509_cert': x509_cert}
+
+def safe_open(file_path, base_path, mode='r'):
+    # Get absolute path of the base directory
+    base_path = os.path.abspath(base_path)
+
+    # Join the base directory and the user-provided file path
+    full_path = os.path.join(base_path, file_path)
+
+    # Get the absolute path of the resulting path
+    full_path = os.path.abspath(full_path)
+
+    # Check if the resulting path is still within the base directory
+    if not full_path.startswith(base_path):
+        raise ValueError("File path is outside allowed area")
+
+    # If everything is okay, open the file
+    return open(full_path, mode)
 
 parser = argparse.ArgumentParser()
 action = parser.add_mutually_exclusive_group(required=True)
@@ -89,29 +107,45 @@ elif args.output_file:
 
 
 if args.cert_file:
-  tree = ET.parse(args.cert_file)
+  tree = etree.parse(args.cert_file)
   root = tree.getroot()
 else:
-  root = ET.fromstring(get_certs_xml().read())
+  root = etree.fromstring(get_certs_xml().read())
 
 try:
-  [ns] = re.findall("({[^}]*}).*", root.tag)
+  [default_namespace] = re.findall("({[^}]*}).*", root.tag)
 except:
-  ns = ""
+  default_namespace = ""
 
-print("Namespace: `%s`", ns)
+print("Namespace: `%s`", default_namespace)
+
+# Dizionario dei namespace
+ns = {
+    "tsl": default_namespace.strip("{}")
+}
 
 if args.service_type_identifier:
-    services = root.findall(ns+"TrustServiceProviderList//"+ns+"TSPService/"+ns+"ServiceInformation["+ns+"ServiceTypeIdentifier='"+args.service_type_identifier+"']")
+    # Definiamo il dizionario delle variabili XPath
+    variables = {"service_type_identifier": args.service_type_identifier}
+
+    # Define the XPath query with a placeholder for the parameter
+    query = "//tsl:ServiceInformation[tsl:ServiceTypeIdentifier=$service_type_identifier]"
+
+    # Use the query with the parameter
+    services = root.xpath(query, namespaces=ns, **variables)
 else:
-    services = root.findall(ns+"TrustServiceProviderList//"+ns+"TSPService/"+ns+"ServiceInformation")
+    # Define the XPath query with a placeholder for the parameter
+    query = "//tsl:TrustServiceProviderList//tsl:TSPService/tsl:ServiceInformation"
+
+    # Use the query with the parameter
+    services = root.xpath(query, namespaces=ns)
 
 if args.output_folder:
   for service in services:
-    try:
-      info = get_service_info(service)
+    try:      
+      info = get_service_info(service, default_namespace)
       name = re.sub('[A-z]{1,2}=', '_', re.sub('[/\,\' "]', '_', info['name'])).replace('__', '_').strip('_- ')
-      filename = args.output_folder+os.path.sep+name
+      filename = name
 
       idx = 1
       tmpname = filename
@@ -120,7 +154,7 @@ if args.output_folder:
         idx += 1
       filename = tmpname+EXTENSION
 
-      f = open(filename, 'w')
+      f = safe_open(filename, args.output_folder, 'w')
       write_certificate(f, info['x509_cert'])
       f.close()
       print("Added certificate: %s" % filename)
@@ -130,7 +164,7 @@ if args.output_folder:
       pass
 
 else:
-  f = open(args.output_file, 'w')
+  f = safe_open(args.output_file, '/', 'w')
 
   for service in services:
     try:
