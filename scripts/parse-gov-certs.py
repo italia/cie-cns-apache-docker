@@ -80,6 +80,7 @@ def safe_open(file_path, base_path, mode='r'):
         raise ValueError("File path is outside allowed area")
 
     # If everything is okay, open the file
+    # file deepcode ignore PT: only point to use this function
     return open(full_path, mode)
 
 parser = argparse.ArgumentParser()
