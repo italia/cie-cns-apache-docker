@@ -144,25 +144,25 @@ else:
 if args.output_folder:
   for service in services:
     try:      
-      info = get_service_info(service, default_namespace)
-      name = re.sub('[A-z]{1,2}=', '_', re.sub('[/\,\' "]', '_', info['name'])).replace('__', '_').strip('_- ')
-      filename = name
+        info = get_service_info(service, default_namespace)
+        name = re.sub('[A-z]{1,2}=', '_', re.sub('[/\,\' "]', '_', info['name'])).replace('__', '_').strip('_- ')
+        filename = name
 
-      idx = 1
-      tmpname = filename
-      while os.path.exists(tmpname+EXTENSION):
-        tmpname = filename+str(idx)
-        idx += 1
-      filename = tmpname+EXTENSION
+        idx = 1
+        tmpname = filename
+        while os.path.exists(os.path.join(args.output_folder, tmpname + EXTENSION)):
+            tmpname = filename + str(idx)
+            idx += 1
+        filename = tmpname + EXTENSION
 
-      f = safe_open(filename, args.output_folder, 'w')
-      write_certificate(f, info['x509_cert'])
-      f.close()
-      print("Added certificate: %s" % filename)
+        f = safe_open(filename, args.output_folder, 'w')
+        write_certificate(f, info['x509_cert'])
+        f.close()
+        print("Added certificate: %s" % filename)
 
     except Exception as e:
-      print("Impossible to add file: %s" % e)
-      pass
+        print("Impossible to add file: %s" % e)
+        pass
 
 else:
   f = safe_open(args.output_file, '/', 'w')
