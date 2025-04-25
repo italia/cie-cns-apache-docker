@@ -47,6 +47,7 @@ RUN apt update \
     && apt install -y cron \
     && apt install -y pip \
     && pip install lxml \
+    && pip install cryptography \
     && rm -rf /var/lib/apt/lists/*
 
 COPY scripts/parse-gov-certs.py /usr/local/bin/

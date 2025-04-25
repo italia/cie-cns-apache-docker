@@ -33,7 +33,21 @@
 # Current XML file:
 #  - https://eidas.agid.gov.it/TL/TSL-IT.xml
 
-from pathlib import Path
+"""
+Script to retrieve and process Italian government Certification Authority certificates
+from a specified XML file, either local or remote. It extracts relevant certificate
+information and saves the certificates in PEM format.
+
+Original URI:
+ - https://www.agid.gov.it/agenda-digitale/infrastrutture-architetture/firme-elettroniche/certificati
+
+Current XML file:
+ - https://eidas.agid.gov.it/TL/TSL-IT.xml
+"""
+
+from cryptography import x509
+from cryptography.hazmat.backends import default_backend
+from datetime import datetime, timezone
 from lxml import etree
 import argparse
 import re
@@ -44,28 +58,90 @@ import os
 DEFAULT_XML_URI = "https://eidas.agid.gov.it/TL/TSL-IT.xml"
 EXTENSION = ".pem"
 
+
+def is_certificate_expired(cert):
+    """
+    Check if a certificate is expired.
+
+    Args:
+        cert (str): X.509 certificate content in base64 format.
+
+    Returns:
+        bool: True if the certificate is expired, False otherwise.
+    """
+    try:
+        # Decode the certificate
+        cert_data = x509.load_pem_x509_certificate(
+            f"-----BEGIN CERTIFICATE-----\n{cert}\n-----END CERTIFICATE-----".encode(),
+            default_backend()
+        )
+
+        # Convert not_valid_after to timezone-aware
+        not_valid_after_aware = cert_data.not_valid_after.replace(tzinfo=timezone.utc)
+
+        # Check expiration date
+        return not_valid_after_aware < datetime.now(tz=timezone.utc)
+    except Exception as e:
+        print(f"Error checking certificate expiration: {e}")
+        return True  # Treat as expired if there's an error
+
+
 def get_certs_xml():
-  if sys.version_info[0] == 2:
-    import urllib2
-    request = urllib2
-  else:
+    """
+    Fetch the XML file containing certificate information from the default URI.
+
+    Returns:
+        HTTPResponse: An HTTP response object containing the XML data.
+    """
     import urllib.request
-    request = urllib.request
+    return urllib.request.urlopen(DEFAULT_XML_URI)
 
-  return request.urlopen(DEFAULT_XML_URI)
 
-def write_certificate(f, x509_cert):
-  f.write('-----BEGIN CERTIFICATE-----\n')
-  for line in textwrap.wrap(x509_cert, 65):
-    f.write(line+'\n')
-  f.write('-----END CERTIFICATE-----\n')
+def write_certificate(file, cert):
+    """
+    Write a certificate to a file in PEM format.
 
-def get_service_info(service, namespace):
-  name = service.find("*/"+namespace+"Name").text
-  x509_cert = service.find("*//"+namespace+"X509Certificate").text
-  return {'name': name, 'x509_cert': x509_cert}
+    Args:
+        file (file object): File object opened in write mode.
+        cert (str): X.509 certificate content in base64 format.
+    """
+    file.write('-----BEGIN CERTIFICATE-----\n')
+    file.writelines(line + '\n' for line in textwrap.wrap(cert, 65))
+    file.write('-----END CERTIFICATE-----\n')
+
+
+def get_service_info(service_name, namespace):
+    """
+    Extract the service name and X.509 certificate from a service XML element.
+
+    Args:
+        service_name (lxml.etree._Element): XML element containing service information.
+        namespace (str): XML namespace for locating elements.
+
+    Returns:
+        dict: A dictionary containing the service name and X.509 certificate.
+    """
+    return {
+        'name': service_name.find(f"*/{namespace}Name").text,
+        'x509_cert': service_name.find(f"*//{namespace}X509Certificate").text
+    }
+
 
 def safe_open(file_path, base_path, mode='r'):
+    """
+    Safely open a file within a specified base directory to prevent path traversal.
+
+    Args:
+        file_path (str): Relative path to the file to open.
+        base_path (str): Base directory to ensure the file is within.
+        mode (str, optional): File opening mode. Defaults to 'r'.
+
+    Returns:
+        file: Opened file object.
+
+    Raises:
+        ValueError: If the resolved path is outside the base directory.
+    """
     # Get absolute path of the base directory
     base_path = os.path.abspath(base_path)
 
@@ -83,42 +159,54 @@ def safe_open(file_path, base_path, mode='r'):
     # file deepcode ignore PT: only point to use this function
     return open(full_path, mode)
 
+
+def sanitize_certificate_name(service_name):
+    """
+    Sanitize the certificate name for use as a filename.
+
+    Replaces invalid characters with underscores, removes consecutive underscores,
+    and strips leading/trailing underscores and hyphens.
+
+    Args:
+        service_name (str): Original certificate name.
+
+    Returns:
+        str: Sanitized certificate name.
+    """
+    sanitized_name = re.sub(r'[A-z]{1,2}=', '_', re.sub(r'[=/\\,\' ".\-@]', '_', service_name))
+    sanitized_name = re.sub(r'__+', '_', sanitized_name).strip('_-')
+    return sanitized_name
+
+
+# Command-line argument parsing
 parser = argparse.ArgumentParser()
 action = parser.add_mutually_exclusive_group(required=True)
 action.add_argument("--output-folder", help="Where to save the certs files")
 action.add_argument("--output-file", help="File saving certificates")
 parser.add_argument("--cert-file", help="Input Xml file, instead of %s" % DEFAULT_XML_URI)
 parser.add_argument("--service-type-identifier", help="Save certs by Service Type Identifier, instead of all")
+parser.add_argument("--save-expired-certs", action="store_true",
+                    help="Save expired certificates with the prefix 'expired_'")
 args = parser.parse_args()
 
 if args.output_folder:
-  if os.path.exists(args.output_folder):
-    if not os.path.isdir(args.output_folder):
-      print("Impossible to save certificates in `%s': file exists and is not a folder." % args.output_folder)
-      sys.exit(1)
-  else:
-    os.makedirs(args.output_folder)
+    os.makedirs(args.output_folder, exist_ok=True)
 elif args.output_file:
-  if os.path.exists(args.output_file):
-    if not os.path.isfile(args.output_file):
-      print("Impossible to write on `%s', it's not a file." % args.output_file)
-      sys.exit(1)
-
-    print("File `%s' will be overwritten..." % args.output_file)
-
+    if os.path.exists(args.output_file) and not os.path.isfile(args.output_file):
+        print(f"Impossible to write on `{args.output_file}`, it's not a file.")
+        sys.exit(1)
+    print(f"File `{args.output_file}` will be overwritten...")
 
 if args.cert_file:
-  tree = etree.parse(args.cert_file)
-  root = tree.getroot()
+    tree = etree.parse(args.cert_file)
+    root = tree.getroot()
 else:
-  root = etree.fromstring(get_certs_xml().read())
+    root = etree.fromstring(get_certs_xml().read())
 
-try:
-  [default_namespace] = re.findall("({[^}]*}).*", root.tag)
-except:
-  default_namespace = ""
+default_namespace = re.search(r"{[^}]*}", root.tag)
+default_namespace = default_namespace.group(0) if default_namespace else ""
 
-print("Namespace: `%s`", default_namespace)
+print(f"Namespace: {default_namespace}")
 
 # Dizionario dei namespace
 ns = {
@@ -142,40 +230,45 @@ else:
     services = root.xpath(query, namespaces=ns)
 
 if args.output_folder:
-  for service in services:
-    try:      
-        info = get_service_info(service, default_namespace)
-        name = re.sub('[A-z]{1,2}=', '_', re.sub('[/\,\' "]', '_', info['name'])).replace('__', '_').strip('_- ')
-        filename = name
+    for service in services:
+        try:
+            info = get_service_info(service, default_namespace)
+            filename = sanitize_certificate_name(info['name'])
+            cert_expired = is_certificate_expired(info['x509_cert'])
 
-        idx = 1
-        tmpname = filename
-        while os.path.exists(os.path.join(args.output_folder, tmpname + EXTENSION)):
-            tmpname = filename + str(idx)
-            idx += 1
-        filename = tmpname + EXTENSION
+            # Skip expired certificates unless --save-expired-certs is specified
+            if cert_expired and not args.save_expired_certs:
+                print(f"Skipping expired certificate: {filename}")
+                continue
 
-        f = safe_open(filename, args.output_folder, 'w')
-        write_certificate(f, info['x509_cert'])
-        f.close()
-        print("Added certificate: %s" % filename)
+            # Add 'expired_' prefix for expired certificates
+            if cert_expired:
+                filename = f"expired_{filename}"
 
-    except Exception as e:
-        print("Impossible to add file: %s" % e)
-        pass
-
+            while os.path.exists(os.path.join(args.output_folder, filename + EXTENSION)):
+                filename += "1"
+            with safe_open(filename + EXTENSION, args.output_folder, 'w') as f:
+                write_certificate(f, info['x509_cert'])
+            print(f"Added certificate: {filename + EXTENSION}")
+        except Exception as e:
+            print(f"Error adding file: {e}")
 else:
-  f = safe_open(args.output_file, '/', 'w')
+    with safe_open(args.output_file, '/', 'w') as f:
+        for service in services:
+            try:
+                info = get_service_info(service, default_namespace)
+                cert_expired = is_certificate_expired(info['x509_cert'])
 
-  for service in services:
-    try:
-      info = get_service_info(service)
-      write_certificate(f, info['x509_cert'])
+                # Skip expired certificates unless --save-expired-certs is specified
+                if cert_expired and not args.save_expired_certs:
+                    print(f"Skipping expired certificate: {info['name']}")
+                    continue
 
-      print("Added certificate %s" % info['name'])
+                # Add 'expired_' prefix for expired certificates
+                if cert_expired:
+                    info['name'] = f"expired_{info['name']}"
 
-    except Exception as e:
-      print("Impossible to add certificate to file: %s" % e)
-      pass
-
-  f.close()
+                write_certificate(f, info['x509_cert'])
+                print(f"Added certificate: {info['name']}")
+            except Exception as e:
+                print(f"Error adding certificate: {e}")
