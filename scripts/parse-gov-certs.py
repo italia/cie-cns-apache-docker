@@ -46,14 +46,8 @@ EXTENSION = ".pem"
 
 
 def get_certs_xml():
-    if sys.version_info[0] == 2:
-        import urllib2
-        request = urllib2
-    else:
-        import urllib.request
-        request = urllib.request
-
-    return request.urlopen(DEFAULT_XML_URI)
+    import urllib.request
+    return urllib.request.urlopen(DEFAULT_XML_URI)
 
 
 def write_certificate(f, x509_cert):
