@@ -173,7 +173,7 @@ def sanitize_certificate_name(service_name):
     Returns:
         str: Sanitized certificate name.
     """
-    sanitized_name = re.sub(r'[A-z]{1,2}=', '_', re.sub(r'[/\\,\' ".\-@]', '_', service_name))
+    sanitized_name = re.sub(r'[A-z]{1,2}=', '_', re.sub(r'[=/\\,\' ".\-@]', '_', service_name))
     sanitized_name = re.sub(r'__+', '_', sanitized_name).strip('_-')
     return sanitized_name
 
