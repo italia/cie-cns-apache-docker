@@ -157,37 +157,20 @@ if args.output_folder:
     for service in services:
         try:
             info = get_service_info(service, default_namespace)
-            name = sanitize_certificate_name(info['name'])
-            filename = name
-
-            idx = 1
-            tmpname = filename
-            while os.path.exists(os.path.join(args.output_folder, tmpname + EXTENSION)):
-                tmpname = filename + str(idx)
-                idx += 1
-            filename = tmpname + EXTENSION
-
-            f = safe_open(filename, args.output_folder, 'w')
-            write_certificate(f, info['x509_cert'])
-            f.close()
-            print("Added certificate: %s" % filename)
-
+            filename = sanitize_certificate_name(info['name'])
+            while os.path.exists(os.path.join(args.output_folder, filename + EXTENSION)):
+                filename += "1"
+            with safe_open(filename + EXTENSION, args.output_folder, 'w') as f:
+                write_certificate(f, info['x509_cert'])
+            print(f"Added certificate: {filename + EXTENSION}")
         except Exception as e:
-            print("Impossible to add file: %s" % e)
-            pass
-
+            print(f"Error adding file: {e}")
 else:
-    f = safe_open(args.output_file, '/', 'w')
-
-    for service in services:
-        try:
-            info = get_service_info(service)
-            write_certificate(f, info['x509_cert'])
-
-            print("Added certificate %s" % info['name'])
-
-        except Exception as e:
-            print("Impossible to add certificate to file: %s" % e)
-            pass
-
-    f.close()
+    with safe_open(args.output_file, '/', 'w') as f:
+        for service in services:
+            try:
+                info = get_service_info(service, default_namespace)
+                write_certificate(f, info['x509_cert'])
+                print(f"Added certificate: {info['name']}")
+            except Exception as e:
+                print(f"Error adding certificate: {e}")
