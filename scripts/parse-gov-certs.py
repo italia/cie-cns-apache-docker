@@ -118,12 +118,10 @@ if args.cert_file:
 else:
     root = etree.fromstring(get_certs_xml().read())
 
-try:
-    [default_namespace] = re.findall("({[^}]*}).*", root.tag)
-except:
-    default_namespace = ""
+default_namespace = re.search(r"{[^}]*}", root.tag)
+default_namespace = default_namespace.group(0) if default_namespace else ""
 
-print("Namespace: `%s`" % default_namespace)
+print(f"Namespace: {default_namespace}")
 
 # Dizionario dei namespace
 ns = {
