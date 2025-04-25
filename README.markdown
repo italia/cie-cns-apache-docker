@@ -169,6 +169,7 @@ RUN apt update \
     && apt install -y cron \
     && apt install -y pip \
     && pip install lxml \
+    && pip install cryptography \
     && rm -rf /var/lib/apt/lists/*
 ```
 
@@ -189,6 +190,12 @@ RUN /usr/local/bin/parse-gov-certs.py \
         --service-type-identifier ${GOV_TRUST_CERTS_SERVICE_TYPE_IDENTIFIER} \
     && cp ${GOV_TRUST_CERTS_OUTPUT_PATH}/*.pem /etc/ssl/certs/
 ```
+
+> Attenzione: dalla release 2.3.0 del progetto, è stata introdotta sullo script `parse-gov-certs.py` la funzionalità di
+> controllo scadenza validità dei certificati. Per impostazione predefinita, lo script non salva i certificati
+> scaduti e scrive un messaggio del tipo `Skipping expired certificate`. Qualora si vogliano salvare i certificati
+> scaduti, è possibile utilizzare l'opzione `--save-expired-certs` e in questo caso lo script salverà i certificati
+> scaduti con il suffisso `_expired` e scriverà un messaggio del tipo `Added certificate: expired...`.
  
 La sezione a seguire del Dockerfile, anch'essa esplicativa, copia le 
 configurazioni di Apache opportunamente modificate al fine di abilitare 
