@@ -33,6 +33,18 @@
 # Current XML file:
 #  - https://eidas.agid.gov.it/TL/TSL-IT.xml
 
+"""
+Script to retrieve and process Italian government Certification Authority certificates
+from a specified XML file, either local or remote. It extracts relevant certificate
+information and saves the certificates in PEM format.
+
+Original URI:
+ - https://www.agid.gov.it/agenda-digitale/infrastrutture-architetture/firme-elettroniche/certificati
+
+Current XML file:
+ - https://eidas.agid.gov.it/TL/TSL-IT.xml
+"""
+
 from lxml import etree
 import argparse
 import re
@@ -45,24 +57,61 @@ EXTENSION = ".pem"
 
 
 def get_certs_xml():
+    """
+    Fetch the XML file containing certificate information from the default URI.
+
+    Returns:
+        HTTPResponse: An HTTP response object containing the XML data.
+    """
     import urllib.request
     return urllib.request.urlopen(DEFAULT_XML_URI)
 
 
 def write_certificate(file, cert):
+    """
+    Write a certificate to a file in PEM format.
+
+    Args:
+        file (file object): File object opened in write mode.
+        cert (str): X.509 certificate content in base64 format.
+    """
     file.write('-----BEGIN CERTIFICATE-----\n')
     file.writelines(line + '\n' for line in textwrap.wrap(cert, 65))
     file.write('-----END CERTIFICATE-----\n')
 
 
-def get_service_info(service, namespace):
+def get_service_info(service_name, namespace):
+    """
+    Extract the service name and X.509 certificate from a service XML element.
+
+    Args:
+        service_name (lxml.etree._Element): XML element containing service information.
+        namespace (str): XML namespace for locating elements.
+
+    Returns:
+        dict: A dictionary containing the service name and X.509 certificate.
+    """
     return {
-        'name': service.find(f"*/{namespace}Name").text,
-        'x509_cert': service.find(f"*//{namespace}X509Certificate").text
+        'name': service_name.find(f"*/{namespace}Name").text,
+        'x509_cert': service_name.find(f"*//{namespace}X509Certificate").text
     }
 
 
 def safe_open(file_path, base_path, mode='r'):
+    """
+    Safely open a file within a specified base directory to prevent path traversal.
+
+    Args:
+        file_path (str): Relative path to the file to open.
+        base_path (str): Base directory to ensure the file is within.
+        mode (str, optional): File opening mode. Defaults to 'r'.
+
+    Returns:
+        file: Opened file object.
+
+    Raises:
+        ValueError: If the resolved path is outside the base directory.
+    """
     # Get absolute path of the base directory
     base_path = os.path.abspath(base_path)
 
@@ -82,19 +131,23 @@ def safe_open(file_path, base_path, mode='r'):
 
 
 def sanitize_certificate_name(service_name):
-    r"""
-    Sanitize the certificate name according to the defined rules:
-    1. Replace `/`, `\`, `'`, `"`, spaces, and `@` with `_`.
-    2. Replace prefixes matching `[A-z]{1,2}=` with `_`.
-    3. Remove double underscores (`__`).
-    4. Strip leading and trailing `_` or `-`.
-    5. Remove the characters `.`, `-`, and `=`.
+    """
+    Sanitize the certificate name for use as a filename.
+
+    Replaces invalid characters with underscores, removes consecutive underscores,
+    and strips leading/trailing underscores and hyphens.
+
+    Args:
+        service_name (str): Original certificate name.
+
+    Returns:
+        str: Sanitized certificate name.
     """
     sanitized_name = re.sub(r'[A-z]{1,2}=', '_', re.sub(r'[/\\,\' ".\-@]', '_', service_name))
     sanitized_name = re.sub(r'__+', '_', sanitized_name).strip('_-')
     return sanitized_name
 
-
+# Command-line argument parsing
 parser = argparse.ArgumentParser()
 action = parser.add_mutually_exclusive_group(required=True)
 action.add_argument("--output-folder", help="Where to save the certs files")
