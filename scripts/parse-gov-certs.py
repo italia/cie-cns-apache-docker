@@ -33,7 +33,6 @@
 # Current XML file:
 #  - https://eidas.agid.gov.it/TL/TSL-IT.xml
 
-from pathlib import Path
 from lxml import etree
 import argparse
 import re
