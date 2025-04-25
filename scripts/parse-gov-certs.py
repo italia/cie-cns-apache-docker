@@ -45,6 +45,9 @@ Current XML file:
  - https://eidas.agid.gov.it/TL/TSL-IT.xml
 """
 
+from cryptography import x509
+from cryptography.hazmat.backends import default_backend
+from datetime import datetime, timezone
 from lxml import etree
 import argparse
 import re
@@ -54,6 +57,33 @@ import os
 
 DEFAULT_XML_URI = "https://eidas.agid.gov.it/TL/TSL-IT.xml"
 EXTENSION = ".pem"
+
+
+def is_certificate_expired(cert):
+    """
+    Check if a certificate is expired.
+
+    Args:
+        cert (str): X.509 certificate content in base64 format.
+
+    Returns:
+        bool: True if the certificate is expired, False otherwise.
+    """
+    try:
+        # Decode the certificate
+        cert_data = x509.load_pem_x509_certificate(
+            f"-----BEGIN CERTIFICATE-----\n{cert}\n-----END CERTIFICATE-----".encode(),
+            default_backend()
+        )
+
+        # Convert not_valid_after to timezone-aware
+        not_valid_after_aware = cert_data.not_valid_after.replace(tzinfo=timezone.utc)
+
+        # Check expiration date
+        return not_valid_after_aware < datetime.now(tz=timezone.utc)
+    except Exception as e:
+        print(f"Error checking certificate expiration: {e}")
+        return True  # Treat as expired if there's an error
 
 
 def get_certs_xml():
@@ -147,6 +177,7 @@ def sanitize_certificate_name(service_name):
     sanitized_name = re.sub(r'__+', '_', sanitized_name).strip('_-')
     return sanitized_name
 
+
 # Command-line argument parsing
 parser = argparse.ArgumentParser()
 action = parser.add_mutually_exclusive_group(required=True)
@@ -154,6 +185,8 @@ action.add_argument("--output-folder", help="Where to save the certs files")
 action.add_argument("--output-file", help="File saving certificates")
 parser.add_argument("--cert-file", help="Input Xml file, instead of %s" % DEFAULT_XML_URI)
 parser.add_argument("--service-type-identifier", help="Save certs by Service Type Identifier, instead of all")
+parser.add_argument("--save-expired-certs", action="store_true",
+                    help="Save expired certificates with the prefix 'expired_'")
 args = parser.parse_args()
 
 if args.output_folder:
@@ -201,6 +234,17 @@ if args.output_folder:
         try:
             info = get_service_info(service, default_namespace)
             filename = sanitize_certificate_name(info['name'])
+            cert_expired = is_certificate_expired(info['x509_cert'])
+
+            # Skip expired certificates unless --save-expired-certs is specified
+            if cert_expired and not args.save_expired_certs:
+                print(f"Skipping expired certificate: {filename}")
+                continue
+
+            # Add 'expired_' prefix for expired certificates
+            if cert_expired:
+                filename = f"expired_{filename}"
+
             while os.path.exists(os.path.join(args.output_folder, filename + EXTENSION)):
                 filename += "1"
             with safe_open(filename + EXTENSION, args.output_folder, 'w') as f:
@@ -213,6 +257,17 @@ else:
         for service in services:
             try:
                 info = get_service_info(service, default_namespace)
+                cert_expired = is_certificate_expired(info['x509_cert'])
+
+                # Skip expired certificates unless --save-expired-certs is specified
+                if cert_expired and not args.save_expired_certs:
+                    print(f"Skipping expired certificate: {info['name']}")
+                    continue
+
+                # Add 'expired_' prefix for expired certificates
+                if cert_expired:
+                    info['name'] = f"expired_{info['name']}"
+
                 write_certificate(f, info['x509_cert'])
                 print(f"Added certificate: {info['name']}")
             except Exception as e:
