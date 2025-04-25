@@ -50,11 +50,10 @@ def get_certs_xml():
     return urllib.request.urlopen(DEFAULT_XML_URI)
 
 
-def write_certificate(f, x509_cert):
-    f.write('-----BEGIN CERTIFICATE-----\n')
-    for line in textwrap.wrap(x509_cert, 65):
-        f.write(line + '\n')
-    f.write('-----END CERTIFICATE-----\n')
+def write_certificate(file, cert):
+    file.write('-----BEGIN CERTIFICATE-----\n')
+    file.writelines(line + '\n' for line in textwrap.wrap(cert, 65))
+    file.write('-----END CERTIFICATE-----\n')
 
 
 def get_service_info(service, namespace):
