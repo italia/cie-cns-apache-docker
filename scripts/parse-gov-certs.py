@@ -105,19 +105,12 @@ parser.add_argument("--service-type-identifier", help="Save certs by Service Typ
 args = parser.parse_args()
 
 if args.output_folder:
-    if os.path.exists(args.output_folder):
-        if not os.path.isdir(args.output_folder):
-            print("Impossible to save certificates in `%s': file exists and is not a folder." % args.output_folder)
-            sys.exit(1)
-    else:
-        os.makedirs(args.output_folder)
+    os.makedirs(args.output_folder, exist_ok=True)
 elif args.output_file:
-    if os.path.exists(args.output_file):
-        if not os.path.isfile(args.output_file):
-            print("Impossible to write on `%s', it's not a file." % args.output_file)
-            sys.exit(1)
-
-        print("File `%s' will be overwritten..." % args.output_file)
+    if os.path.exists(args.output_file) and not os.path.isfile(args.output_file):
+        print(f"Impossible to write on `{args.output_file}`, it's not a file.")
+        sys.exit(1)
+    print(f"File `{args.output_file}` will be overwritten...")
 
 if args.cert_file:
     tree = etree.parse(args.cert_file)
