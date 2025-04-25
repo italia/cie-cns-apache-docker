@@ -57,9 +57,10 @@ def write_certificate(file, cert):
 
 
 def get_service_info(service, namespace):
-    name = service.find("*/" + namespace + "Name").text
-    x509_cert = service.find("*//" + namespace + "X509Certificate").text
-    return {'name': name, 'x509_cert': x509_cert}
+    return {
+        'name': service.find(f"*/{namespace}Name").text,
+        'x509_cert': service.find(f"*//{namespace}X509Certificate").text
+    }
 
 
 def safe_open(file_path, base_path, mode='r'):
