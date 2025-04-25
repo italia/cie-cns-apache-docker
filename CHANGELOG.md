@@ -4,6 +4,20 @@ Tutte le modifiche importanti a questo progetto saranno documentate in questo fi
 Il formato è basato su [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 e questo progetto aderisce a [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.3.0] - 2025-04-25
+### Added
+- Sullo script `parse-gov-certs.py` è stata aggiunta la funzionalità di controllo della validità del certificato (scadenza)
+- Aggiunto il file requirements.txt per la gestione delle dipendenze Python qualora si volesse eseguire lo script `parse-gov-certs.py` al di fuori del container Docker
+
+### Changed
+- Aggiornamento della documentazione (README)
+- Aggiornamento della documentazione doc-style dello script `parse-gov-certs.py`
+- Refactoring dello script `parse-gov-certs.py` per rimuovere vecchio codice di compatibilità con Python 2
+- Aggiornamento del Dockerfile per l'installazione delle dipendenze Python aggiuntive
+
+### Fixed
+- Revisione della funzione di sanificazione del nome del certificato
+
 ## [2.2.2] - 2025-04-24
 ### Fixed
 - Sovrascrittura dei certificati con lo stesso CN (Common Name) [#28](https://github.com/italia/cie-cns-apache-docker/issues/28)
