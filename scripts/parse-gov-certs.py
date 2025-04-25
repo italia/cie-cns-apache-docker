@@ -88,6 +88,20 @@ def safe_open(file_path, base_path, mode='r'):
     return open(full_path, mode)
 
 
+def sanitize_certificate_name(service_name):
+    r"""
+    Sanitize the certificate name according to the defined rules:
+    1. Replace `/`, `\`, `'`, `"`, spaces, and `@` with `_`.
+    2. Replace prefixes matching `[A-z]{1,2}=` with `_`.
+    3. Remove double underscores (`__`).
+    4. Strip leading and trailing `_` or `-`.
+    5. Remove the characters `.`, `-`, and `=`.
+    """
+    sanitized_name = re.sub(r'[A-z]{1,2}=', '_', re.sub(r'[/\\,\' "\.\-@]', '_', service_name))
+    sanitized_name = re.sub(r'__+', '_', sanitized_name).strip('_-')
+    return sanitized_name
+
+
 parser = argparse.ArgumentParser()
 action = parser.add_mutually_exclusive_group(required=True)
 action.add_argument("--output-folder", help="Where to save the certs files")
@@ -122,7 +136,7 @@ try:
 except:
     default_namespace = ""
 
-print("Namespace: `%s`", default_namespace)
+print("Namespace: `%s`" % default_namespace)
 
 # Dizionario dei namespace
 ns = {
@@ -149,7 +163,7 @@ if args.output_folder:
     for service in services:
         try:
             info = get_service_info(service, default_namespace)
-            name = re.sub('[A-z]{1,2}=', '_', re.sub('[/\,\' "]', '_', info['name'])).replace('__', '_').strip('_- ')
+            name = sanitize_certificate_name(info['name'])
             filename = name
 
             idx = 1
